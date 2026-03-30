@@ -4,7 +4,7 @@ FROM node:lts-alpine
 WORKDIR /app
 
 # copy both 'package.json' and 'package-lock.json' (if available)
-COPY frontend/package*.json ./
+COPY package*.json ./
 
 # install project dependencies
 RUN npm install
