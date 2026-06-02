@@ -1,17 +1,23 @@
-FROM node:lts-alpine
+# Stage 1: Builder
+FROM node:lts-alpine AS builder
 
-# make the 'app' folder the current working directory
 WORKDIR /app
 
-# copy both 'package.json' and 'package-lock.json' (if available)
 COPY package*.json ./
-
-# install project dependencies
 RUN npm install
 
-# copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
+RUN npm run build
 
-EXPOSE 5173
+# Stage 2: Nginx (serveur léger)
+FROM nginx:alpine
 
-CMD [ "npm", "run", "dev", "--", "--host" ]
+# Copie les fichiers buildés dans Nginx
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copie la config Nginx (voir ci-dessous)
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
