@@ -31,7 +31,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="size-full">
+  <div style="min-height: 100vh; position: relative;">
     <FloatingShapes />
 
     <!-- Navigation -->
