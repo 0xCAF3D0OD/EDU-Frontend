@@ -1,5 +1,5 @@
+@import './fonts.css';
 @import './theme.css';
-@import "tailwindcss";
-@import "tailwindcss/preflight";
-
-@tailwind utilities;
+@import './globals.css';
+@import 'tailwindcss' source(none);
+@source '../**/*.{vue,js,ts}';

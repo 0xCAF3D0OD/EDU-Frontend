@@ -138,3 +138,4 @@ jobs:
           # image Docker qu'on vient de builder.
           ansible-playbook kube.playbook.yaml \
             -i inventories/home/hosts.yaml
+            --tags "helm, k3s-deploy"
