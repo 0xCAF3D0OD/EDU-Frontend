@@ -137,5 +137,4 @@ jobs:
           # Résultat: les pods EduChat redémarrent avec la nouvelle
           # image Docker qu'on vient de builder.
           ansible-playbook kube.playbook.yaml \
-            -i inventories/home/hosts.yaml \
-            --tags "k8s-deploy"
+            -i inventories/home/hosts.yaml
