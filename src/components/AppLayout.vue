@@ -7,8 +7,6 @@ import FloatingShapes from './FloatingShapes.vue'
 const lenisRef = ref<Lenis | null>(null)
 let rafId: number | null = null
 
-const navHovered = ref<string | null>(null)
-
 onMounted(() => {
   const lenis = new Lenis({
     duration: 1.2,

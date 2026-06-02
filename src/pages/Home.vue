@@ -12,7 +12,6 @@ const featuresRef = ref<HTMLElement | null>(null)
 const cardsRef = ref<HTMLElement | null>(null)
 
 // Hero initial animations
-const heroContent = ref<HTMLElement | null>(null)
 const heroTitle = ref<HTMLElement | null>(null)
 const heroParagraph = ref<HTMLElement | null>(null)
 const heroButton = ref<HTMLElement | null>(null)
