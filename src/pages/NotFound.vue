@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { gsap } from 'gsap'
 import AnimatedBlob from '../components/AnimatedBlob.vue'
-import { Home, Search, Frown } from 'lucide-vue-next'
+import { Home, Search, Frown } from '@lucide/vue'
 
 const sadIconRef = ref<HTMLElement | null>(null)
 const num1Ref = ref<HTMLElement | null>(null)

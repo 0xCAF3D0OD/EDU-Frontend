@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import AnimatedBlob from '../components/AnimatedBlob.vue'
-import { Sparkles, Heart, Zap, Circle } from 'lucide-vue-next'
+import { Sparkles, Heart, Zap, Circle } from '@lucide/vue'
 
 gsap.registerPlugin(ScrollTrigger)
 

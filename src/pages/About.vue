@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import AnimatedBlob from '../components/AnimatedBlob.vue'
-import { Users, Target, Lightbulb, Rocket, Star, Award } from 'lucide-vue-next'
+import { Users, Target, Lightbulb, Rocket, Star, Award } from '@lucide/vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
