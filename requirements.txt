@@ -1,4 +1,0 @@
-gsap
-lenis
-lucide-vue-next
-vue-router
