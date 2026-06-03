@@ -2,8 +2,13 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import AnimatedBlob from '../components/AnimatedBlob.vue'
-import { Sparkles, Heart, Zap, Circle } from '@lucide/vue'
+import { Sparkles, UserCheck, Clock, BookOpen } from 'lucide-vue-next'
+import { RouterLink } from 'vue-router'
+import IllustratedIcon from '../components/IllustratedIcon.vue'
+import CroppedIcon from '../components/CroppedIcon.vue'
+import Footer from '../components/Footer.vue'
+import illustrationSet1 from '../imports/illustrationSet1.png'
+import illustrationSet2 from '../imports/illustrationSet2.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -11,263 +16,208 @@ const heroRef = ref<HTMLElement | null>(null)
 const featuresRef = ref<HTMLElement | null>(null)
 const cardsRef = ref<HTMLElement | null>(null)
 
-// Hero initial animations
-const heroTitle = ref<HTMLElement | null>(null)
-const heroParagraph = ref<HTMLElement | null>(null)
-const heroButton = ref<HTMLElement | null>(null)
-
-const featureItems = [
-  { icon: Sparkles, title: 'Créativité', color: '#FDCB40' },
-  { icon: Heart, title: 'Passion', color: '#FD4401' },
-  { icon: Zap, title: 'Innovation', color: '#FDCB40' },
-  { icon: Circle, title: 'Excellence', color: '#FD4401' },
+const features = [
+  { icon: BookOpen, title: 'Professionnels qualifiés', description: 'Tous nos remplaçants sont vérifiés et diplômés', color: '#FD4401' },
+  { icon: Clock, title: 'Disponibilité immédiate', description: 'Trouvez un remplaçant en moins de 24h', color: '#FDCB40' },
+  { icon: UserCheck, title: 'Gestion simplifiée', description: 'Gérez tous vos remplacements depuis une seule plateforme', color: '#FD4401' },
 ]
 
 let ctx: gsap.Context | null = null
 
 onMounted(() => {
   ctx = gsap.context(() => {
-    // Hero entrance animations
-    if (heroTitle.value) {
-      gsap.from(heroTitle.value, { opacity: 0, y: 30, duration: 0.8, ease: 'power2.out' })
-    }
-    if (heroParagraph.value) {
-      gsap.from(heroParagraph.value, { opacity: 0, y: 20, duration: 0.8, delay: 0.2, ease: 'power2.out' })
-    }
-    if (heroButton.value) {
-      gsap.from(heroButton.value, { opacity: 0, scale: 0.8, duration: 0.5, delay: 0.4, ease: 'back.out(1.7)' })
-    }
-
-    // Hero parallax
     if (heroRef.value) {
       const circles = heroRef.value.querySelectorAll('.parallax-circle')
       circles.forEach((circle, index) => {
         gsap.to(circle, {
           y: index % 2 === 0 ? -100 : 100,
-          scrollTrigger: {
-            trigger: heroRef.value,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1,
-          },
+          scrollTrigger: { trigger: heroRef.value, start: 'top top', end: 'bottom top', scrub: 1 },
         })
       })
     }
-
-    // Features stagger animation
     if (featuresRef.value) {
       const cards = featuresRef.value.querySelectorAll('.feature-card')
-      gsap.fromTo(
-        cards,
-        { y: 100, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.2,
-          scrollTrigger: {
-            trigger: featuresRef.value,
-            start: 'top 70%',
-            end: 'top 30%',
-            scrub: 1,
-          },
-        },
-      )
+      gsap.fromTo(cards, { y: 100, opacity: 0 }, {
+        y: 0, opacity: 1, stagger: 0.2,
+        scrollTrigger: { trigger: featuresRef.value, start: 'top 70%', end: 'top 30%', scrub: 1 },
+      })
     }
-
-    // Cards scale animation
     if (cardsRef.value) {
       const colorCards = cardsRef.value.querySelectorAll('.color-card')
       colorCards.forEach((card) => {
-        gsap.fromTo(
-          card,
-          { scale: 0.8, opacity: 0 },
-          {
-            scale: 1,
-            opacity: 1,
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 80%',
-              end: 'top 50%',
-              scrub: 1,
-            },
-          },
-        )
+        gsap.fromTo(card, { scale: 0.8, opacity: 0 }, {
+          scale: 1, opacity: 1,
+          scrollTrigger: { trigger: card, start: 'top 80%', end: 'top 50%', scrub: 1 },
+        })
       })
     }
   })
 })
 
-onUnmounted(() => {
-  ctx?.revert()
-})
+onUnmounted(() => ctx?.revert())
 
-// Feature card hover handlers
-function onFeatureHover(e: MouseEvent, index: number) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, {
-    y: -15,
-    rotate: index % 2 === 0 ? 2 : -2,
-    duration: 0.3,
-    ease: 'power2.out',
-  })
+function onFeatureHover(e: MouseEvent) {
+  gsap.to(e.currentTarget as HTMLElement, { y: -10, scale: 1.02, duration: 0.3, ease: 'power2.out' })
 }
-
 function onFeatureLeave(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, { y: 0, rotate: 0, duration: 0.3, ease: 'power2.out' })
+  gsap.to(e.currentTarget as HTMLElement, { y: 0, scale: 1, duration: 0.3, ease: 'power2.out' })
 }
-
-function onIconHover(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, { rotate: 360, duration: 0.6, ease: 'power2.out' })
+function onCardHover(e: MouseEvent) {
+  gsap.to(e.currentTarget as HTMLElement, { scale: 1.02, duration: 0.3, ease: 'power2.out' })
 }
-
-function onIconLeave(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, { rotate: 0, duration: 0 })
-}
-
-function onCardHover(e: MouseEvent, rotate: number) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, { scale: 1.03, rotate, duration: 0.3, ease: 'power2.out' })
-}
-
 function onCardLeave(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, { scale: 1, rotate: 0, duration: 0.3, ease: 'power2.out' })
+  gsap.to(e.currentTarget as HTMLElement, { scale: 1, duration: 0.3, ease: 'power2.out' })
 }
-
-function onBtnHover(e: MouseEvent, rotate: number) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, { scale: 1.08, rotate, duration: 0.3, ease: 'back.out(1.7)' })
+function onBtnHover(e: MouseEvent) {
+  gsap.to(e.currentTarget as HTMLElement, { scale: 1.05, duration: 0.3, ease: 'back.out(1.7)' })
 }
-
 function onBtnLeave(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, { scale: 1, rotate: 0, duration: 0.3, ease: 'back.out(1.7)' })
+  gsap.to(e.currentTarget as HTMLElement, { scale: 1, duration: 0.3 })
 }
-
 function onBtnPress(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, { scale: 0.92, duration: 0.1 })
+  gsap.to(e.currentTarget as HTMLElement, { scale: 0.95, duration: 0.1 })
 }
-
 function onBtnRelease(e: MouseEvent) {
-  const el = e.currentTarget as HTMLElement
-  gsap.to(el, { scale: 1, duration: 0.2, ease: 'back.out' })
+  gsap.to(e.currentTarget as HTMLElement, { scale: 1, duration: 0.2, ease: 'back.out' })
 }
 </script>
 
 <template>
-  <div class="size-full overflow-auto bg-background">
+  <div style="min-height:100vh; overflow-x:hidden; background:var(--background); position:relative;">
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section ref="heroRef" class="min-h-screen flex items-center justify-center relative overflow-hidden px-8">
-      <div class="parallax-circle absolute top-20 left-20 opacity-30">
-        <AnimatedBlob color="#FDCB40" :size="250" />
+      <div class="parallax-circle absolute top-20 left-20">
+        <CroppedIcon :image-url="illustrationSet1" :row="0" :col="4" :size="200" :opacity="0.25" />
       </div>
-      <div class="parallax-circle absolute bottom-32 right-32 opacity-30">
-        <AnimatedBlob color="#FD4401" :size="200" />
+      <div class="parallax-circle absolute bottom-32 right-32">
+        <CroppedIcon :image-url="illustrationSet2" :row="1" :col="6" :size="180" :opacity="0.25" />
+      </div>
+      <div class="parallax-circle absolute top-1/3 right-20">
+        <CroppedIcon :image-url="illustrationSet1" :row="3" :col="8" :size="150" :opacity="0.2" />
       </div>
 
       <div class="max-w-6xl mx-auto text-center z-10">
-        <div ref="heroTitle">
-          <h1 class="text-[5rem] leading-[1.1] mb-8">
-            Créons ensemble
-            <br />
-            <span class="text-primary">quelque chose d'unique</span>
-          </h1>
-        </div>
+
+        <h1 class="text-[5.5rem] leading-[1.05] mb-8" style="font-family:'DM Serif Display',serif">
+          Trouvez votre remplaçant
+          <br />
+          <span class="text-primary">en un instant</span>
+        </h1>
 
         <p
-          ref="heroParagraph"
-          class="text-[1.5rem] mb-12 max-w-3xl mx-auto text-muted-foreground"
+          class="text-[1.35rem] mb-14 max-w-3xl mx-auto text-foreground/70 leading-relaxed"
+          style="font-family:Inter,sans-serif;font-weight:400"
         >
-          Une expérience visuelle inspirée par la créativité et la couleur
+          La solution moderne qui connecte professionnels de santé et remplaçants qualifiés en quelques clics
         </p>
 
-        <button
-          ref="heroButton"
-          class="px-12 py-6 bg-primary text-primary-foreground rounded-full text-lg shadow-xl transition-transform"
-          @mouseenter="(e) => onBtnHover(e, 0)"
-          @mouseleave="onBtnLeave"
-          @mousedown="onBtnPress"
-          @mouseup="onBtnRelease"
-        >
-          Découvrir
-        </button>
+        <div class="flex gap-4 justify-center">
+          <RouterLink to="/missions">
+            <button
+              class="px-10 py-4 bg-primary text-primary-foreground rounded-full text-base font-medium shadow-lg"
+              @mouseenter="onBtnHover" @mouseleave="onBtnLeave" @mousedown="onBtnPress" @mouseup="onBtnRelease"
+            >
+              Voir les missions
+            </button>
+          </RouterLink>
+          <RouterLink to="/about">
+            <button
+              class="px-10 py-4 bg-white text-foreground rounded-full text-base font-medium shadow-sm"
+              style="border:2px solid rgba(26,26,26,0.1)"
+              @mouseenter="onBtnHover" @mouseleave="onBtnLeave" @mousedown="onBtnPress" @mouseup="onBtnRelease"
+            >
+              En savoir plus
+            </button>
+          </RouterLink>
+        </div>
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section ref="featuresRef" class="py-32 px-8">
+    <!-- Features -->
+    <section ref="featuresRef" class="py-32 px-8 relative">
       <div class="max-w-7xl mx-auto">
-        <h2
-          class="text-center mb-20 text-[3.5rem] opacity-0"
-          v-motion
-          :initial="{ opacity: 0 }"
-          :visibleOnce="{ opacity: 1, transition: { duration: 600 } }"
-        >
-          Notre approche
-        </h2>
+        <div class="text-center mb-20">
+          <span class="inline-block text-sm font-semibold text-primary mb-4 tracking-wide uppercase">
+            Notre promesse
+          </span>
+          <h2 class="text-[3.8rem] leading-tight" style="font-family:'DM Serif Display',serif">
+            Simple, rapide, efficace
+          </h2>
+        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           <div
-            v-for="(item, index) in featureItems"
+            v-for="item in features"
             :key="item.title"
-            class="feature-card bg-card rounded-[2rem] p-10 text-center shadow-lg hover:shadow-2xl transition-shadow cursor-pointer"
-            @mouseenter="(e) => onFeatureHover(e, index)"
-            @mouseleave="onFeatureLeave"
+            class="feature-card bg-card rounded-[2.5rem] p-12 text-center border border-border/50 hover:border-primary/20 transition-all"
+            @mouseenter="onFeatureHover" @mouseleave="onFeatureLeave"
           >
-            <div
-              class="inline-flex items-center justify-center w-24 h-24 rounded-full mb-6 cursor-pointer"
-              :style="{ backgroundColor: item.color }"
-              @mouseenter="onIconHover"
-              @mouseleave="onIconLeave"
-            >
-              <component :is="item.icon" :size="40" color="white" />
+            <div class="flex justify-center mb-8">
+              <IllustratedIcon :icon="item.icon" :color="item.color" class="w-28 h-28" />
             </div>
-            <h3 class="text-[1.75rem] mb-4">{{ item.title }}</h3>
-            <p class="text-muted-foreground">
-              Un engagement fort pour créer des expériences exceptionnelles
+            <h3 class="text-[1.6rem] mb-4 font-semibold" style="font-family:Inter,sans-serif">{{ item.title }}</h3>
+            <p class="text-foreground/60 text-[1.05rem] leading-relaxed" style="font-family:Inter,sans-serif">
+              {{ item.description }}
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Colorful Cards Section -->
-    <section ref="cardsRef" class="py-32 px-8 bg-muted/30">
+    <!-- How it works (color cards) -->
+    <section ref="cardsRef" class="py-32 px-8 bg-muted/30 relative">
       <div class="max-w-7xl mx-auto">
-        <h2 class="text-center mb-20 text-[3.5rem]">
-          Nos réalisations
-        </h2>
+        <div class="text-center mb-20">
+          <h2 class="text-[3.8rem] leading-tight mb-6" style="font-family:'DM Serif Display',serif">
+            Comment ça marche ?
+          </h2>
+          <p class="text-[1.2rem] text-foreground/60 max-w-2xl mx-auto" style="font-family:Inter,sans-serif">
+            Trois étapes simples pour trouver le remplaçant idéal
+          </p>
+        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div
-            class="color-card rounded-[2rem] p-16 flex items-center justify-center min-h-[400px] cursor-pointer"
-            style="background-color: #FDCB40"
-            @mouseenter="(e) => onCardHover(e, -1)"
-            @mouseleave="onCardLeave"
+            class="color-card rounded-[3rem] p-16 flex flex-col justify-center min-h-[450px] cursor-pointer relative overflow-hidden"
+            style="background-color:#FDCB40"
+            @mouseenter="onCardHover" @mouseleave="onCardLeave"
           >
-            <div class="text-center">
-              <h3 class="text-[3rem] mb-6 text-foreground">Design Audacieux</h3>
-              <p class="text-[1.25rem] text-foreground/80">
-                Des créations qui marquent les esprits
+            <div class="absolute top-8 right-8">
+              <CroppedIcon :image-url="illustrationSet1" :row="5" :col="6" :size="160" :opacity="0.15" />
+            </div>
+            <div class="absolute bottom-12 left-12">
+              <CroppedIcon :image-url="illustrationSet2" :row="4" :col="2" :size="120" :opacity="0.1" />
+            </div>
+            <div class="relative z-10">
+              <span class="inline-block text-7xl font-bold text-white/30 mb-4" style="font-family:'DM Serif Display',serif">01</span>
+              <h3 class="text-[2.8rem] mb-6 text-foreground leading-tight" style="font-family:'DM Serif Display',serif">
+                Publiez votre annonce
+              </h3>
+              <p class="text-[1.2rem] text-foreground/70 leading-relaxed" style="font-family:Inter,sans-serif">
+                Décrivez vos besoins en quelques clics : dates, spécialité, localisation
               </p>
             </div>
           </div>
 
           <div
-            class="color-card rounded-[2rem] p-16 flex items-center justify-center min-h-[400px] cursor-pointer"
-            style="background-color: #FD4401"
-            @mouseenter="(e) => onCardHover(e, 1)"
-            @mouseleave="onCardLeave"
+            class="color-card rounded-[3rem] p-16 flex flex-col justify-center min-h-[450px] cursor-pointer relative overflow-hidden"
+            style="background-color:#FD4401"
+            @mouseenter="onCardHover" @mouseleave="onCardLeave"
           >
-            <div class="text-center">
-              <h3 class="text-[3rem] mb-6 text-white">Expérience Unique</h3>
-              <p class="text-[1.25rem] text-white/90">
-                Chaque projet est une aventure
+            <div class="absolute bottom-8 left-8">
+              <CroppedIcon :image-url="illustrationSet2" :row="3" :col="3" :size="160" :opacity="0.15" />
+            </div>
+            <div class="absolute top-12 right-16">
+              <CroppedIcon :image-url="illustrationSet1" :row="6" :col="7" :size="140" :opacity="0.1" />
+            </div>
+            <div class="relative z-10">
+              <span class="inline-block text-7xl font-bold text-white/30 mb-4" style="font-family:'DM Serif Display',serif">02</span>
+              <h3 class="text-[2.8rem] mb-6 text-white leading-tight" style="font-family:'DM Serif Display',serif">
+                Recevez des candidatures
+              </h3>
+              <p class="text-[1.2rem] text-white/85 leading-relaxed" style="font-family:Inter,sans-serif">
+                Les professionnels disponibles vous contactent directement
               </p>
             </div>
           </div>
@@ -275,35 +225,43 @@ function onBtnRelease(e: MouseEvent) {
       </div>
     </section>
 
-    <!-- Interactive Footer Section -->
+    <!-- CTA -->
     <section class="py-24 px-8">
       <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-[3.5rem] mb-12">
-          Prêt à commencer ?
+        <h2 class="text-[4rem] mb-6 leading-tight" style="font-family:'DM Serif Display',serif">
+          Rejoignez Allo Remplaçant
         </h2>
-
-        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+        <p class="text-[1.25rem] text-foreground/60 mb-12 max-w-2xl mx-auto" style="font-family:Inter,sans-serif">
+          Plus de 5000 professionnels de santé nous font confiance
+        </p>
+        <div class="flex flex-col sm:flex-row gap-5 justify-center">
           <button
-            class="px-12 py-6 bg-primary text-primary-foreground rounded-full text-lg shadow-xl"
-            @mouseenter="(e) => onBtnHover(e, -2)"
-            @mouseleave="onBtnLeave"
-            @mousedown="onBtnPress"
-            @mouseup="onBtnRelease"
+            class="px-12 py-5 bg-primary text-primary-foreground rounded-full text-base font-medium shadow-xl"
+            @mouseenter="onBtnHover" @mouseleave="onBtnLeave" @mousedown="onBtnPress" @mouseup="onBtnRelease"
           >
-            Contactez-nous
+            Créer un compte gratuitement
           </button>
           <button
-            class="px-12 py-6 bg-secondary text-secondary-foreground rounded-full text-lg shadow-xl"
-            @mouseenter="(e) => onBtnHover(e, 2)"
-            @mouseleave="onBtnLeave"
-            @mousedown="onBtnPress"
-            @mouseup="onBtnRelease"
+            class="px-12 py-5 bg-white text-foreground rounded-full text-base font-medium shadow-lg"
+            style="border:2px solid rgba(26,26,26,0.1)"
+            @mouseenter="onBtnHover" @mouseleave="onBtnLeave" @mousedown="onBtnPress" @mouseup="onBtnRelease"
           >
-            En savoir plus
+            Planifier une démo
           </button>
         </div>
       </div>
     </section>
 
+    <Footer />
   </div>
 </template>
+
+<style scoped>
+.spin-slow {
+  animation: spin 3s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
