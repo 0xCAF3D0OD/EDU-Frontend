@@ -98,6 +98,13 @@ function onBtnRelease(e: MouseEvent) {
       </div>
 
       <div class="max-w-6xl mx-auto text-center z-10">
+        <div
+          class="inline-flex items-center gap-2 px-5 py-2 rounded-full border mb-8"
+          style="background-color:rgba(253,203,64,0.2);border-color:rgba(253,203,64,0.3)"
+        >
+          <Sparkles :size="16" color="#FD4401" class="spin-slow" />
+          <span class="text-sm font-medium text-foreground/80">Suisse romande</span>
+        </div>
 
         <h1 class="text-[5.5rem] leading-[1.05] mb-8" style="font-family:'DM Serif Display',serif">
           Trouvez votre remplaçant

@@ -11,7 +11,6 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), { class: '' })
 
-const wrapper = ref<HTMLDivElement | null>(null)
 const glow = ref<HTMLDivElement | null>(null)
 const main = ref<HTMLDivElement | null>(null)
 const iconInner = ref<HTMLDivElement | null>(null)
@@ -31,7 +30,8 @@ function onEnter() {
   gsap.to(main.value, { rotate: 360, duration: 0.6, ease: 'power1.inOut' })
   gsap.to(iconInner.value, { scale: 1.2, duration: 0.3 })
   dots.value.forEach((dot, i) => {
-    const p = dotPos(angles[i], 70)
+    const angle = angles[i] ?? 0
+    const p = dotPos(angle, 70)
     gsap.to(dot, { x: p.x, y: p.y, opacity: 1, duration: 0.3, delay: i * 0.05 })
   })
 }
@@ -41,7 +41,8 @@ function onLeave() {
   gsap.to(main.value, { rotate: 0, duration: 0.6, ease: 'power1.inOut' })
   gsap.to(iconInner.value, { scale: 1, duration: 0.3 })
   dots.value.forEach((dot, i) => {
-    const p = dotPos(angles[i], 50)
+    const angle = angles[i] ?? 0
+    const p = dotPos(angle, 50)
     gsap.to(dot, { x: p.x, y: p.y, opacity: 0, duration: 0.3, delay: i * 0.05 })
   })
 }
@@ -49,7 +50,6 @@ function onLeave() {
 
 <template>
   <div
-    ref="wrapper"
     :class="`relative ${props.class}`"
     @mouseenter="onEnter"
     @mouseleave="onLeave"

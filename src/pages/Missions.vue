@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { gsap } from 'gsap'
 import { MapPin, Calendar, BookOpen, Users, Award, Clock } from 'lucide-vue-next'
 import Footer from '../components/Footer.vue'
 
-const selectedDays = ref<string[]>([])
-const selectedCantons = ref<string[]>([])
-const selectedLevels = ref<string[]>([])
-const selectedSubjects = ref<string[]>([])
+type FilterKey = 'days' | 'cantons' | 'levels' | 'subjects'
+
+const selected = reactive<Record<FilterKey, string[]>>({
+  days: [],
+  cantons: [],
+  levels: [],
+  subjects: [],
+})
+
 const periodsRange = ref(14)
 const searchRadius = ref(15)
 
@@ -48,8 +53,11 @@ const missions = [
   { id: 3, school: 'École Primaire des Jordils', match: 92, subject: 'Sciences de la nature', level: '5-8H', periods: 14, startDate: '8 Septembre 2026', endDate: '30 Novembre 2026', location: 'Pully, VD' },
 ]
 
-function toggle(list: { value: string[] }, id: string) {
-  list.value = list.value.includes(id) ? list.value.filter((x) => x !== id) : [...list.value, id]
+function toggle(key: FilterKey, id: string) {
+  const list = selected[key]
+  const idx = list.indexOf(id)
+  if (idx === -1) list.push(id)
+  else list.splice(idx, 1)
 }
 
 function periodLabel(period: string) {
@@ -103,10 +111,10 @@ function onCardLeave(e: MouseEvent) {
                     :key="day.id"
                     class="h-12 rounded-[16px] text-sm font-medium transition-all"
                     :style="{
-                      backgroundColor: selectedDays.includes(day.id) ? '#FD4401' : 'white',
-                      color: selectedDays.includes(day.id) ? 'white' : '#6B6B6B',
+                      backgroundColor: selected.days.includes(day.id) ? '#FD4401' : 'white',
+                      color: selected.days.includes(day.id) ? 'white' : '#6B6B6B',
                     }"
-                    @click="toggle(selectedDays, day.id)"
+                    @click="toggle('days', day.id)"
                     @mouseenter="onBtnHover" @mouseleave="onBtnLeave"
                   >
                     {{ periodLabel(period) }}
@@ -129,10 +137,10 @@ function onCardLeave(e: MouseEvent) {
                   :key="canton.id"
                   class="px-4 py-2 rounded-[16px] text-sm font-medium transition-all"
                   :style="{
-                    backgroundColor: selectedCantons.includes(canton.id) ? canton.color : 'white',
-                    color: selectedCantons.includes(canton.id) ? 'white' : '#6B6B6B',
+                    backgroundColor: selected.cantons.includes(canton.id) ? canton.color : 'white',
+                    color: selected.cantons.includes(canton.id) ? 'white' : '#6B6B6B',
                   }"
-                  @click="toggle(selectedCantons, canton.id)"
+                  @click="toggle('cantons', canton.id)"
                   @mouseenter="(e) => onBtnHover(e, { rotate: 2 })" @mouseleave="onBtnLeave"
                 >
                   {{ canton.label }}
@@ -149,10 +157,10 @@ function onCardLeave(e: MouseEvent) {
                   :key="level.id"
                   class="px-4 py-3 rounded-[16px] text-sm font-medium transition-all"
                   :style="{
-                    backgroundColor: selectedLevels.includes(level.id) ? '#FDCB40' : 'white',
-                    color: selectedLevels.includes(level.id) ? '#1A1A1A' : '#6B6B6B',
+                    backgroundColor: selected.levels.includes(level.id) ? '#FDCB40' : 'white',
+                    color: selected.levels.includes(level.id) ? '#1A1A1A' : '#6B6B6B',
                   }"
-                  @click="toggle(selectedLevels, level.id)"
+                  @click="toggle('levels', level.id)"
                   @mouseenter="onBtnHover" @mouseleave="onBtnLeave"
                 >
                   {{ level.label }}
@@ -185,10 +193,10 @@ function onCardLeave(e: MouseEvent) {
                   :key="subject"
                   class="px-4 py-2 rounded-[16px] text-sm font-medium transition-all"
                   :style="{
-                    backgroundColor: selectedSubjects.includes(subject) ? '#FD4401' : 'white',
-                    color: selectedSubjects.includes(subject) ? 'white' : '#6B6B6B',
+                    backgroundColor: selected.subjects.includes(subject) ? '#FD4401' : 'white',
+                    color: selected.subjects.includes(subject) ? 'white' : '#6B6B6B',
                   }"
-                  @click="toggle(selectedSubjects, subject)"
+                  @click="toggle('subjects', subject)"
                   @mouseenter="(e) => onBtnHover(e, { y: -2 })" @mouseleave="onBtnLeave"
                 >
                   {{ subject }}
