@@ -44,7 +44,7 @@ jobs:
         with:
           # Spécifie le repo Infrastructure
           # (pas le repo Frontend où le workflow s'exécute)
-          repository: 0xCAF3D0OD/EDU-Infrastructure
+          repository: 0xCAF3D0OD/EDU-Frontend
           ref: main
 
       # ============================================================
