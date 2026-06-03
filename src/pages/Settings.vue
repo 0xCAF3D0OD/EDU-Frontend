@@ -24,15 +24,14 @@ interface Theme {
   id: ThemeOption
   name: string
   description: string
-  emoji: string
   colors: ThemeColors
 }
 
 const themes: Theme[] = [
-  { id: 'creme', name: 'Papier Crème', description: 'Ton clair doux et reposant', emoji: '☀️', colors: { bg: '#FFFEF9', card: '#FFFFFF', text: '#1A1A1A', textSecondary: '#6B6B6B', accent: '#FD4401', inputBg: '#FFFFFF', inputBorder: 'rgba(26, 26, 26, 0.1)', gradient: 'linear-gradient(135deg, #FFFEF9 0%, #FFF4E6 100%)' } },
-  { id: 'nuit', name: 'Nuit Bleutée', description: 'Sombre et apaisant pour les yeux', emoji: '🌙', colors: { bg: '#121824', card: '#1E293B', text: '#F8FAFC', textSecondary: '#CBD5E1', accent: '#FD4401', inputBg: '#0F172A', inputBorder: 'rgba(203, 213, 225, 0.2)', gradient: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)' } },
-  { id: 'foret', name: 'Forêt Romande', description: 'Nature et sérénité', emoji: '🌲', colors: { bg: '#F0F4F0', card: '#FFFFFF', text: '#1F3A2E', textSecondary: '#4A6B5A', accent: '#B8621B', inputBg: '#FFFFFF', inputBorder: 'rgba(31, 58, 46, 0.1)', gradient: 'linear-gradient(135deg, #E8F0E8 0%, #D4E4D4 100%)' } },
-  { id: 'lavande', name: 'Lavande Douce', description: 'Relaxant et élégant', emoji: '💜', colors: { bg: '#F5F3F7', card: '#FFFFFF', text: '#3D2557', textSecondary: '#6B4A8C', accent: '#7C3F8C', inputBg: '#FFFFFF', inputBorder: 'rgba(61, 37, 87, 0.1)', gradient: 'linear-gradient(135deg, #F5F3F7 0%, #E9E4EE 100%)' } },
+  { id: 'creme', name: 'Papier Crème', description: 'Ton clair doux et reposant', colors: { bg: '#FFFEF9', card: '#FFFFFF', text: '#1A1A1A', textSecondary: '#6B6B6B', accent: '#FD4401', inputBg: '#FFFFFF', inputBorder: 'rgba(26, 26, 26, 0.1)', gradient: 'linear-gradient(135deg, #FFFEF9 0%, #FFF4E6 100%)' } },
+  { id: 'nuit', name: 'Nuit Bleutée', description: 'Sombre et apaisant pour les yeux', colors: { bg: '#121824', card: '#1E293B', text: '#F8FAFC', textSecondary: '#CBD5E1', accent: '#FD4401', inputBg: '#0F172A', inputBorder: 'rgba(203, 213, 225, 0.2)', gradient: 'linear-gradient(135deg, #1E293B 0%, #0F172A 100%)' } },
+  { id: 'foret', name: 'Forêt Romande', description: 'Nature et sérénité', colors: { bg: '#F0F4F0', card: '#FFFFFF', text: '#1F3A2E', textSecondary: '#4A6B5A', accent: '#B8621B', inputBg: '#FFFFFF', inputBorder: 'rgba(31, 58, 46, 0.1)', gradient: 'linear-gradient(135deg, #E8F0E8 0%, #D4E4D4 100%)' } },
+  { id: 'lavande', name: 'Lavande Douce', description: 'Relaxant et élégant', colors: { bg: '#F5F3F7', card: '#FFFFFF', text: '#3D2557', textSecondary: '#6B4A8C', accent: '#7C3F8C', inputBg: '#FFFFFF', inputBorder: 'rgba(61, 37, 87, 0.1)', gradient: 'linear-gradient(135deg, #F5F3F7 0%, #E9E4EE 100%)' } },
 ]
 
 const emailNotif = ref(true)
@@ -120,7 +119,7 @@ const decorations = [
         <section class="rounded-[32px] p-10 shadow-sm" :style="{ backgroundColor: c.card }">
           <div class="flex items-center gap-3 mb-8">
             <div class="w-12 h-12 rounded-full flex items-center justify-center" :style="{ backgroundColor: `${c.accent}15` }">
-              <span class="text-2xl">🎨</span>
+              <span class="text-2xl"></span>
             </div>
             <h2 class="text-[2rem] leading-tight" style="font-family:'DM Serif Display',serif" :style="{ color: c.text }">Préférences d'Affichage</h2>
           </div>
@@ -150,7 +149,6 @@ const decorations = [
                   <Check :size="16" class="text-white" />
                 </div>
                 <div class="flex items-center gap-3 mb-3">
-                  <span class="text-3xl">{{ theme.emoji }}</span>
                   <h3 class="text-lg font-bold" :style="{ color: theme.colors.text }">{{ theme.name }}</h3>
                 </div>
                 <p class="text-sm mb-4" :style="{ color: theme.colors.text, opacity: 0.7 }">{{ theme.description }}</p>

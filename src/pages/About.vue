@@ -20,16 +20,16 @@ const ctaBlob = ref<HTMLElement | null>(null)
 let ctx: gsap.Context | null = null
 
 const values = [
-  { icon: Target, title: 'Notre Mission', text: "Garantir l'accès aux soins en facilitant le remplacement médical", color: '#FD4401' },
+  { icon: Target, title: 'Notre Mission', text: "Garantir l'accès à l'enseignement en facilitant le remplacement dans les classes", color: '#FD4401' },
   { icon: Lightbulb, title: 'Notre Vision', text: 'Une plateforme où chaque professionnel trouve son remplaçant idéal', color: '#FDCB40' },
   { icon: Rocket, title: 'Notre Approche', text: 'Technologie moderne et service humain personnalisé', color: '#FD4401' },
 ]
 
 const team = [
-  { name: 'Dr. Sophie Martin', role: 'Directrice Médicale', color: '#FD4401' },
-  { name: 'Lucas Dubois', role: 'CTO & Co-fondateur', color: '#FDCB40' },
-  { name: 'Marie Laurent', role: 'Responsable Partenariats', color: '#FD4401' },
-  { name: 'Thomas Petit', role: 'Chef de Produit', color: '#FDCB40' },
+  { name: 'Hervé Di Nocera', role: 'Enseignant Français Histoire et Géographie', color: '#FD4401' },
+  { name: 'Regina Di Nocera', role: 'Enseignante Allemand, mathématiques et sciences', color: '#FDCB40' },
+  { name: 'Kevin Di Nocera', role: 'DevOps/plateform engineer', color: '#FD4401' },
+  { name: 'İrem Doğantekin', role: 'Sportive de haut niveau', color: '#FDCB40' },
 ]
 
 onMounted(() => {
@@ -138,10 +138,10 @@ function onBtnRelease(e: MouseEvent) {
         <h1 class="text-[5.5rem] leading-[1.05] mb-10" style="font-family:'DM Serif Display',serif">
           Notre mission,
           <br />
-          <span class="text-primary">faciliter la santé</span>
+          <span class="text-primary">faciliter l'enseignement</span>
         </h1>
         <p class="text-[1.4rem] text-foreground/70 max-w-3xl mx-auto leading-relaxed" style="font-family:Inter,sans-serif;font-weight:400">
-          Allo Remplaçant connecte les professionnels de santé avec des remplaçants qualifiés pour assurer la continuité des soins
+          Allo Remplaçant connecte les professionnels de l'enseignement avec des remplaçants qualifiés pour assurer la continuité des classes
         </p>
       </div>
     </section>
@@ -178,7 +178,7 @@ function onBtnRelease(e: MouseEvent) {
               Comment tout a commencé
             </h2>
             <p class="text-[1.25rem] text-foreground/70 leading-relaxed" style="font-family:Inter,sans-serif">
-              Fondé en 2022, Allo Remplaçant est né d'un constat simple : trouver un remplaçant médical est souvent long et compliqué. Nous avons créé une plateforme moderne qui simplifie ce processus, permettant aux professionnels de santé de se concentrer sur l'essentiel : soigner leurs patients.
+              Créer en 2026, Allo Remplaçant est né d'un constat simple : trouver un remplaçant est souvent long et compliqué. Nous avons créé une plateforme moderne qui simplifie ce processus, permettant aux professionnels de l'enseignement de se concentrer sur l'essentiel : soigner leurs patients.
             </p>
           </div>
           <div
@@ -207,7 +207,7 @@ function onBtnRelease(e: MouseEvent) {
               Ce qui nous rend uniques
             </h2>
             <p class="text-[1.25rem] text-foreground/70 leading-relaxed" style="font-family:Inter,sans-serif">
-              Nous combinons technologie de pointe et accompagnement humain. Chaque professionnel de santé bénéficie d'un suivi personnalisé, tandis que notre algorithme intelligent trouve les meilleurs candidats en un temps record.
+              Nous combinons technologie de pointe et accompagnement humain. Chaque professionnel de l'enseignement bénéficie d'un suivi personnalisé, tandis que notre algorithme intelligent trouve les meilleurs candidats en un temps record.
             </p>
           </div>
         </div>

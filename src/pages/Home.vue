@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Sparkles, UserCheck, Clock, BookOpen } from 'lucide-vue-next'
+import { UserCheck, Clock, BookOpen } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
 import IllustratedIcon from '../components/IllustratedIcon.vue'
 import CroppedIcon from '../components/CroppedIcon.vue'
@@ -98,14 +98,6 @@ function onBtnRelease(e: MouseEvent) {
       </div>
 
       <div class="max-w-6xl mx-auto text-center z-10">
-        <div
-          class="inline-flex items-center gap-2 px-5 py-2 rounded-full border mb-8"
-          style="background-color:rgba(253,203,64,0.2);border-color:rgba(253,203,64,0.3)"
-        >
-          <Sparkles :size="16" color="#FD4401" class="spin-slow" />
-          <span class="text-sm font-medium text-foreground/80">Suisse romande</span>
-        </div>
-
         <h1 class="text-[5.5rem] leading-[1.05] mb-8" style="font-family:'DM Serif Display',serif">
           Trouvez votre remplaçant
           <br />
@@ -116,7 +108,7 @@ function onBtnRelease(e: MouseEvent) {
           class="text-[1.35rem] mb-14 max-w-3xl mx-auto text-foreground/70 leading-relaxed"
           style="font-family:Inter,sans-serif;font-weight:400"
         >
-          La solution moderne qui connecte professionnels de santé et remplaçants qualifiés en quelques clics
+          La solution moderne qui connecte professionnels de l'enseignement et remplaçants qualifiés en quelques clics
         </p>
 
         <div class="flex gap-4 justify-center">
@@ -239,7 +231,7 @@ function onBtnRelease(e: MouseEvent) {
           Rejoignez Allo Remplaçant
         </h2>
         <p class="text-[1.25rem] text-foreground/60 mb-12 max-w-2xl mx-auto" style="font-family:Inter,sans-serif">
-          Plus de 5000 professionnels de santé nous font confiance
+          Plus de X professionnels de l'enseignement nous font confiance
         </p>
         <div class="flex flex-col sm:flex-row gap-5 justify-center">
           <button
