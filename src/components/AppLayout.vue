@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { RouterView, RouterLink, useRoute } from 'vue-router'
 import Lenis from 'lenis'
 import FloatingShapes from './FloatingShapes.vue'
+import ThemeToggle from './ThemeToggle.vue'
 
 const route = useRoute()
 const scrolled = ref(false)
@@ -12,6 +13,9 @@ let rafId: number | null = null
 const navLinks = [
   { to: '/', label: 'Accueil' },
   { to: '/missions', label: 'Missions' },
+  { to: '/dashboard', label: 'Tableau de bord' },
+  { to: '/messages', label: 'Messages' },
+  { to: '/settings', label: 'Réglages' },
   { to: '/about', label: 'À propos' },
 ]
 
@@ -108,12 +112,17 @@ onUnmounted(() => {
             </div>
           </RouterLink>
 
-          <!-- CTA -->
-          <button
-            class="px-6 py-2.5 bg-primary text-primary-foreground rounded-full text-sm font-medium shadow-lg transition-transform hover:scale-105 active:scale-95"
-          >
-            Nous contacter
-          </button>
+          <!-- Theme toggle -->
+          <ThemeToggle />
+
+          <!-- CTA -> login -->
+          <RouterLink to="/login">
+            <button
+              class="px-6 py-2.5 bg-primary text-primary-foreground rounded-full text-sm font-medium shadow-lg transition-transform hover:scale-105 active:scale-95"
+            >
+              Connexion
+            </button>
+          </RouterLink>
         </div>
       </div>
     </nav>
