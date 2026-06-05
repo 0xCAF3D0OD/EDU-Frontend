@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, watch } from 'vue'
 import {
   User, MapPin, Users as UsersIcon, Landmark, GraduationCap, CalendarCheck,
   FileText, Plus, Trash2, ExternalLink, Save, Info, ShieldCheck,
@@ -8,22 +8,31 @@ import Footer from '../components/Footer.vue'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
 import { useTheme } from '../composables/useTheme'
+import { yearLevels, subjectsForLevels } from '../data/vaud'
 
 const MIREO_URL = 'https://prestations.vd.ch/pub/mireo/#/'
 
 const { currentTheme } = useTheme()
 const accentColor = computed(() =>
-  ({ creme: '#FD4401', nuit: '#FF5A1F', foret: '#B8621B', lavande: '#7C3F8C' })[currentTheme.value],
+  ({ creme: '#FD4401', nuit: '#FF5A1F', foret: '#B8621B', lavande: '#7C3F8C', vaud: '#00843D' })[currentTheme.value],
 )
 
+// All doodles live in the left/right gutters or top/bottom whitespace so they
+// never sit on top of form text.
 const doodles: Doodle[] = [
-  { name: 'rocket', top: '6%', left: '3%', size: 96, rotate: -12, opacity: 0.5 },
-  { name: 'bunting', top: '3%', left: '38%', size: 150, opacity: 0.35 },
-  { name: 'star', top: '16%', right: '12%', size: 52, opacity: 0.6 },
-  { name: 'pencil', top: '34%', right: '4%', size: 74, rotate: 10, opacity: 0.5 },
-  { name: 'sparkle', top: '52%', left: '5%', size: 46, opacity: 0.6 },
-  { name: 'sun-rays', top: '70%', right: '7%', size: 86, opacity: 0.45 },
-  { name: 'schoolbus', bottom: '8%', left: '6%', size: 104, rotate: -3, opacity: 0.5 },
+  // left gutter (top -> bottom)
+  { name: 'rocket', top: '5%', left: '2%', size: 84, rotate: -12, opacity: 0.5 },
+  { name: 'pencil', top: '28%', left: '3%', size: 58, rotate: 10, opacity: 0.5 },
+  { name: 'schoolbus', top: '52%', left: '2%', size: 88, rotate: -3, opacity: 0.5 },
+  { name: 'partyhat', top: '76%', left: '4%', size: 52, opacity: 0.5 },
+  // right gutter (top -> bottom)
+  { name: 'star', top: '8%', right: '3%', size: 46, opacity: 0.6 },
+  { name: 'sun-rays', top: '30%', right: '3%', size: 70, opacity: 0.45 },
+  { name: 'bunting', top: '54%', right: '2%', size: 82, opacity: 0.4 },
+  { name: 'balloon', top: '78%', right: '4%', size: 52, opacity: 0.5 },
+  // corners
+  { name: 'sparkle', bottom: '4%', right: '8%', size: 40, opacity: 0.6 },
+  { name: 'asterisk', bottom: '5%', left: '9%', size: 42, opacity: 0.5 },
 ]
 
 // ---- Form state -------------------------------------------------------------
@@ -87,11 +96,17 @@ const availability = reactive({
   active: true,
   ownVehicle: false,
 })
-const classTypes = ['1-2P', '3-4P', '5-6P', '7-8P', '9-11S']
+const classTypes = yearLevels
 const selectedClasses = ref<string[]>([])
-const subjects = ['Français', 'Mathématiques', 'Allemand', 'Anglais', 'Sciences de la nature', 'Histoire', 'Géographie']
 const selectedSubjects = ref<string[]>([])
-const showSubjects = computed(() => selectedClasses.value.includes('7-8P') || selectedClasses.value.includes('9-11S'))
+const availableSubjects = computed(() =>
+  selectedClasses.value.length ? subjectsForLevels(selectedClasses.value) : [],
+)
+const showSubjects = computed(() => availableSubjects.value.length > 0)
+// Garde la sélection cohérente avec les niveaux choisis
+watch(availableSubjects, (subs) => {
+  selectedSubjects.value = selectedSubjects.value.filter((s) => subs.includes(s))
+})
 
 const regions = [
   'Lausanne', 'Ouest lausannois', 'Morges', 'Nyon', 'Gros-de-Vaud',
@@ -445,26 +460,26 @@ function saveDraft() {
           </div>
 
           <!-- Types de classes -->
-          <label class="block text-sm font-semibold mb-3 text-foreground">Types de classes préférés</label>
+          <label class="block text-sm font-semibold mb-3 text-foreground">Degrés / années préférés</label>
           <div class="flex flex-wrap gap-2 mb-6">
             <button
-              v-for="ct in classTypes" :key="ct" type="button"
+              v-for="ct in classTypes" :key="ct.id" type="button"
               class="px-4 py-2 rounded-full text-sm font-medium border-2 transition-all"
-              :class="selectedClasses.includes(ct)
+              :class="selectedClasses.includes(ct.id)
                 ? 'bg-primary text-primary-foreground border-transparent'
                 : 'bg-transparent text-foreground/70 border-border hover:border-primary/40'"
-              @click="toggle({ value: selectedClasses }, ct)"
+              @click="toggle({ value: selectedClasses }, ct.id)"
             >
-              {{ ct }}
+              {{ ct.label }}
             </button>
           </div>
 
-          <!-- Disciplines (only for 7-8P / 9-11S) -->
+          <!-- Disciplines en fonction des degrés choisis -->
           <div v-if="showSubjects" class="mb-6">
-            <label class="block text-sm font-semibold mb-3 text-foreground">Disciplines (secondaire)</label>
+            <label class="block text-sm font-semibold mb-3 text-foreground">Disciplines (selon les degrés)</label>
             <div class="flex flex-wrap gap-2">
               <button
-                v-for="s in subjects" :key="s" type="button"
+                v-for="s in availableSubjects" :key="s" type="button"
                 class="px-4 py-2 rounded-full text-sm font-medium border-2 transition-all"
                 :class="selectedSubjects.includes(s)
                   ? 'bg-secondary text-secondary-foreground border-transparent'

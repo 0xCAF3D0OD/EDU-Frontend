@@ -1,8 +1,8 @@
 import { ref, computed } from 'vue'
 
-export type ThemeId = 'creme' | 'nuit' | 'foret' | 'lavande'
+export type ThemeId = 'creme' | 'nuit' | 'foret' | 'lavande' | 'vaud'
 
-export const THEME_IDS: ThemeId[] = ['creme', 'nuit', 'foret', 'lavande']
+export const THEME_IDS: ThemeId[] = ['creme', 'nuit', 'foret', 'lavande', 'vaud']
 
 const STORAGE_KEY = 'theme'
 const LIGHT_THEME: ThemeId = 'creme'

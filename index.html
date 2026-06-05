@@ -15,7 +15,7 @@
 <script>
     // Apply saved theme before paint to avoid a flash of the wrong theme
     (function () {
-        var valid = ['creme', 'nuit', 'foret', 'lavande']
+        var valid = ['creme', 'nuit', 'foret', 'lavande', 'vaud']
         var saved = localStorage.getItem('theme')
         if (saved === 'dark') saved = 'nuit'
         var theme = valid.indexOf(saved) !== -1 ? saved : 'creme'

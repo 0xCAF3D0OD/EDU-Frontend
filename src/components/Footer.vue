@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { Mail, MapPin } from 'lucide-vue-next'
+import alloBubble from '../assets/allo-bubble.svg'
+import alloOrange from '../assets/allo-orange.svg'
+import { useTheme } from '../composables/useTheme'
+
+const { isDark } = useTheme()
 
 const year = new Date().getFullYear()
 const socials = ['LinkedIn', 'Twitter', 'Facebook']
@@ -19,14 +24,12 @@ const legalLinks = ['Mentions légales', 'Confidentialité', 'CGU']
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <!-- Brand -->
         <div class="col-span-1 md:col-span-2">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color:#FD4401">
-              <span class="text-white text-xl font-semibold">A</span>
-            </div>
-            <span class="text-[1.5rem] font-semibold text-primary" style="font-family:Inter,sans-serif;letter-spacing:-0.02em">
-              Allo Remplaçant
+          <RouterLink to="/" class="flex items-center gap-3 mb-6 w-fit group">
+            <img :src="isDark ? alloOrange : alloBubble" alt="allô" class="h-12 w-auto transition-transform duration-300 group-hover:-rotate-3" />
+            <span class="text-[1.5rem] font-semibold text-primary" style="font-family:'DM Serif Display',serif;letter-spacing:-0.01em">
+              Remplaçant
             </span>
-          </div>
+          </RouterLink>
           <p class="text-foreground/60 mb-6 max-w-md leading-relaxed" style="font-family:Inter,sans-serif">
             La plateforme qui simplifie la recherche de remplaçants pour les établissements scolaires en Suisse romande.
           </p>

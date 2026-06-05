@@ -1,17 +1,26 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { gsap } from 'gsap'
 import { MapPin, Calendar, BookOpen, Users, Award, Clock } from 'lucide-vue-next'
 import Footer from '../components/Footer.vue'
 import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
+import EstablishmentsMap from '../components/EstablishmentsMap.vue'
+import GrilleHoraire from '../components/GrilleHoraire.vue'
+import { yearLevels, subjectsForLevels } from '../data/vaud'
 
 const doodles: Doodle[] = [
-  { name: 'arrow', top: '14%', left: '4%', size: 70, rotate: -8, opacity: 0.5 },
-  { name: 'lightning', top: '30%', right: '5%', size: 60, opacity: 0.55 },
-  { name: 'star-mini', top: '8%', right: '16%', size: 40, opacity: 0.6 },
-  { name: 'swirl', bottom: '30%', left: '6%', size: 90, opacity: 0.45 },
-  { name: 'cloud-line', top: '60%', right: '8%', size: 96, opacity: 0.4 },
-  { name: 'hills', bottom: '10%', right: '24%', size: 110, opacity: 0.4 },
+  // left gutter
+  { name: 'arrow', top: '12%', left: '2%', size: 64, rotate: -8, opacity: 0.5 },
+  { name: 'swirl', top: '34%', left: '3%', size: 78, opacity: 0.45 },
+  { name: 'arrow2', top: '58%', left: '2%', size: 58, rotate: 12, opacity: 0.5 },
+  { name: 'hills', bottom: '8%', left: '4%', size: 90, opacity: 0.4 },
+  { name: 'dots-red', bottom: '30%', left: '3%', size: 50, opacity: 0.45 },
+  // right gutter
+  { name: 'lightning', top: '14%', right: '2%', size: 56, opacity: 0.55 },
+  { name: 'cloud-line', top: '38%', right: '3%', size: 84, opacity: 0.4 },
+  { name: 'lightning2', top: '62%', right: '2%', size: 50, opacity: 0.5 },
+  { name: 'star-mini', bottom: '12%', right: '5%', size: 36, opacity: 0.55 },
+  { name: 'check', bottom: '34%', right: '4%', size: 40, opacity: 0.5 },
 ]
 
 type FilterKey = 'days' | 'cantons' | 'levels' | 'subjects'
@@ -48,19 +57,19 @@ const cantons = [
   { id: 'JU', label: 'Jura (JU)', color: '#FDCB40' },
 ]
 
-const levels = [
-  { id: '1-4H', label: '1-4H (Primaire)' },
-  { id: '5-8H', label: '5-8H (Primaire)' },
-  { id: '9-11H', label: '9-11H (CO)' },
-  { id: 'sec2', label: 'Secondaire II' },
-]
+// Niveaux officiels VD (HarmoS) ; les disciplines dépendent des niveaux choisis
+const levels = yearLevels
+const availableSubjects = computed(() => subjectsForLevels(selected.levels))
 
-const subjects = ['Français', 'Mathématiques', 'Allemand', 'Anglais', 'Histoire & Citoyenneté', 'Géographie', 'Sciences de la nature']
+// Retire les disciplines qui ne sont plus proposées quand les niveaux changent
+watch(availableSubjects, (subs) => {
+  selected.subjects = selected.subjects.filter((s) => subs.includes(s))
+})
 
 const missions = [
-  { id: 1, school: 'Établissement Primaire de Belmont', match: 95, subject: 'Français', level: '5-8H', periods: 18, startDate: '15 Septembre 2026', endDate: '12 Décembre 2026', location: 'Lausanne, VD' },
-  { id: 2, school: "Collège de l'Elysée", match: 88, subject: 'Mathématiques', level: '9-11H', periods: 22, startDate: '1 Octobre 2026', endDate: '20 Décembre 2026', location: 'Genève, GE' },
-  { id: 3, school: 'École Primaire des Jordils', match: 92, subject: 'Sciences de la nature', level: '5-8H', periods: 14, startDate: '8 Septembre 2026', endDate: '30 Novembre 2026', location: 'Pully, VD' },
+  { id: 1, school: 'Établissement Primaire de Belmont', match: 95, subject: 'Français', level: '7-8P', periods: 18, startDate: '15 Septembre 2026', endDate: '12 Décembre 2026', location: 'Lausanne, VD' },
+  { id: 2, school: "Collège de l'Elysée", match: 88, subject: 'Mathématiques', level: '9-11S · VP', periods: 22, startDate: '1 Octobre 2026', endDate: '20 Décembre 2026', location: 'Lausanne, VD' },
+  { id: 3, school: 'École Primaire des Jordils', match: 92, subject: 'Sciences de la nature', level: '5-6P', periods: 14, startDate: '8 Septembre 2026', endDate: '30 Novembre 2026', location: 'Pully, VD' },
 ]
 
 function toggle(key: FilterKey, id: string) {
@@ -197,10 +206,13 @@ function onCardLeave(e: MouseEvent) {
 
             <!-- Disciplines -->
             <div class="mb-6">
-              <label class="block text-base font-semibold mb-4" style="font-family:Inter,sans-serif">Disciplines théoriques</label>
+              <label class="block text-base font-semibold mb-2" style="font-family:Inter,sans-serif">Disciplines</label>
+              <p class="text-xs text-foreground/50 mb-4">
+                {{ selected.levels.length ? 'Selon les niveaux sélectionnés' : 'Sélectionnez un niveau pour affiner' }}
+              </p>
               <div class="flex flex-wrap gap-2">
                 <button
-                  v-for="subject in subjects"
+                  v-for="subject in availableSubjects"
                   :key="subject"
                   class="px-4 py-2 rounded-[16px] text-sm font-medium transition-all"
                   :style="{
@@ -279,6 +291,12 @@ function onCardLeave(e: MouseEvent) {
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Carte des établissements + grilles horaires -->
+      <div class="mt-12 space-y-6">
+        <EstablishmentsMap />
+        <GrilleHoraire />
       </div>
     </div>
 

@@ -149,6 +149,34 @@
   --nav-border: rgba(61, 37, 87, 0.12);
 }
 
+.theme-vaud {
+  /* Official Canton de Vaud look: green & white */
+  --background: #F4F8F5;
+  --foreground: #14201A;
+  --card: #FFFFFF;
+  --card-foreground: #14201A;
+  --popover: #FFFFFF;
+  --popover-foreground: #14201A;
+  --primary: #00843D;
+  --primary-foreground: #FFFFFF;
+  --secondary: #FDCB40;
+  --secondary-foreground: #1A1A1A;
+  --muted: #E4EFE7;
+  --muted-foreground: #4F6157;
+  --accent: #FDCB40;
+  --accent-foreground: #1A1A1A;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 132, 61, 0.16);
+  --input: transparent;
+  --input-background: #FFFFFF;
+  --switch-background: #FDCB40;
+  --ring: #00843D;
+  --nav-bg: rgba(244, 248, 245, 0.8);
+  --nav-bg-scrolled: rgba(244, 248, 245, 0.95);
+  --nav-border: rgba(0, 132, 61, 0.16);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
