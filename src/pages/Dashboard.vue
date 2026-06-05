@@ -2,9 +2,16 @@
 import { gsap } from 'gsap'
 import { Calendar, MapPin, MessageCircle, Clock, CheckCircle, AlertCircle, Link as LinkIcon } from 'lucide-vue-next'
 import Footer from '../components/Footer.vue'
-import CroppedIcon from '../components/CroppedIcon.vue'
-import illustrationSet1 from '../imports/illustrationSet1.png'
-import illustrationSet2 from '../imports/illustrationSet2.png'
+import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
+
+const doodles: Doodle[] = [
+  { name: 'campervan', top: '10%', right: '5%', size: 110, rotate: -3, opacity: 0.5 },
+  { name: 'pine', top: '40%', left: '4%', size: 80, opacity: 0.45 },
+  { name: 'moon', top: '22%', left: '14%', size: 46, opacity: 0.55 },
+  { name: 'sparkles', top: '64%', right: '7%', size: 60, opacity: 0.5 },
+  { name: 'bolt', bottom: '26%', left: '8%', size: 54, opacity: 0.55 },
+  { name: 'sun-small', bottom: '10%', right: '22%', size: 70, opacity: 0.45 },
+]
 
 const missions = [
   { id: 1, status: 'confirmed', statusLabel: 'Confirmé', school: 'Établissement Primaire de Belmont', class: '5H-6H', subject: 'Français', periods: 18, startDate: '15 Sep 2026', endDate: '12 Déc 2026', schedule: 'Lun-Mar-Mer 08:30-11:45', teacher: 'Mme Sophie Ducret', location: 'Lausanne, VD' },
@@ -18,14 +25,6 @@ const upcomingWeek = [
   { day: 'Mer', date: '17', missions: ['Belmont', 'Jordils'] },
   { day: 'Jeu', date: '18', missions: [] },
   { day: 'Ven', date: '19', missions: [] },
-]
-
-const decorations = [
-  { set: illustrationSet1, row: 5, col: 6, size: 140, opacity: 0.1, pos: 'top-20 right-20' },
-  { set: illustrationSet2, row: 3, col: 8, size: 160, opacity: 0.08, pos: 'bottom-40 left-20' },
-  { set: illustrationSet1, row: 2, col: 4, size: 110, opacity: 0.07, pos: 'top-1/3 left-32' },
-  { set: illustrationSet2, row: 5, col: 7, size: 130, opacity: 0.09, pos: 'bottom-1/4 right-40' },
-  { set: illustrationSet1, row: 4, col: 9, size: 95, opacity: 0.06, pos: 'top-2/3 right-16' },
 ]
 
 function onCardHover(e: MouseEvent) {
@@ -44,16 +43,8 @@ function onBtnLeave(e: MouseEvent) {
 
 <template>
   <div style="min-height:100vh; overflow-x:hidden; background:var(--background); position:relative;">
-    <div
-      v-for="(deco, i) in decorations"
-      :key="i"
-      class="absolute pointer-events-none"
-      :class="deco.pos"
-    >
-      <CroppedIcon :image-url="deco.set" :row="deco.row" :col="deco.col" :size="deco.size" :opacity="deco.opacity" />
-    </div>
-
-    <div class="max-w-[1400px] mx-auto px-8 py-12">
+    <DoodleBackground :items="doodles" />
+    <div class="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8 py-12">
       <!-- Header -->
       <div class="mb-12">
         <h1 class="text-[clamp(2rem,6.5vw,3.5rem)] mb-6 leading-tight" style="font-family:'DM Serif Display',serif">

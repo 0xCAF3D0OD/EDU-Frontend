@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Search, Paperclip, Smile, Send, FileText, Download, Circle } from 'lucide-vue-next'
-import CroppedIcon from '../components/CroppedIcon.vue'
-import illustrationSet1 from '../imports/illustrationSet1.png'
-import illustrationSet2 from '../imports/illustrationSet2.png'
+import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
+
+const doodles: Doodle[] = [
+  { name: 'envelope', top: '12%', right: '6%', size: 64, rotate: -6, opacity: 0.5 },
+  { name: 'paperplane', top: '40%', left: '3%', size: 70, opacity: 0.5 },
+  { name: 'heart', bottom: '16%', right: '10%', size: 48, opacity: 0.5 },
+  { name: 'dots', top: '70%', left: '6%', size: 60, opacity: 0.45 },
+  { name: 'smiley', bottom: '30%', left: '14%', size: 44, opacity: 0.5 },
+  { name: 'cloud', top: '6%', left: '30%', size: 70, opacity: 0.4 },
+]
 
 const selectedChat = ref(1)
 
@@ -32,12 +39,7 @@ const currentConversation = computed(() => conversations.find((c) => c.id === se
 
 <template>
   <div style="height:calc(100vh - 6rem); overflow:hidden; background:var(--background); display:flex; flex-direction:column; position:relative;">
-    <div class="absolute top-24 right-16 pointer-events-none z-0">
-      <CroppedIcon :image-url="illustrationSet1" :row="3" :col="5" :size="100" :opacity="0.06" />
-    </div>
-    <div class="absolute bottom-32 left-24 pointer-events-none z-0">
-      <CroppedIcon :image-url="illustrationSet2" :row="2" :col="8" :size="120" :opacity="0.07" />
-    </div>
+    <DoodleBackground :items="doodles" />
 
     <div class="flex-1 flex overflow-hidden relative z-10">
       <!-- Conversations list -->

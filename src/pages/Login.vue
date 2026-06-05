@@ -1,21 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import { Mail, Lock, Eye, EyeOff } from 'lucide-vue-next'
-import CroppedIcon from '../components/CroppedIcon.vue'
-import illustrationSet1 from '../imports/illustrationSet1.png'
-import illustrationSet2 from '../imports/illustrationSet2.png'
+import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
 
 const showPassword = ref(false)
 
-const decorations = [
-  { set: illustrationSet1, row: 0, col: 4, size: 120, opacity: 0.3, pos: 'top-20 left-20' },
-  { set: illustrationSet2, row: 1, col: 6, size: 100, opacity: 0.25, pos: 'top-40 right-32' },
-  { set: illustrationSet1, row: 5, col: 2, size: 140, opacity: 0.2, pos: 'bottom-32 left-40' },
-  { set: illustrationSet2, row: 6, col: 9, size: 110, opacity: 0.3, pos: 'bottom-20 right-20' },
-  { set: illustrationSet1, row: 3, col: 7, size: 90, opacity: 0.18, pos: 'top-1/2 left-1/3' },
-  { set: illustrationSet2, row: 4, col: 4, size: 130, opacity: 0.22, pos: 'top-1/3 right-1/4' },
-  { set: illustrationSet1, row: 2, col: 8, size: 95, opacity: 0.2, pos: 'top-1/4 left-1/2' },
-  { set: illustrationSet2, row: 5, col: 1, size: 115, opacity: 0.25, pos: 'bottom-1/3 right-1/3' },
+const doodles: Doodle[] = [
+  { name: 'sun', top: '12%', left: '12%', size: 80, opacity: 0.55 },
+  { name: 'flower-red', top: '36%', right: '14%', size: 64, opacity: 0.55 },
+  { name: 'tree-blue', bottom: '14%', left: '16%', size: 96, opacity: 0.5 },
+  { name: 'icecream', top: '60%', left: '8%', size: 56, rotate: -8, opacity: 0.55 },
+  { name: 'sparkle-plus', top: '22%', right: '34%', size: 44, opacity: 0.6 },
+  { name: 'wave', bottom: '34%', right: '18%', size: 90, opacity: 0.4 },
 ]
 </script>
 
@@ -24,14 +21,7 @@ const decorations = [
 
     <!-- Left: visual -->
     <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden items-center justify-center p-12 bg-muted">
-      <div
-        v-for="(deco, i) in decorations"
-        :key="i"
-        class="absolute pointer-events-none"
-        :class="deco.pos"
-      >
-        <CroppedIcon :image-url="deco.set" :row="deco.row" :col="deco.col" :size="deco.size" :opacity="deco.opacity" />
-      </div>
+      <DoodleBackground :items="doodles" />
 
       <div class="relative z-10 text-center max-w-md">
         <h1 class="text-[clamp(2.5rem,8vw,4.5rem)] mb-6 leading-[1.1]" style="font-family:'DM Serif Display',serif">
@@ -144,7 +134,7 @@ const decorations = [
         <div class="text-center mt-8">
           <p class="text-foreground/70">
             Pas encore inscrit ?
-            <a href="#" class="text-primary font-semibold hover:underline">Créer un compte</a>
+            <RouterLink to="/create-profile" class="text-primary font-semibold hover:underline">Créer un compte</RouterLink>
           </p>
         </div>
       </div>
