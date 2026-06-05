@@ -98,7 +98,7 @@ function onBtnRelease(e: MouseEvent) {
       </div>
 
       <div class="max-w-6xl mx-auto text-center z-10">
-        <h1 class="text-[5.5rem] leading-[1.05] mb-8" style="font-family:'DM Serif Display',serif">
+        <h1 class="text-[clamp(2.5rem,9vw,5.5rem)] leading-[1.05] mb-8" style="font-family:'DM Serif Display',serif">
           Trouvez votre remplaçant
           <br />
           <span class="text-primary">en un instant</span>
@@ -111,7 +111,7 @@ function onBtnRelease(e: MouseEvent) {
           La solution moderne qui connecte professionnels de l'enseignement et remplaçants qualifiés en quelques clics
         </p>
 
-        <div class="flex gap-4 justify-center">
+        <div class="flex flex-wrap gap-4 justify-center">
           <RouterLink to="/missions">
             <button
               class="px-10 py-4 bg-primary text-primary-foreground rounded-full text-base font-medium shadow-lg"
@@ -122,8 +122,8 @@ function onBtnRelease(e: MouseEvent) {
           </RouterLink>
           <RouterLink to="/about">
             <button
-              class="px-10 py-4 bg-white text-foreground rounded-full text-base font-medium shadow-sm"
-              style="border:2px solid rgba(26,26,26,0.1)"
+              class="px-10 py-4 bg-card text-foreground rounded-full text-base font-medium shadow-sm"
+              style="border:2px solid var(--border)"
               @mouseenter="onBtnHover" @mouseleave="onBtnLeave" @mousedown="onBtnPress" @mouseup="onBtnRelease"
             >
               En savoir plus
@@ -140,7 +140,7 @@ function onBtnRelease(e: MouseEvent) {
           <span class="inline-block text-sm font-semibold text-primary mb-4 tracking-wide uppercase">
             Notre promesse
           </span>
-          <h2 class="text-[3.8rem] leading-tight" style="font-family:'DM Serif Display',serif">
+          <h2 class="text-[clamp(2rem,7vw,3.8rem)] leading-tight" style="font-family:'DM Serif Display',serif">
             Simple, rapide, efficace
           </h2>
         </div>
@@ -168,7 +168,7 @@ function onBtnRelease(e: MouseEvent) {
     <section ref="cardsRef" class="py-32 px-8 bg-muted/30 relative">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-20">
-          <h2 class="text-[3.8rem] leading-tight mb-6" style="font-family:'DM Serif Display',serif">
+          <h2 class="text-[clamp(2rem,7vw,3.8rem)] leading-tight mb-6" style="font-family:'DM Serif Display',serif">
             Comment ça marche ?
           </h2>
           <p class="text-[1.2rem] text-foreground/60 max-w-2xl mx-auto" style="font-family:Inter,sans-serif">
@@ -190,10 +190,10 @@ function onBtnRelease(e: MouseEvent) {
             </div>
             <div class="relative z-10">
               <span class="inline-block text-7xl font-bold text-white/30 mb-4" style="font-family:'DM Serif Display',serif">01</span>
-              <h3 class="text-[2.8rem] mb-6 text-foreground leading-tight" style="font-family:'DM Serif Display',serif">
+              <h3 class="text-[clamp(1.875rem,5.5vw,2.8rem)] mb-6 text-[#1A1A1A] leading-tight" style="font-family:'DM Serif Display',serif">
                 Publiez votre annonce
               </h3>
-              <p class="text-[1.2rem] text-foreground/70 leading-relaxed" style="font-family:Inter,sans-serif">
+              <p class="text-[1.2rem] text-[#1A1A1A]/70 leading-relaxed" style="font-family:Inter,sans-serif">
                 Décrivez vos besoins en quelques clics : dates, spécialité, localisation
               </p>
             </div>
@@ -212,7 +212,7 @@ function onBtnRelease(e: MouseEvent) {
             </div>
             <div class="relative z-10">
               <span class="inline-block text-7xl font-bold text-white/30 mb-4" style="font-family:'DM Serif Display',serif">02</span>
-              <h3 class="text-[2.8rem] mb-6 text-white leading-tight" style="font-family:'DM Serif Display',serif">
+              <h3 class="text-[clamp(1.875rem,5.5vw,2.8rem)] mb-6 text-white leading-tight" style="font-family:'DM Serif Display',serif">
                 Recevez des candidatures
               </h3>
               <p class="text-[1.2rem] text-white/85 leading-relaxed" style="font-family:Inter,sans-serif">
@@ -227,7 +227,7 @@ function onBtnRelease(e: MouseEvent) {
     <!-- CTA -->
     <section class="py-24 px-8">
       <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-[4rem] mb-6 leading-tight" style="font-family:'DM Serif Display',serif">
+        <h2 class="text-[clamp(2.25rem,7.5vw,4rem)] mb-6 leading-tight" style="font-family:'DM Serif Display',serif">
           Rejoignez Allo Remplaçant
         </h2>
         <p class="text-[1.25rem] text-foreground/60 mb-12 max-w-2xl mx-auto" style="font-family:Inter,sans-serif">
@@ -241,8 +241,8 @@ function onBtnRelease(e: MouseEvent) {
             Créer un compte gratuitement
           </button>
           <button
-            class="px-12 py-5 bg-white text-foreground rounded-full text-base font-medium shadow-lg"
-            style="border:2px solid rgba(26,26,26,0.1)"
+            class="px-12 py-5 bg-card text-foreground rounded-full text-base font-medium shadow-lg"
+            style="border:2px solid var(--border)"
             @mouseenter="onBtnHover" @mouseleave="onBtnLeave" @mousedown="onBtnPress" @mouseup="onBtnRelease"
           >
             Planifier une démo

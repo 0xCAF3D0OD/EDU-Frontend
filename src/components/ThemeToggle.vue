@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Sun, Moon } from 'lucide-vue-next'
+import { useTheme } from '../composables/useTheme'
 
-const isDark = ref(false)
+const { isDark, toggleDark } = useTheme()
 
 function toggleTheme() {
-  isDark.value = !isDark.value
-  document.documentElement.classList.toggle('dark')
+  toggleDark()
 }
 </script>
 

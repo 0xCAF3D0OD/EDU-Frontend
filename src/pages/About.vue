@@ -135,7 +135,7 @@ function onBtnRelease(e: MouseEvent) {
             <Star :size="80" color="#FD4401" fill="#FDCB40" />
           </div>
         </div>
-        <h1 class="text-[5.5rem] leading-[1.05] mb-10" style="font-family:'DM Serif Display',serif">
+        <h1 class="text-[clamp(2.5rem,9vw,5.5rem)] leading-[1.05] mb-10" style="font-family:'DM Serif Display',serif">
           Notre mission,
           <br />
           <span class="text-primary">faciliter l'enseignement</span>
@@ -174,7 +174,7 @@ function onBtnRelease(e: MouseEvent) {
       <div class="max-w-6xl mx-auto relative z-10">
         <div class="story-left grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-32">
           <div>
-            <h2 class="text-[3.8rem] mb-8 leading-tight" style="font-family:'DM Serif Display',serif">
+            <h2 class="text-[clamp(2rem,7vw,3.8rem)] mb-8 leading-tight" style="font-family:'DM Serif Display',serif">
               Comment tout a commencé
             </h2>
             <p class="text-[1.25rem] text-foreground/70 leading-relaxed" style="font-family:Inter,sans-serif">
@@ -203,7 +203,7 @@ function onBtnRelease(e: MouseEvent) {
             </div>
           </div>
           <div class="order-1 md:order-2">
-            <h2 class="text-[3.8rem] mb-8 leading-tight" style="font-family:'DM Serif Display',serif">
+            <h2 class="text-[clamp(2rem,7vw,3.8rem)] mb-8 leading-tight" style="font-family:'DM Serif Display',serif">
               Ce qui nous rend uniques
             </h2>
             <p class="text-[1.25rem] text-foreground/70 leading-relaxed" style="font-family:Inter,sans-serif">
@@ -217,7 +217,7 @@ function onBtnRelease(e: MouseEvent) {
     <!-- Team -->
     <section ref="teamRef" class="py-32 px-8 bg-muted/20">
       <div class="max-w-7xl mx-auto">
-        <h2 class="text-center mb-20 text-[3.8rem] leading-tight" style="font-family:'DM Serif Display',serif">
+        <h2 class="text-center mb-20 text-[clamp(2rem,7vw,3.8rem)] leading-tight" style="font-family:'DM Serif Display',serif">
           Rencontrez l'équipe
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -227,7 +227,7 @@ function onBtnRelease(e: MouseEvent) {
               :style="{ backgroundColor: member.color }"
               @mouseenter="(e) => onTeamHover(e, index)" @mouseleave="onTeamLeave"
             >
-              <div class="text-white text-[4rem]">{{ member.name.charAt(0) }}</div>
+              <div class="text-white text-[clamp(2.25rem,7.5vw,4rem)]">{{ member.name.charAt(0) }}</div>
             </div>
             <h3 class="text-[1.5rem] mb-2" style="font-family:Inter,sans-serif;font-weight:600">{{ member.name }}</h3>
             <p class="text-foreground/60 text-base" style="font-family:Inter,sans-serif">{{ member.role }}</p>
@@ -240,7 +240,7 @@ function onBtnRelease(e: MouseEvent) {
     <section class="py-32 px-8">
       <div class="cta-section max-w-5xl mx-auto rounded-[3rem] p-20 text-center relative overflow-hidden" style="background-color:#FD4401">
         <div ref="ctaBlob" class="absolute top-10 right-10 w-32 h-32 rounded-full opacity-30" style="background-color:#FDCB40" />
-        <h2 class="text-[4rem] mb-8 text-white leading-tight" style="font-family:'DM Serif Display',serif">
+        <h2 class="text-[clamp(2.25rem,7.5vw,4rem)] mb-8 text-white leading-tight" style="font-family:'DM Serif Display',serif">
           Rejoignez notre réseau
         </h2>
         <p class="text-[1.4rem] text-white/90 mb-12" style="font-family:Inter,sans-serif">

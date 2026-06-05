@@ -41,7 +41,7 @@ const currentConversation = computed(() => conversations.find((c) => c.id === se
 
     <div class="flex-1 flex overflow-hidden relative z-10">
       <!-- Conversations list -->
-      <div class="w-full lg:w-[30%] border-r border-foreground/10 flex flex-col bg-white">
+      <div class="w-full lg:w-[30%] border-r border-foreground/10 flex flex-col bg-card">
         <div class="p-6 border-b border-foreground/10">
           <h1 class="text-[2rem] mb-4" style="font-family:'DM Serif Display',serif">Messages</h1>
           <div class="relative">
@@ -59,8 +59,8 @@ const currentConversation = computed(() => conversations.find((c) => c.id === se
           <div
             v-for="conv in conversations"
             :key="conv.id"
-            class="p-5 border-b border-foreground/5 cursor-pointer transition-all relative hover:bg-[#FAFAFA]"
-            :style="{ backgroundColor: selectedChat === conv.id ? '#FFF4E6' : 'transparent' }"
+            class="p-5 border-b border-foreground/5 cursor-pointer transition-all relative hover:bg-foreground/5"
+            :style="{ backgroundColor: selectedChat === conv.id ? 'var(--muted)' : 'transparent' }"
             @click="selectedChat = conv.id"
           >
             <div class="flex gap-4">
@@ -93,7 +93,7 @@ const currentConversation = computed(() => conversations.find((c) => c.id === se
       <!-- Active chat -->
       <div class="hidden lg:flex lg:w-[70%] flex-col">
         <!-- Header -->
-        <div class="p-6 border-b border-foreground/10 bg-white">
+        <div class="p-6 border-b border-foreground/10 bg-card">
           <div class="flex items-center gap-4">
             <div class="relative">
               <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl" style="background-color:#FD4401">
@@ -109,7 +109,7 @@ const currentConversation = computed(() => conversations.find((c) => c.id === se
         </div>
 
         <!-- Transmission docs -->
-        <div class="p-6 border-b border-foreground/10" style="background-color:#FFF4E6">
+        <div class="p-6 border-b border-foreground/10 bg-muted">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-bold flex items-center gap-2">
               <FileText :size="20" class="text-primary" />
@@ -120,7 +120,7 @@ const currentConversation = computed(() => conversations.find((c) => c.id === se
             <div
               v-for="doc in transmissionDocs"
               :key="doc.id"
-              class="p-4 rounded-[16px] bg-white border-2 border-foreground/5 hover:border-primary/30 transition-all cursor-pointer"
+              class="p-4 rounded-[16px] bg-card border-2 border-foreground/5 hover:border-primary/30 transition-all cursor-pointer"
             >
               <div class="flex items-start gap-3">
                 <div class="w-10 h-10 rounded-[12px] bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -147,8 +147,8 @@ const currentConversation = computed(() => conversations.find((c) => c.id === se
             <div
               class="max-w-[70%] px-5 py-3 rounded-[20px]"
               :style="{
-                backgroundColor: message.sender === 'me' ? '#FD4401' : '#F5F5F5',
-                color: message.sender === 'me' ? 'white' : '#1A1A1A',
+                backgroundColor: message.sender === 'me' ? '#FD4401' : 'var(--muted)',
+                color: message.sender === 'me' ? 'white' : 'var(--foreground)',
                 borderBottomRightRadius: message.sender === 'me' ? '4px' : '20px',
                 borderBottomLeftRadius: message.sender === 'me' ? '20px' : '4px',
               }"
@@ -160,7 +160,7 @@ const currentConversation = computed(() => conversations.find((c) => c.id === se
         </div>
 
         <!-- Input -->
-        <div class="p-6 border-t border-foreground/10 bg-white">
+        <div class="p-6 border-t border-foreground/10 bg-card">
           <div class="flex items-end gap-3">
             <div class="flex-1 relative">
               <input
