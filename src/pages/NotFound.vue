@@ -64,7 +64,7 @@ function onBtnRelease(e: MouseEvent) {
     <div class="max-w-4xl mx-auto text-center z-10">
       <div class="nf-main mb-12">
         <div class="flex items-center justify-center gap-4 mb-6">
-          <span ref="num1Ref" class="text-[10rem] leading-none" style="color:#FD4401">4</span>
+          <span ref="num1Ref" class="text-[clamp(4rem,18vw,10rem)] leading-none" style="color:#FD4401">4</span>
 
           <div ref="emojiWrapRef" class="relative">
             <div class="w-40 h-40 rounded-full flex items-center justify-center" style="background-color:#FDCB40">
@@ -85,12 +85,12 @@ function onBtnRelease(e: MouseEvent) {
             />
           </div>
 
-          <span ref="num2Ref" class="text-[10rem] leading-none" style="color:#FD4401">4</span>
+          <span ref="num2Ref" class="text-[clamp(4rem,18vw,10rem)] leading-none" style="color:#FD4401">4</span>
         </div>
       </div>
 
       <div class="nf-text">
-        <h1 class="text-[4rem] mb-8 leading-tight" style="font-family:'DM Serif Display',serif">Oups ! Page introuvable</h1>
+        <h1 class="text-[clamp(2.25rem,7.5vw,4rem)] mb-8 leading-tight" style="font-family:'DM Serif Display',serif">Oups ! Page introuvable</h1>
         <p class="text-[1.4rem] text-foreground/70 mb-14 max-w-2xl mx-auto leading-relaxed" style="font-family:Inter,sans-serif">
           Il semblerait que cette page ait pris des vacances... ou qu'elle n'ait jamais existé !
         </p>
@@ -107,8 +107,8 @@ function onBtnRelease(e: MouseEvent) {
           </button>
         </RouterLink>
         <button
-          class="px-10 py-5 bg-white text-foreground rounded-full text-base font-medium shadow-lg flex items-center gap-3"
-          style="border:2px solid rgba(26,26,26,0.1)"
+          class="px-10 py-5 bg-card text-foreground rounded-full text-base font-medium shadow-lg flex items-center gap-3"
+          style="border:2px solid var(--border)"
           @mouseenter="onBtnHover" @mouseleave="onBtnLeave" @mousedown="onBtnPress" @mouseup="onBtnRelease"
         >
           <Search :size="22" />

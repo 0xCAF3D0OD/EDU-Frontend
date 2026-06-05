@@ -56,7 +56,7 @@ function onBtnLeave(e: MouseEvent) {
     <div class="max-w-[1400px] mx-auto px-8 py-12">
       <!-- Header -->
       <div class="mb-12">
-        <h1 class="text-[3.5rem] mb-6 leading-tight" style="font-family:'DM Serif Display',serif">
+        <h1 class="text-[clamp(2rem,6.5vw,3.5rem)] mb-6 leading-tight" style="font-family:'DM Serif Display',serif">
           Bonjour <span class="text-primary">Marc</span>,
           <br />
           prêt pour votre prochaine mission ?
@@ -73,7 +73,7 @@ function onBtnLeave(e: MouseEvent) {
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <!-- Week timeline -->
         <div class="lg:col-span-4">
-          <div class="rounded-[32px] p-8 sticky top-28" style="background-color:#FFF4E6">
+          <div class="rounded-[32px] p-8 sticky top-28 bg-muted">
             <h2 class="text-[2rem] mb-6 leading-tight" style="font-family:'DM Serif Display',serif">Cette semaine</h2>
             <div class="space-y-3">
               <div
@@ -81,8 +81,8 @@ function onBtnLeave(e: MouseEvent) {
                 :key="day.date"
                 class="rounded-[20px] p-4 transition-all"
                 :style="{
-                  backgroundColor: day.missions.length > 0 ? '#FD4401' : 'white',
-                  color: day.missions.length > 0 ? 'white' : '#1A1A1A',
+                  backgroundColor: day.missions.length > 0 ? '#FD4401' : 'var(--card)',
+                  color: day.missions.length > 0 ? 'white' : 'var(--foreground)',
                 }"
               >
                 <div class="flex items-center justify-between mb-2">
@@ -106,13 +106,12 @@ function onBtnLeave(e: MouseEvent) {
 
         <!-- Mission cards -->
         <div class="lg:col-span-8">
-          <h2 class="text-[2.5rem] mb-8 leading-tight" style="font-family:'DM Serif Display',serif">Mes missions à venir</h2>
+          <h2 class="text-[clamp(1.75rem,5vw,2.5rem)] mb-8 leading-tight" style="font-family:'DM Serif Display',serif">Mes missions à venir</h2>
           <div class="space-y-6">
             <div
               v-for="mission in missions"
               :key="mission.id"
-              class="rounded-[28px] p-8 shadow-lg hover:shadow-xl transition-all relative overflow-hidden"
-              style="background-color:white"
+              class="rounded-[28px] p-8 shadow-lg hover:shadow-xl transition-all relative overflow-hidden bg-card"
               @mouseenter="onCardHover" @mouseleave="onCardLeave"
             >
               <div class="absolute top-6 right-6">
@@ -154,7 +153,7 @@ function onBtnLeave(e: MouseEvent) {
                 </div>
               </div>
 
-              <div class="mb-6 p-4 rounded-[16px]" style="background-color:#FFF4E6">
+              <div class="mb-6 p-4 rounded-[16px] bg-muted">
                 <div class="text-sm text-foreground/60 mb-1">Enseignant titulaire</div>
                 <div class="font-semibold text-lg">{{ mission.teacher }}</div>
                 <div class="text-sm text-foreground/70 mt-1 flex items-center gap-1">
@@ -172,7 +171,7 @@ function onBtnLeave(e: MouseEvent) {
                   Voir l'itinéraire
                 </button>
                 <button
-                  class="flex-1 py-3 bg-white border-2 border-foreground/10 text-foreground rounded-[16px] text-base font-semibold flex items-center justify-center gap-2 hover:border-primary/30"
+                  class="flex-1 py-3 bg-card border-2 border-foreground/10 text-foreground rounded-[16px] text-base font-semibold flex items-center justify-center gap-2 hover:border-primary/30"
                   @mouseenter="onBtnHover" @mouseleave="onBtnLeave"
                 >
                   <MessageCircle :size="18" />

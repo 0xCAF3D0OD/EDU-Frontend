@@ -106,7 +106,7 @@ function onCardLeave(e: MouseEvent) {
 
         <!-- Left: filters -->
         <div class="lg:col-span-4">
-          <div class="sticky top-28 rounded-[32px] p-8" style="background-color:#FFF4E6">
+          <div class="sticky top-28 rounded-[32px] p-8 bg-muted">
             <h2 class="text-[2rem] mb-8 leading-tight" style="font-family:'DM Serif Display',serif">
               Mes Préférences
               <br />
@@ -126,8 +126,8 @@ function onCardLeave(e: MouseEvent) {
                     :key="day.id"
                     class="h-12 rounded-[16px] text-sm font-medium transition-all"
                     :style="{
-                      backgroundColor: selected.days.includes(day.id) ? '#FD4401' : 'white',
-                      color: selected.days.includes(day.id) ? 'white' : '#6B6B6B',
+                      backgroundColor: selected.days.includes(day.id) ? '#FD4401' : 'var(--card)',
+                      color: selected.days.includes(day.id) ? 'white' : 'var(--muted-foreground)',
                     }"
                     @click="toggle('days', day.id)"
                     @mouseenter="onBtnHover" @mouseleave="onBtnLeave"
@@ -152,8 +152,8 @@ function onCardLeave(e: MouseEvent) {
                   :key="canton.id"
                   class="px-4 py-2 rounded-[16px] text-sm font-medium transition-all"
                   :style="{
-                    backgroundColor: selected.cantons.includes(canton.id) ? canton.color : 'white',
-                    color: selected.cantons.includes(canton.id) ? 'white' : '#6B6B6B',
+                    backgroundColor: selected.cantons.includes(canton.id) ? canton.color : 'var(--card)',
+                    color: selected.cantons.includes(canton.id) ? 'white' : 'var(--muted-foreground)',
                   }"
                   @click="toggle('cantons', canton.id)"
                   @mouseenter="(e) => onBtnHover(e, { rotate: 2 })" @mouseleave="onBtnLeave"
@@ -172,8 +172,8 @@ function onCardLeave(e: MouseEvent) {
                   :key="level.id"
                   class="px-4 py-3 rounded-[16px] text-sm font-medium transition-all"
                   :style="{
-                    backgroundColor: selected.levels.includes(level.id) ? '#FDCB40' : 'white',
-                    color: selected.levels.includes(level.id) ? '#1A1A1A' : '#6B6B6B',
+                    backgroundColor: selected.levels.includes(level.id) ? '#FDCB40' : 'var(--card)',
+                    color: selected.levels.includes(level.id) ? '#1A1A1A' : 'var(--muted-foreground)',
                   }"
                   @click="toggle('levels', level.id)"
                   @mouseenter="onBtnHover" @mouseleave="onBtnLeave"
@@ -186,7 +186,7 @@ function onCardLeave(e: MouseEvent) {
             <!-- Volume horaire -->
             <div class="mb-8">
               <label class="block text-base font-semibold mb-4" style="font-family:Inter,sans-serif">Volume horaire par semaine</label>
-              <div class="px-4 py-6 rounded-[16px] bg-white">
+              <div class="px-4 py-6 rounded-[16px] bg-card">
                 <div class="text-center mb-3">
                   <span class="text-2xl font-bold text-primary">{{ periodsRange }}</span>
                   <span class="text-sm text-foreground/60 ml-2">périodes</span>
@@ -208,8 +208,8 @@ function onCardLeave(e: MouseEvent) {
                   :key="subject"
                   class="px-4 py-2 rounded-[16px] text-sm font-medium transition-all"
                   :style="{
-                    backgroundColor: selected.subjects.includes(subject) ? '#FD4401' : 'white',
-                    color: selected.subjects.includes(subject) ? 'white' : '#6B6B6B',
+                    backgroundColor: selected.subjects.includes(subject) ? '#FD4401' : 'var(--card)',
+                    color: selected.subjects.includes(subject) ? 'white' : 'var(--muted-foreground)',
                   }"
                   @click="toggle('subjects', subject)"
                   @mouseenter="(e) => onBtnHover(e, { y: -2 })" @mouseleave="onBtnLeave"
@@ -224,7 +224,7 @@ function onCardLeave(e: MouseEvent) {
         <!-- Right: results -->
         <div class="lg:col-span-8">
           <div class="flex items-center justify-between mb-8">
-            <h1 class="text-[3rem] leading-tight" style="font-family:'DM Serif Display',serif">
+            <h1 class="text-[clamp(1.875rem,6vw,3rem)] leading-tight" style="font-family:'DM Serif Display',serif">
               <span class="text-primary">{{ missions.length }}</span> opportunités
               <br />
               correspondent à votre profil
@@ -240,11 +240,10 @@ function onCardLeave(e: MouseEvent) {
             <div
               v-for="mission in missions"
               :key="mission.id"
-              class="rounded-[24px] p-8 shadow-lg hover:shadow-xl transition-all cursor-pointer relative overflow-hidden"
-              style="background-color:white"
+              class="rounded-[24px] p-8 shadow-lg hover:shadow-xl transition-all cursor-pointer relative overflow-hidden bg-card"
               @mouseenter="onCardHover" @mouseleave="onCardLeave"
             >
-              <div class="absolute top-6 right-6 px-4 py-2 rounded-[16px] flex items-center gap-2" style="background-color:#FFF4E6">
+              <div class="absolute top-6 right-6 px-4 py-2 rounded-[16px] flex items-center gap-2 bg-muted">
                 <Award :size="20" color="#FD4401" />
                 <span class="text-sm font-bold text-primary">{{ mission.match }}% Match</span>
               </div>
@@ -270,7 +269,7 @@ function onCardLeave(e: MouseEvent) {
                 </div>
               </div>
 
-              <div class="flex items-center gap-2 mb-6 px-4 py-2 rounded-[12px] inline-flex" style="background-color:#FFF4E6">
+              <div class="flex items-center gap-2 mb-6 px-4 py-2 rounded-[12px] inline-flex bg-muted">
                 <Calendar :size="16" color="#FD4401" />
                 <span class="text-sm font-medium">Du {{ mission.startDate }} au {{ mission.endDate }}</span>
               </div>

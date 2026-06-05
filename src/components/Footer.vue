@@ -35,8 +35,7 @@ const legalLinks = ['Mentions légales', 'Confidentialité', 'CGU']
               v-for="social in socials"
               :key="social"
               href="#"
-              class="w-10 h-10 rounded-full flex items-center justify-center text-foreground/60 hover:bg-primary hover:text-white transition-colors"
-              style="background-color:rgba(26,26,26,0.1)"
+              class="w-10 h-10 rounded-full flex items-center justify-center text-foreground/60 hover:bg-primary hover:text-white transition-colors bg-foreground/10"
             >
               {{ social.charAt(0) }}
             </a>

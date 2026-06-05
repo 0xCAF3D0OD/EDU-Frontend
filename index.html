@@ -12,6 +12,17 @@
 </head>
 <body>
 <div id="app"></div>
+<script>
+    // Apply saved theme before paint to avoid a flash of the wrong theme
+    (function () {
+        var valid = ['creme', 'nuit', 'foret', 'lavande']
+        var saved = localStorage.getItem('theme')
+        if (saved === 'dark') saved = 'nuit'
+        var theme = valid.indexOf(saved) !== -1 ? saved : 'creme'
+        document.documentElement.classList.add('theme-' + theme)
+        if (theme === 'nuit') document.documentElement.classList.add('dark')
+    })()
+</script>
 <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
