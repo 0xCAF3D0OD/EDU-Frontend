@@ -26,6 +26,7 @@ const primaryLinks = [
 ]
 const moreLinks = [
   { to: '/create-profile', label: 'Créer un profil' },
+  { to: '/etablissement', label: 'Espace établissement' },
   { to: '/settings', label: 'Réglages' },
   { to: '/about', label: 'À propos' },
 ]

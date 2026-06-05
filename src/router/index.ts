@@ -9,6 +9,7 @@ import Settings from '../pages/Settings.vue'
 import Login from '../pages/Login.vue'
 import CreateProfile from '../pages/CreateProfile.vue'
 import Expertise from '../pages/Expertise.vue'
+import Establishment from '../pages/Establishment.vue'
 import NotFound from '../pages/NotFound.vue'
 
 const router = createRouter({
@@ -27,6 +28,7 @@ const router = createRouter({
         { path: 'messages', component: Messages },
         { path: 'settings', component: Settings },
         { path: 'create-profile', component: CreateProfile },
+        { path: 'etablissement', component: Establishment },
         { path: 'about', component: About },
         { path: ':pathMatch(.*)*', component: NotFound },
       ],
