@@ -1,0 +1,17 @@
+{
+  "name": "Allô Remplaçant",
+  "short_name": "Allô Rempl.",
+  "description": "Remplacements scolaires simplifiés — Canton de Vaud",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFEF9",
+  "theme_color": "#FD4401",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

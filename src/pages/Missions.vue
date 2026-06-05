@@ -7,6 +7,9 @@ import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vu
 import EstablishmentsMap from '../components/EstablishmentsMap.vue'
 import GrilleHoraire from '../components/GrilleHoraire.vue'
 import { yearLevels, subjectsForLevels } from '../data/vaud'
+import { useOffers } from '../composables/useOffers'
+
+const { offers } = useOffers()
 
 const doodles: Doodle[] = [
   // left gutter
@@ -65,12 +68,6 @@ const availableSubjects = computed(() => subjectsForLevels(selected.levels))
 watch(availableSubjects, (subs) => {
   selected.subjects = selected.subjects.filter((s) => subs.includes(s))
 })
-
-const missions = [
-  { id: 1, school: 'Établissement Primaire de Belmont', match: 95, subject: 'Français', level: '7-8P', periods: 18, startDate: '15 Septembre 2026', endDate: '12 Décembre 2026', location: 'Lausanne, VD' },
-  { id: 2, school: "Collège de l'Elysée", match: 88, subject: 'Mathématiques', level: '9-11S · VP', periods: 22, startDate: '1 Octobre 2026', endDate: '20 Décembre 2026', location: 'Lausanne, VD' },
-  { id: 3, school: 'École Primaire des Jordils', match: 92, subject: 'Sciences de la nature', level: '5-6P', periods: 14, startDate: '8 Septembre 2026', endDate: '30 Novembre 2026', location: 'Pully, VD' },
-]
 
 function toggle(key: FilterKey, id: string) {
   const list = selected[key]
@@ -233,7 +230,7 @@ function onCardLeave(e: MouseEvent) {
         <div class="lg:col-span-8">
           <div class="flex items-center justify-between mb-8">
             <h1 class="text-[clamp(1.875rem,6vw,3rem)] leading-tight" style="font-family:'DM Serif Display',serif">
-              <span class="text-primary">{{ missions.length }}</span> opportunités
+              <span class="text-primary">{{ offers.length }}</span> opportunités
               <br />
               correspondent à votre profil
             </h1>
@@ -246,14 +243,19 @@ function onCardLeave(e: MouseEvent) {
 
           <div class="space-y-6">
             <div
-              v-for="mission in missions"
+              v-for="mission in offers"
               :key="mission.id"
               class="rounded-[24px] p-8 shadow-lg hover:shadow-xl transition-all cursor-pointer relative overflow-hidden bg-card"
               @mouseenter="onCardHover" @mouseleave="onCardLeave"
             >
-              <div class="absolute top-6 right-6 px-4 py-2 rounded-[16px] flex items-center gap-2 bg-muted">
-                <Award :size="20" color="#FD4401" />
-                <span class="text-sm font-bold text-primary">{{ mission.match }}% Match</span>
+              <div class="absolute top-6 right-6 flex items-center gap-2">
+                <span v-if="mission.urgent" class="px-3 py-1.5 rounded-[14px] bg-destructive/15 text-destructive text-xs font-bold">
+                  Urgent
+                </span>
+                <div class="px-4 py-2 rounded-[16px] flex items-center gap-2 bg-muted">
+                  <Award :size="20" color="#FD4401" />
+                  <span class="text-sm font-bold text-primary">{{ mission.match ? mission.match + '% Match' : 'Nouvelle offre' }}</span>
+                </div>
               </div>
 
               <h3 class="text-[1.75rem] mb-4 pr-32 leading-tight" style="font-family:'DM Serif Display',serif">{{ mission.school }}</h3>
@@ -277,9 +279,15 @@ function onCardLeave(e: MouseEvent) {
                 </div>
               </div>
 
-              <div class="flex items-center gap-2 mb-6 px-4 py-2 rounded-[12px] inline-flex bg-muted">
-                <Calendar :size="16" color="#FD4401" />
-                <span class="text-sm font-medium">Du {{ mission.startDate }} au {{ mission.endDate }}</span>
+              <div class="flex flex-wrap gap-3 mb-6">
+                <div class="flex items-center gap-2 px-4 py-2 rounded-[12px] bg-muted">
+                  <Calendar :size="16" color="#FD4401" />
+                  <span class="text-sm font-medium">Du {{ mission.startDate }} au {{ mission.endDate }}</span>
+                </div>
+                <div class="flex items-center gap-2 px-4 py-2 rounded-[12px] bg-muted">
+                  <Clock :size="16" color="#FD4401" />
+                  <span class="text-sm font-medium">{{ mission.daypart }}</span>
+                </div>
               </div>
 
               <button
