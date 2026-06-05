@@ -2,10 +2,8 @@
 import { ref, computed } from 'vue'
 import { User, Bell, Calendar, Lock, Trash2, Save, Camera, Check } from 'lucide-vue-next'
 import Footer from '../components/Footer.vue'
-import CroppedIcon from '../components/CroppedIcon.vue'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
-import illustrationSet1 from '../imports/illustrationSet1.png'
-import illustrationSet2 from '../imports/illustrationSet2.png'
+import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
 import { useTheme, type ThemeId } from '../composables/useTheme'
 
 interface ThemeColors {
@@ -43,26 +41,20 @@ const accentColor = computed(
   () => themes.find((t) => t.id === currentTheme.value)?.colors.accent ?? '#FD4401',
 )
 
-const decorations = [
-  { set: illustrationSet1, row: 2, col: 7, size: 120, opacity: 0.08, pos: 'top-32 right-32' },
-  { set: illustrationSet2, row: 4, col: 3, size: 140, opacity: 0.1, pos: 'top-80 left-20' },
-  { set: illustrationSet1, row: 5, col: 9, size: 100, opacity: 0.09, pos: 'bottom-96 right-40' },
-  { set: illustrationSet2, row: 1, col: 5, size: 130, opacity: 0.08, pos: 'bottom-40 left-32' },
+const doodles: Doodle[] = [
+  { name: 'leaf-branch', top: '14%', right: '6%', size: 80, opacity: 0.45 },
+  { name: 'rainbow-fine', top: '40%', left: '4%', size: 90, opacity: 0.45 },
+  { name: 'swirl-line', bottom: '24%', right: '8%', size: 80, opacity: 0.4 },
+  { name: 'triangle', top: '64%', left: '7%', size: 50, opacity: 0.45 },
+  { name: 'sunrise', bottom: '8%', right: '20%', size: 86, opacity: 0.4 },
 ]
 </script>
 
 <template>
   <div class="bg-background" style="min-height:100vh; overflow-x:hidden; position:relative;">
-    <div
-      v-for="(deco, i) in decorations"
-      :key="i"
-      class="absolute pointer-events-none hidden md:block"
-      :class="deco.pos"
-    >
-      <CroppedIcon :image-url="deco.set" :row="deco.row" :col="deco.col" :size="deco.size" :opacity="deco.opacity" />
-    </div>
+    <DoodleBackground :items="doodles" />
 
-    <div class="max-w-5xl mx-auto px-5 sm:px-8 py-12">
+    <div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-8 py-12">
       <!-- Header -->
       <div class="mb-12">
         <h1 class="text-[clamp(2.25rem,7vw,3.5rem)] mb-3 leading-tight text-foreground" style="font-family:'DM Serif Display',serif">

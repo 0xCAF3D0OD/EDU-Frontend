@@ -7,10 +7,20 @@ import { RouterLink } from 'vue-router'
 import IllustratedIcon from '../components/IllustratedIcon.vue'
 import CroppedIcon from '../components/CroppedIcon.vue'
 import Footer from '../components/Footer.vue'
+import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
 import illustrationSet1 from '../imports/illustrationSet1.png'
 import illustrationSet2 from '../imports/illustrationSet2.png'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const doodles: Doodle[] = [
+  { name: 'leaf-sprig', top: '12%', left: '8%', size: 70, opacity: 0.5 },
+  { name: 'tree', top: '22%', right: '10%', size: 90, opacity: 0.5 },
+  { name: 'rainbow', bottom: '18%', left: '10%', size: 96, opacity: 0.5 },
+  { name: 'cloud-puffy', top: '40%', right: '6%', size: 80, opacity: 0.45 },
+  { name: 'flowers', bottom: '12%', right: '14%', size: 70, opacity: 0.5 },
+  { name: 'heart-line', top: '60%', left: '5%', size: 50, opacity: 0.5 },
+]
 
 const heroRef = ref<HTMLElement | null>(null)
 const featuresRef = ref<HTMLElement | null>(null)
@@ -87,17 +97,9 @@ function onBtnRelease(e: MouseEvent) {
 
     <!-- Hero -->
     <section ref="heroRef" class="min-h-screen flex items-center justify-center relative overflow-hidden px-8">
-      <div class="parallax-circle absolute top-20 left-20">
-        <CroppedIcon :image-url="illustrationSet1" :row="0" :col="4" :size="200" :opacity="0.25" />
-      </div>
-      <div class="parallax-circle absolute bottom-32 right-32">
-        <CroppedIcon :image-url="illustrationSet2" :row="1" :col="6" :size="180" :opacity="0.25" />
-      </div>
-      <div class="parallax-circle absolute top-1/3 right-20">
-        <CroppedIcon :image-url="illustrationSet1" :row="3" :col="8" :size="150" :opacity="0.2" />
-      </div>
+      <DoodleBackground :items="doodles" />
 
-      <div class="max-w-6xl mx-auto text-center z-10">
+      <div class="max-w-6xl mx-auto text-center relative z-10">
         <h1 class="text-[clamp(2.5rem,9vw,5.5rem)] leading-[1.05] mb-8" style="font-family:'DM Serif Display',serif">
           Trouvez votre remplaçant
           <br />
@@ -234,12 +236,14 @@ function onBtnRelease(e: MouseEvent) {
           Plus de X professionnels de l'enseignement nous font confiance
         </p>
         <div class="flex flex-col sm:flex-row gap-5 justify-center">
-          <button
-            class="px-12 py-5 bg-primary text-primary-foreground rounded-full text-base font-medium shadow-xl"
-            @mouseenter="onBtnHover" @mouseleave="onBtnLeave" @mousedown="onBtnPress" @mouseup="onBtnRelease"
-          >
-            Créer un compte gratuitement
-          </button>
+          <RouterLink to="/create-profile">
+            <button
+              class="px-12 py-5 bg-primary text-primary-foreground rounded-full text-base font-medium shadow-xl"
+              @mouseenter="onBtnHover" @mouseleave="onBtnLeave" @mousedown="onBtnPress" @mouseup="onBtnRelease"
+            >
+              Créer un compte gratuitement
+            </button>
+          </RouterLink>
           <button
             class="px-12 py-5 bg-card text-foreground rounded-full text-base font-medium shadow-lg"
             style="border:2px solid var(--border)"

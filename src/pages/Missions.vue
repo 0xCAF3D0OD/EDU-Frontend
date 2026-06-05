@@ -3,9 +3,16 @@ import { ref, reactive } from 'vue'
 import { gsap } from 'gsap'
 import { MapPin, Calendar, BookOpen, Users, Award, Clock } from 'lucide-vue-next'
 import Footer from '../components/Footer.vue'
-import CroppedIcon from '../components/CroppedIcon.vue'
-import illustrationSet1 from '../imports/illustrationSet1.png'
-import illustrationSet2 from '../imports/illustrationSet2.png'
+import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
+
+const doodles: Doodle[] = [
+  { name: 'arrow', top: '14%', left: '4%', size: 70, rotate: -8, opacity: 0.5 },
+  { name: 'lightning', top: '30%', right: '5%', size: 60, opacity: 0.55 },
+  { name: 'star-mini', top: '8%', right: '16%', size: 40, opacity: 0.6 },
+  { name: 'swirl', bottom: '30%', left: '6%', size: 90, opacity: 0.45 },
+  { name: 'cloud-line', top: '60%', right: '8%', size: 96, opacity: 0.4 },
+  { name: 'hills', bottom: '10%', right: '24%', size: 110, opacity: 0.4 },
+]
 
 type FilterKey = 'days' | 'cantons' | 'levels' | 'subjects'
 
@@ -89,19 +96,8 @@ function onCardLeave(e: MouseEvent) {
 
 <template>
   <div style="min-height:100vh; overflow-x:hidden; background:var(--background); position:relative;">
-    <div class="absolute top-32 left-16 pointer-events-none">
-      <CroppedIcon :image-url="illustrationSet1" :row="1" :col="6" :size="120" :opacity="0.08" />
-    </div>
-    <div class="absolute top-1/3 right-20 pointer-events-none">
-      <CroppedIcon :image-url="illustrationSet2" :row="4" :col="2" :size="140" :opacity="0.09" />
-    </div>
-    <div class="absolute bottom-48 left-24 pointer-events-none">
-      <CroppedIcon :image-url="illustrationSet1" :row="6" :col="8" :size="110" :opacity="0.07" />
-    </div>
-    <div class="absolute bottom-1/4 right-32 pointer-events-none">
-      <CroppedIcon :image-url="illustrationSet2" :row="3" :col="5" :size="130" :opacity="0.08" />
-    </div>
-    <div class="max-w-[1600px] mx-auto px-8 py-12">
+    <DoodleBackground :items="doodles" />
+    <div class="relative z-10 max-w-[1600px] mx-auto px-5 sm:px-8 py-12">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
         <!-- Left: filters -->

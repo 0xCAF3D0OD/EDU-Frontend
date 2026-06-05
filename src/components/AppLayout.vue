@@ -21,6 +21,7 @@ const navLinks = [
   { to: '/dashboard', label: 'Tableau de bord' },
   { to: '/messages', label: 'Messages' },
   { to: '/settings', label: 'Réglages' },
+  { to: '/create-profile', label: 'Créer un profil' },
   { to: '/about', label: 'À propos' },
 ]
 
@@ -101,7 +102,7 @@ onUnmounted(() => {
         </RouterLink>
 
         <!-- Desktop nav links -->
-        <div class="hidden lg:flex items-center gap-7 xl:gap-10">
+        <div class="hidden xl:flex items-center gap-6">
           <RouterLink v-for="link in navLinks" :key="link.to" :to="link.to">
             <div class="relative cursor-pointer group transition-transform hover:-translate-y-0.5">
               <span
@@ -129,7 +130,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Mobile controls -->
-        <div class="flex items-center gap-2 lg:hidden shrink-0">
+        <div class="flex items-center gap-2 xl:hidden shrink-0">
           <ThemeToggle />
           <button
             class="w-10 h-10 rounded-full flex items-center justify-center text-foreground hover:bg-foreground/10 transition-colors"
@@ -147,7 +148,7 @@ onUnmounted(() => {
       <Transition name="mobile-menu">
         <div
           v-if="mobileOpen"
-          class="lg:hidden border-t border-border"
+          class="xl:hidden border-t border-border"
           :style="{ backgroundColor: 'var(--nav-bg-scrolled)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }"
         >
           <div class="px-5 py-4 flex flex-col gap-1">

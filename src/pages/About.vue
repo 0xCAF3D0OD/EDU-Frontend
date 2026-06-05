@@ -5,8 +5,18 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Users, Target, Lightbulb, Rocket, Star, Award } from 'lucide-vue-next'
 import AnimatedBlob from '../components/AnimatedBlob.vue'
 import Footer from '../components/Footer.vue'
+import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const doodles: Doodle[] = [
+  { name: 'firework', top: '8%', right: '6%', size: 80, opacity: 0.5 },
+  { name: 'shootingstar', top: '26%', left: '4%', size: 84, rotate: -6, opacity: 0.5 },
+  { name: 'flower', top: '52%', right: '5%', size: 56, opacity: 0.5 },
+  { name: 'heart-orange', top: '70%', left: '6%', size: 50, opacity: 0.5 },
+  { name: 'leaf', bottom: '20%', right: '12%', size: 70, opacity: 0.45 },
+  { name: 'lollipop', bottom: '8%', left: '16%', size: 60, opacity: 0.5 },
+]
 
 const containerRef = ref<HTMLElement | null>(null)
 const valuesRef = ref<HTMLElement | null>(null)
@@ -119,6 +129,7 @@ function onBtnRelease(e: MouseEvent) {
 
 <template>
   <div ref="containerRef" style="min-height:100vh; overflow-x:hidden; background:var(--background); position:relative;">
+    <DoodleBackground :items="doodles" />
 
     <!-- Hero -->
     <section class="min-h-screen flex items-center justify-center relative overflow-hidden px-8">
@@ -129,7 +140,7 @@ function onBtnRelease(e: MouseEvent) {
         <AnimatedBlob color="#FD4401" :size="260" />
       </div>
 
-      <div class="max-w-5xl mx-auto text-center z-10">
+      <div class="max-w-5xl mx-auto text-center relative z-10">
         <div class="inline-block mb-8">
           <div ref="starRef">
             <Star :size="80" color="#FD4401" fill="#FDCB40" />
@@ -148,7 +159,7 @@ function onBtnRelease(e: MouseEvent) {
 
     <!-- Values -->
     <section ref="valuesRef" class="py-20 px-8">
-      <div class="max-w-7xl mx-auto">
+      <div class="max-w-7xl mx-auto relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           <div
             v-for="(item, index) in values"
@@ -216,7 +227,7 @@ function onBtnRelease(e: MouseEvent) {
 
     <!-- Team -->
     <section ref="teamRef" class="py-32 px-8 bg-muted/20">
-      <div class="max-w-7xl mx-auto">
+      <div class="max-w-7xl mx-auto relative z-10">
         <h2 class="text-center mb-20 text-[clamp(2rem,7vw,3.8rem)] leading-tight" style="font-family:'DM Serif Display',serif">
           Rencontrez l'équipe
         </h2>
