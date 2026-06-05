@@ -6,13 +6,18 @@ import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vu
 
 const showPassword = ref(false)
 
+// Positioned inside the left visual panel, in its edges (away from the centred text).
 const doodles: Doodle[] = [
-  { name: 'sun', top: '12%', left: '12%', size: 80, opacity: 0.55 },
-  { name: 'flower-red', top: '36%', right: '14%', size: 64, opacity: 0.55 },
-  { name: 'tree-blue', bottom: '14%', left: '16%', size: 96, opacity: 0.5 },
-  { name: 'icecream', top: '60%', left: '8%', size: 56, rotate: -8, opacity: 0.55 },
-  { name: 'sparkle-plus', top: '22%', right: '34%', size: 44, opacity: 0.6 },
-  { name: 'wave', bottom: '34%', right: '18%', size: 90, opacity: 0.4 },
+  // left edge of the panel
+  { name: 'sun', top: '9%', left: '6%', size: 74, opacity: 0.55 },
+  { name: 'icecream', top: '38%', left: '6%', size: 52, rotate: -8, opacity: 0.55 },
+  { name: 'squiggle', top: '66%', left: '8%', size: 60, opacity: 0.45 },
+  { name: 'tree-blue', bottom: '9%', left: '8%', size: 88, opacity: 0.5 },
+  // right edge of the panel
+  { name: 'flower-red', top: '13%', right: '6%', size: 58, opacity: 0.55 },
+  { name: 'leaf-fall', top: '42%', right: '6%', size: 54, opacity: 0.5 },
+  { name: 'leaf-red', top: '68%', right: '9%', size: 44, opacity: 0.5 },
+  { name: 'wave', bottom: '26%', right: '8%', size: 82, opacity: 0.4 },
 ]
 </script>
 

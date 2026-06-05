@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 29.360415 44.303684"
+   id="svg527"
+   width="29.360415"
+   height="44.303684"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs527" />
+  <g
+     id="g536"
+     transform="translate(-351.80667,-211.08218)">
+    <path
+       fill="#eb3d3c"
+       d="m 362.59,213.42 a 1.84,1.84 0 0 1 1.49,-2.13 l 0.7,-0.13 a 5.52,5.25 79.9 0 1 6.14,4.52 l 0.04,0.25 a 5.52,5.25 79.9 0 1 -4.2,6.36 l -0.7,0.12 a 1.84,1.84 0 0 1 -2.13,-1.49 z"
+       id="path398" />
+    <ellipse
+       fill="#eb3d3c"
+       cx="0"
+       cy="0"
+       transform="rotate(-111.5,253.53476,-10.247482)"
+       rx="6.02"
+       ry="3.8199999"
+       id="ellipse403" />
+    <ellipse
+       fill="#eb3d3c"
+       cx="0"
+       cy="0"
+       transform="rotate(-111,267.73677,-13.180384)"
+       rx="6.1700001"
+       ry="3.6500001"
+       id="ellipse412" />
+    <ellipse
+       fill="#eb3d3c"
+       cx="0"
+       cy="0"
+       transform="rotate(-114,259.4472,-1.5829651)"
+       rx="5.52"
+       ry="3.52"
+       id="ellipse415" />
+    <ellipse
+       fill="#eb3d3c"
+       cx="0"
+       cy="0"
+       transform="rotate(-113.9,255.70018,2.8930187)"
+       rx="5.1199999"
+       ry="3.6800001"
+       id="ellipse419" />
+    <ellipse
+       fill="#eb3d3c"
+       cx="0"
+       cy="0"
+       transform="rotate(-109.9,275.75755,-8.4763648)"
+       rx="5.1799998"
+       ry="3.3099999"
+       id="ellipse455" />
+    <ellipse
+       fill="#eb3d3c"
+       cx="0"
+       cy="0"
+       transform="rotate(-112.9,266.45892,3.4352103)"
+       rx="5.3899999"
+       ry="3.5699999"
+       id="ellipse466" />
+  </g>
+</svg>

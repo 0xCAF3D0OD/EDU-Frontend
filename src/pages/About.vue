@@ -10,12 +10,18 @@ import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vu
 gsap.registerPlugin(ScrollTrigger)
 
 const doodles: Doodle[] = [
-  { name: 'firework', top: '8%', right: '6%', size: 80, opacity: 0.5 },
-  { name: 'shootingstar', top: '26%', left: '4%', size: 84, rotate: -6, opacity: 0.5 },
-  { name: 'flower', top: '52%', right: '5%', size: 56, opacity: 0.5 },
-  { name: 'heart-orange', top: '70%', left: '6%', size: 50, opacity: 0.5 },
-  { name: 'leaf', bottom: '20%', right: '12%', size: 70, opacity: 0.45 },
-  { name: 'lollipop', bottom: '8%', left: '16%', size: 60, opacity: 0.5 },
+  // left gutter
+  { name: 'shootingstar', top: '24%', left: '4%', size: 80, rotate: -6, opacity: 0.5 },
+  { name: 'leaf', top: '42%', left: '3%', size: 62, opacity: 0.45 },
+  { name: 'heart-orange', top: '58%', left: '5%', size: 48, opacity: 0.5 },
+  { name: 'rainbow-arc', top: '74%', left: '4%', size: 64, opacity: 0.45 },
+  { name: 'lollipop', bottom: '7%', left: '6%', size: 58, opacity: 0.5 },
+  // right gutter
+  { name: 'firework', top: '8%', right: '4%', size: 76, opacity: 0.5 },
+  { name: 'ufo', top: '28%', right: '5%', size: 64, opacity: 0.45 },
+  { name: 'flower', top: '48%', right: '4%', size: 54, opacity: 0.5 },
+  { name: 'sprig', top: '66%', right: '5%', size: 52, rotate: 10, opacity: 0.45 },
+  { name: 'tree-tall', bottom: '7%', right: '6%', size: 78, opacity: 0.45 },
 ]
 
 const containerRef = ref<HTMLElement | null>(null)

@@ -28,6 +28,7 @@ const themes: Theme[] = [
   { id: 'nuit', name: 'Nuit Chaude', description: 'Sombre et chaleureux, repose les yeux', colors: { bg: '#14100D', card: '#211B16', text: '#F2EDE4', textSecondary: '#B5A99A', accent: '#FF5A1F' } },
   { id: 'foret', name: 'Forêt Romande', description: 'Nature et sérénité', colors: { bg: '#F0F4F0', card: '#FFFFFF', text: '#1F3A2E', textSecondary: '#4A6B5A', accent: '#B8621B' } },
   { id: 'lavande', name: 'Lavande Douce', description: 'Relaxant et élégant', colors: { bg: '#F5F3F7', card: '#FFFFFF', text: '#3D2557', textSecondary: '#6B4A8C', accent: '#7C3F8C' } },
+  { id: 'vaud', name: 'État de Vaud', description: 'Vert et blanc officiels du canton', colors: { bg: '#F4F8F5', card: '#FFFFFF', text: '#14201A', textSecondary: '#4F6157', accent: '#00843D' } },
 ]
 
 const { currentTheme, setTheme } = useTheme()
@@ -42,11 +43,15 @@ const accentColor = computed(
 )
 
 const doodles: Doodle[] = [
-  { name: 'leaf-branch', top: '14%', right: '6%', size: 80, opacity: 0.45 },
-  { name: 'rainbow-fine', top: '40%', left: '4%', size: 90, opacity: 0.45 },
-  { name: 'swirl-line', bottom: '24%', right: '8%', size: 80, opacity: 0.4 },
-  { name: 'triangle', top: '64%', left: '7%', size: 50, opacity: 0.45 },
-  { name: 'sunrise', bottom: '8%', right: '20%', size: 86, opacity: 0.4 },
+  // left gutter
+  { name: 'rainbow-fine', top: '18%', left: '3%', size: 80, opacity: 0.45 },
+  { name: 'triangle', top: '46%', left: '4%', size: 46, opacity: 0.45 },
+  { name: 'bars', top: '72%', left: '4%', size: 56, opacity: 0.4 },
+  // right gutter
+  { name: 'leaf-branch', top: '14%', right: '4%', size: 74, opacity: 0.45 },
+  { name: 'swirl-line', top: '42%', right: '5%', size: 72, opacity: 0.4 },
+  { name: 'flower-blue', top: '68%', right: '5%', size: 46, opacity: 0.45 },
+  { name: 'sunrise', bottom: '8%', right: '6%', size: 76, opacity: 0.4 },
 ]
 </script>
 

@@ -13,13 +13,22 @@ import illustrationSet2 from '../imports/illustrationSet2.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Edge-hugging so they stay clear of the centred hero text and section titles.
 const doodles: Doodle[] = [
-  { name: 'leaf-sprig', top: '12%', left: '8%', size: 70, opacity: 0.5 },
-  { name: 'tree', top: '22%', right: '10%', size: 90, opacity: 0.5 },
-  { name: 'rainbow', bottom: '18%', left: '10%', size: 96, opacity: 0.5 },
-  { name: 'cloud-puffy', top: '40%', right: '6%', size: 80, opacity: 0.45 },
-  { name: 'flowers', bottom: '12%', right: '14%', size: 70, opacity: 0.5 },
-  { name: 'heart-line', top: '60%', left: '5%', size: 50, opacity: 0.5 },
+  // left gutter
+  { name: 'leaf-sprig', top: '6%', left: '4%', size: 58, rotate: -6, opacity: 0.5 },
+  { name: 'rainbow-mini', top: '22%', left: '3%', size: 60, opacity: 0.5 },
+  { name: 'heart-line', top: '40%', left: '3%', size: 44, opacity: 0.5 },
+  { name: 'rainbow', top: '58%', left: '4%', size: 72, opacity: 0.45 },
+  { name: 'grass', top: '78%', left: '5%', size: 78, opacity: 0.4 },
+  { name: 'splash', bottom: '4%', left: '10%', size: 48, opacity: 0.45 },
+  // right gutter
+  { name: 'tree', top: '8%', right: '4%', size: 82, opacity: 0.5 },
+  { name: 'cloud-puffy', top: '26%', right: '3%', size: 66, opacity: 0.45 },
+  { name: 'leaf3', top: '44%', right: '4%', size: 52, rotate: 8, opacity: 0.45 },
+  { name: 'flowers', top: '62%', right: '5%', size: 60, opacity: 0.5 },
+  { name: 'petal', top: '80%', right: '6%', size: 46, opacity: 0.5 },
+  { name: 'sun-spark', bottom: '5%', right: '11%', size: 44, opacity: 0.55 },
 ]
 
 const heroRef = ref<HTMLElement | null>(null)
@@ -94,11 +103,10 @@ function onBtnRelease(e: MouseEvent) {
 
 <template>
   <div style="min-height:100vh; overflow-x:hidden; background:var(--background); position:relative;">
+    <DoodleBackground :items="doodles" />
 
     <!-- Hero -->
     <section ref="heroRef" class="min-h-screen flex items-center justify-center relative overflow-hidden px-8">
-      <DoodleBackground :items="doodles" />
-
       <div class="max-w-6xl mx-auto text-center relative z-10">
         <h1 class="text-[clamp(2.5rem,9vw,5.5rem)] leading-[1.05] mb-8" style="font-family:'DM Serif Display',serif">
           Trouvez votre remplaçant
@@ -137,7 +145,7 @@ function onBtnRelease(e: MouseEvent) {
 
     <!-- Features -->
     <section ref="featuresRef" class="py-32 px-8 relative">
-      <div class="max-w-7xl mx-auto">
+      <div class="max-w-7xl mx-auto relative z-10">
         <div class="text-center mb-20">
           <span class="inline-block text-sm font-semibold text-primary mb-4 tracking-wide uppercase">
             Notre promesse
@@ -168,7 +176,7 @@ function onBtnRelease(e: MouseEvent) {
 
     <!-- How it works (color cards) -->
     <section ref="cardsRef" class="py-32 px-8 bg-muted/30 relative">
-      <div class="max-w-7xl mx-auto">
+      <div class="max-w-7xl mx-auto relative z-10">
         <div class="text-center mb-20">
           <h2 class="text-[clamp(2rem,7vw,3.8rem)] leading-tight mb-6" style="font-family:'DM Serif Display',serif">
             Comment ça marche ?
@@ -228,7 +236,7 @@ function onBtnRelease(e: MouseEvent) {
 
     <!-- CTA -->
     <section class="py-24 px-8">
-      <div class="max-w-4xl mx-auto text-center">
+      <div class="max-w-4xl mx-auto text-center relative z-10">
         <h2 class="text-[clamp(2.25rem,7.5vw,4rem)] mb-6 leading-tight" style="font-family:'DM Serif Display',serif">
           Rejoignez Allo Remplaçant
         </h2>

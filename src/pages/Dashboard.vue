@@ -5,18 +5,25 @@ import Footer from '../components/Footer.vue'
 import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
 
 const doodles: Doodle[] = [
-  { name: 'campervan', top: '10%', right: '5%', size: 110, rotate: -3, opacity: 0.5 },
-  { name: 'pine', top: '40%', left: '4%', size: 80, opacity: 0.45 },
-  { name: 'moon', top: '22%', left: '14%', size: 46, opacity: 0.55 },
-  { name: 'sparkles', top: '64%', right: '7%', size: 60, opacity: 0.5 },
-  { name: 'bolt', bottom: '26%', left: '8%', size: 54, opacity: 0.55 },
-  { name: 'sun-small', bottom: '10%', right: '22%', size: 70, opacity: 0.45 },
+  // left gutter
+  { name: 'pine', top: '34%', left: '3%', size: 74, opacity: 0.45 },
+  { name: 'raincloud', top: '56%', left: '3%', size: 56, opacity: 0.4 },
+  { name: 'bus2', top: '76%', left: '4%', size: 90, opacity: 0.45 },
+  { name: 'bolt', top: '16%', left: '4%', size: 50, opacity: 0.55 },
+  { name: 'car', bottom: '6%', left: '6%', size: 74, opacity: 0.45 },
+  // right gutter (kept off the top-left "Bonjour Marc" title)
+  { name: 'campervan', top: '8%', right: '3%', size: 96, rotate: -3, opacity: 0.5 },
+  { name: 'moon', top: '26%', right: '5%', size: 44, opacity: 0.55 },
+  { name: 'bolt2', top: '44%', right: '4%', size: 48, opacity: 0.5 },
+  { name: 'sparkles', top: '60%', right: '4%', size: 56, opacity: 0.5 },
+  { name: 'sun-small', top: '76%', right: '5%', size: 64, opacity: 0.45 },
+  { name: 'rain', bottom: '6%', right: '8%', size: 48, opacity: 0.5 },
 ]
 
 const missions = [
-  { id: 1, status: 'confirmed', statusLabel: 'Confirmé', school: 'Établissement Primaire de Belmont', class: '5H-6H', subject: 'Français', periods: 18, startDate: '15 Sep 2026', endDate: '12 Déc 2026', schedule: 'Lun-Mar-Mer 08:30-11:45', teacher: 'Mme Sophie Ducret', location: 'Lausanne, VD' },
-  { id: 2, status: 'pending', statusLabel: 'En attente', school: "Collège de l'Elysée", class: '9H-11H', subject: 'Mathématiques', periods: 22, startDate: '1 Oct 2026', endDate: '20 Déc 2026', schedule: 'Jeu-Ven 13:30-16:00', teacher: 'M. Jean-Marc Favre', location: 'Genève, GE' },
-  { id: 3, status: 'confirmed', statusLabel: 'Confirmé', school: 'École Primaire des Jordils', class: '7H-8H', subject: 'Sciences de la nature', periods: 14, startDate: '8 Sep 2026', endDate: '30 Nov 2026', schedule: 'Lun-Mer 09:00-10:30', teacher: 'Mme Claire Monnier', location: 'Pully, VD' },
+  { id: 1, status: 'confirmed', statusLabel: 'Confirmé', school: 'Établissement Primaire de Belmont', class: '5-6P', subject: 'Français', periods: 18, startDate: '15 Sep 2026', endDate: '12 Déc 2026', schedule: 'Lun-Mar-Mer 08:30-11:45', teacher: 'Mme Sophie Ducret', location: 'Lausanne, VD' },
+  { id: 2, status: 'pending', statusLabel: 'En attente', school: "Collège de l'Elysée", class: '9-11S · VP', subject: 'Mathématiques', periods: 22, startDate: '1 Oct 2026', endDate: '20 Déc 2026', schedule: 'Jeu-Ven 13:30-16:00', teacher: 'M. Jean-Marc Favre', location: 'Lausanne, VD' },
+  { id: 3, status: 'confirmed', statusLabel: 'Confirmé', school: 'École Primaire des Jordils', class: '7-8P', subject: 'Sciences de la nature', periods: 14, startDate: '8 Sep 2026', endDate: '30 Nov 2026', schedule: 'Lun-Mer 09:00-10:30', teacher: 'Mme Claire Monnier', location: 'Pully, VD' },
 ]
 
 const upcomingWeek = [
