@@ -16,7 +16,7 @@ Les remplaçant·e·s trouvent et postulent à des missions ; les établissement
 
 ---
 
-## 📑 Sommaire
+## Sommaire
 
 - [Aperçu](#-aperçu)
 - [Stack](#-stack)
@@ -33,7 +33,7 @@ Les remplaçant·e·s trouvent et postulent à des missions ; les établissement
 
 ---
 
-## 🔎 Aperçu
+## Aperçu
 
 SPA Vue 3 qui couvre deux parcours sur **une seule base de code** :
 
@@ -46,7 +46,7 @@ Le tout multi-thème (5 thèmes dont *État de Vaud*), responsive, installable (
 
 ---
 
-## 🧱 Stack
+## Stack
 
 | Domaine | Techno |
 |---|---|
@@ -62,7 +62,7 @@ Le tout multi-thème (5 thèmes dont *État de Vaud*), responsive, installable (
 
 ---
 
-## 🚀 Démarrage rapide
+## Démarrage rapide
 
 > Prérequis : **Node ≥ 20** et npm.
 
@@ -75,7 +75,7 @@ npm run preview    # prévisualiser le build (nécessaire pour tester la PWA)
 
 ---
 
-## 🛠 Scripts
+## Scripts
 
 | Script | Rôle |
 |---|---|
@@ -87,7 +87,7 @@ npm run preview    # prévisualiser le build (nécessaire pour tester la PWA)
 
 ---
 
-## 📁 Structure du projet
+## Structure du projet
 
 ```
 Frontend/
@@ -124,7 +124,7 @@ Frontend/
 
 ---
 
-## 🧩 Architecture
+## Architecture
 
 **Coquille + routes.** Toutes les pages sont rendues dans `AppLayout` (nav + footer + smooth scroll) ; `/login` est autonome.
 
@@ -150,7 +150,7 @@ flowchart LR
 
 ---
 
-## 🎨 Thématisation
+## Thématisation
 
 5 thèmes définis en **variables CSS** dans [`src/styles/theme.css`](src/styles/theme.css) : `creme` (défaut), `nuit` (sombre chaud), `foret`, `lavande`, `vaud` (vert officiel).
 
@@ -162,7 +162,7 @@ flowchart LR
 
 ---
 
-## 🇨🇭 Données métier (VD)
+## Données métier (VD)
 
 [`src/data/vaud.ts`](src/data/vaud.ts) centralise les données officielles (LEO / HarmoS, version août 2025) :
 
@@ -172,7 +172,7 @@ flowchart LR
 
 ---
 
-## 📱 PWA
+## PWA
 
 L'app est **installable** et fonctionne **hors-ligne** :
 
@@ -188,7 +188,7 @@ npm run build && npm run preview
 
 ---
 
-## ☁️ Déploiement & CI/CD
+## Déploiement & CI/CD
 
 Build **multi-stage** Docker (`node:lts-alpine` → `nginx:alpine`), publié sur **GHCR** et déployé sur **K3s** via GitHub Actions.
 
@@ -208,13 +208,13 @@ sudo kubectl rollout restart deployment/edu-deployment-frontend -n dev
 
 ---
 
-## 🗺 Roadmap
+## Roadmap
 
 - [ ] **Capacitor** — empaqueter en apps natives iOS/Android (stores).
 - [ ] Brancher un backend réel (auth IAM/DGEO, persistance des offres) — `axios` déjà installé.
 
 ---
 
-## 📄 Licence
+## Licence
 
 Distribué sous licence **GNU GPL v3** — voir [`LICENSE`](LICENSE).
