@@ -4,6 +4,7 @@ import { User, Bell, Calendar, Lock, Trash2, Save, Camera, Check } from 'lucide-
 import Footer from '../components/Footer.vue'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
+import DropdownSelect from '../components/DropdownSelect.vue'
 import { useTheme, type ThemeId } from '../composables/useTheme'
 
 interface ThemeColors {
@@ -33,6 +34,7 @@ const themes: Theme[] = [
 
 const { currentTheme, setTheme } = useTheme()
 
+const lang = ref('Français (Suisse)')
 const emailNotif = ref(true)
 const smsNotif = ref(false)
 const pushNotif = ref(true)
@@ -172,11 +174,9 @@ const doodles: Doodle[] = [
 
           <div>
             <label class="block text-base font-semibold mb-3 text-foreground" style="font-family:Inter,sans-serif">Langue de l'interface</label>
-            <select class="w-full md:w-auto px-6 py-3 rounded-[16px] border-2 border-border bg-input-background text-foreground focus:outline-none font-medium">
-              <option>Français (Suisse)</option>
-              <option>Deutsch (Schweiz)</option>
-              <option>Italiano (Svizzera)</option>
-            </select>
+            <div class="w-full md:w-72">
+              <DropdownSelect v-model="lang" :options="['Français (Suisse)', 'Deutsch (Schweiz)', 'Italiano (Svizzera)']" aria-label="Langue" />
+            </div>
           </div>
         </section>
 

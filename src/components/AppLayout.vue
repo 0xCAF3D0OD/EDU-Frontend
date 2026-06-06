@@ -1,26 +1,37 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import { RouterView, RouterLink, useRoute } from 'vue-router'
 import { Menu, X, ChevronDown } from 'lucide-vue-next'
 import Lenis from 'lenis'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FloatingShapes from './FloatingShapes.vue'
 import ThemeToggle from './ThemeToggle.vue'
 import MascotLogo from './MascotLogo.vue'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const route = useRoute()
 const scrolled = ref(false)
 const mobileOpen = ref(false)
 const moreOpen = ref(false)
 const moreRef = ref<HTMLElement | null>(null)
+const specOpen = ref(false)
+const specRef = ref<HTMLElement | null>(null)
 
-// Primary links shown inline; secondary links grouped under the "Plus" menu
+// Primary links shown inline
 const primaryLinks = [
   { to: '/', label: 'Accueil' },
   { to: '/missions', label: 'Missions' },
-  { to: '/expertise', label: 'Expertise' },
   { to: '/dashboard', label: 'Tableau de bord' },
   { to: '/messages', label: 'Messages' },
 ]
+// Specialised teaching roles grouped under "Spécialisations"
+const specLinks = [
+  { to: '/expertise', label: 'Expertise aux examens' },
+  { to: '/enseignement-specialise', label: 'Enseignement spécialisé' },
+]
+// Secondary links grouped under "Plus"
 const moreLinks = [
   { to: '/create-profile', label: 'Créer un profil' },
   { to: '/etablissement', label: 'Espace établissement' },
@@ -32,15 +43,26 @@ function isActive(to: string) {
   return route.path === to
 }
 const moreActive = computed(() => moreLinks.some((l) => isActive(l.to)))
-
-// Close menus on navigation
-watch(() => route.path, () => {
-  mobileOpen.value = false
-  moreOpen.value = false
-})
+const specActive = computed(() => specLinks.some((l) => isActive(l.to)))
 
 const lenisRef = ref<Lenis | null>(null)
-let rafId: number | null = null
+
+// Recompute scroll limits (Lenis + ScrollTrigger) once layout has settled
+function refreshScroll() {
+  lenisRef.value?.resize()
+  ScrollTrigger.refresh()
+}
+
+// On navigation: close menus, jump to top, and recalc scroll for the new page.
+// (Without this, Lenis keeps the previous, often shorter, page's scroll limit.)
+watch(() => route.path, async () => {
+  mobileOpen.value = false
+  moreOpen.value = false
+  specOpen.value = false
+  lenisRef.value?.scrollTo(0, { immediate: true })
+  await nextTick()
+  setTimeout(refreshScroll, 350) // after the page transition (~0.3s) + layout
+})
 
 const navBg = computed(() => (scrolled.value ? 'var(--nav-bg-scrolled)' : 'var(--nav-bg)'))
 const navBorder = computed(() =>
@@ -51,7 +73,14 @@ function handleScroll() {
   scrolled.value = window.scrollY > 50
 }
 function handleDocClick(e: MouseEvent) {
-  if (moreRef.value && !moreRef.value.contains(e.target as Node)) moreOpen.value = false
+  const t = e.target as Node
+  if (moreRef.value && !moreRef.value.contains(t)) moreOpen.value = false
+  if (specRef.value && !specRef.value.contains(t)) specOpen.value = false
+}
+
+// Drive Lenis from GSAP's ticker so Lenis and ScrollTrigger stay in sync
+function lenisTick(time: number) {
+  lenisRef.value?.raf(time * 1000)
 }
 
 onMounted(() => {
@@ -62,20 +91,20 @@ onMounted(() => {
     smoothWheel: true,
   })
   lenisRef.value = lenis
-  function raf(time: number) {
-    lenis.raf(time)
-    rafId = requestAnimationFrame(raf)
-  }
-  rafId = requestAnimationFrame(raf)
+  lenis.on('scroll', ScrollTrigger.update)
+  gsap.ticker.add(lenisTick)
+  gsap.ticker.lagSmoothing(0)
   window.addEventListener('scroll', handleScroll)
   window.addEventListener('click', handleDocClick)
+  window.addEventListener('load', refreshScroll)
 })
 
 onUnmounted(() => {
-  if (rafId) cancelAnimationFrame(rafId)
+  gsap.ticker.remove(lenisTick)
   lenisRef.value?.destroy()
   window.removeEventListener('scroll', handleScroll)
   window.removeEventListener('click', handleDocClick)
+  window.removeEventListener('load', refreshScroll)
 })
 </script>
 
@@ -113,6 +142,36 @@ onUnmounted(() => {
               />
             </div>
           </RouterLink>
+
+          <!-- "Spécialisations" dropdown -->
+          <div ref="specRef" class="relative">
+            <button
+              class="flex items-center gap-1 text-base font-medium transition-colors"
+              :class="specActive || specOpen ? 'text-primary' : 'text-foreground/80 hover:text-primary'"
+              :aria-expanded="specOpen"
+              @click="specOpen = !specOpen"
+            >
+              Spécialisations
+              <ChevronDown :size="16" class="transition-transform" :class="specOpen ? 'rotate-180' : ''" />
+            </button>
+            <Transition name="dropdown">
+              <div
+                v-if="specOpen"
+                class="absolute left-0 top-full mt-3 w-64 rounded-[18px] border border-border shadow-xl p-2"
+                :style="{ backgroundColor: 'var(--nav-bg-scrolled)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }"
+              >
+                <RouterLink
+                  v-for="l in specLinks"
+                  :key="l.to"
+                  :to="l.to"
+                  class="block px-4 py-2.5 rounded-[12px] text-sm font-medium transition-colors"
+                  :class="isActive(l.to) ? 'text-primary bg-primary/10' : 'text-foreground/80 hover:bg-foreground/5'"
+                >
+                  {{ l.label }}
+                </RouterLink>
+              </div>
+            </Transition>
+          </div>
 
           <!-- "Plus" dropdown -->
           <div ref="moreRef" class="relative">
@@ -180,6 +239,17 @@ onUnmounted(() => {
           <div class="px-5 py-4 flex flex-col gap-1">
             <RouterLink
               v-for="link in primaryLinks"
+              :key="link.to"
+              :to="link.to"
+              class="px-4 py-3 rounded-[16px] text-base font-medium transition-colors"
+              :class="isActive(link.to) ? 'text-primary bg-primary/10' : 'text-foreground/80 hover:bg-foreground/5'"
+            >
+              {{ link.label }}
+            </RouterLink>
+
+            <div class="mt-2 mb-1 px-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Spécialisations</div>
+            <RouterLink
+              v-for="link in specLinks"
               :key="link.to"
               :to="link.to"
               class="px-4 py-3 rounded-[16px] text-base font-medium transition-colors"

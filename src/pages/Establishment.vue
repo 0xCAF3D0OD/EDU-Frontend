@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import {
   Building2, Lock, LogOut, Send, ShieldCheck, Plus, Trash2, MapPin, Clock, BookOpen, Check, AlertCircle,
+  Star, ClipboardCheck, ChevronDown,
 } from 'lucide-vue-next'
 import Footer from '../components/Footer.vue'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
+import DropdownSelect from '../components/DropdownSelect.vue'
 import { useEstablishment } from '../composables/useEstablishment'
 import { useOffers, DAY_PARTS, type DayPart } from '../composables/useOffers'
 import { useTheme } from '../composables/useTheme'
 import { establishments, yearLevels, subjectsForLevels } from '../data/vaud'
+import { replacements, contacts } from '../data/users'
+import { useReports, type ReportKind } from '../composables/useReports'
 
 const { session, isAuthenticated, login, logout } = useEstablishment()
 const { offers, addOffer, removeOffer } = useOffers()
@@ -30,6 +34,7 @@ const doodles: Doodle[] = [
 
 // --- Gate (login) ---
 const selectedEstId = ref<number | null>(null)
+const estOptions = computed(() => establishments.map((e, i) => ({ value: i, label: `${e.city} — ${e.name}` })))
 const accessCode = ref('')
 const loginError = ref('')
 
@@ -96,6 +101,67 @@ function publish() {
   form.value = { level: '', subject: '', periods: 4, startDate: '', endDate: '', schedule: '', daypart: 'Matin', urgent: false }
   setTimeout(() => (published.value = false), 2600)
 }
+
+// --- Satisfaction reports ---
+const { addReport, reportsFor, avgFor } = useReports()
+const schoolNames = [...new Set(contacts.map((c) => c.school).filter(Boolean) as string[])]
+
+const report = ref({
+  kind: 'remplacant' as ReportKind,
+  target: '',
+  rating: 0,
+  comment: '',
+  level: '',
+  discipline: '',
+})
+const reportTargets = computed(() =>
+  report.value.kind === 'remplacant' ? replacements.map((r) => r.name) : schoolNames,
+)
+// Discipline options follow the selected year (HarmoS correlation)
+const reportDisciplines = computed(() =>
+  report.value.level ? subjectsForLevels([report.value.level]) : [],
+)
+const reportSent = ref(false)
+const canSendReport = computed(() => report.value.target && report.value.rating > 0)
+function setKind(k: ReportKind) {
+  report.value.kind = k
+  report.value.target = ''
+}
+function submitReport() {
+  if (!canSendReport.value || !session.value) return
+  const levelLabel = yearLevels.find((l) => l.id === report.value.level)?.label ?? ''
+  const context = [report.value.discipline, levelLabel].filter(Boolean).join(' · ')
+  addReport({
+    kind: report.value.kind,
+    subject: report.value.target,
+    author: report.value.kind === 'remplacant' ? `${session.value.name} · ${session.value.city}` : session.value.name,
+    rating: report.value.rating,
+    comment: report.value.comment.trim() || '—',
+    context,
+  })
+  report.value = { kind: report.value.kind, target: '', rating: 0, comment: '', level: '', discipline: '' }
+  reportSent.value = true
+  setTimeout(() => (reportSent.value = false), 2600)
+}
+// Keep discipline consistent if the year changes
+watch(() => report.value.level, () => {
+  if (!reportDisciplines.value.includes(report.value.discipline)) report.value.discipline = ''
+})
+
+// Consultation (viability)
+function viability(name: string) {
+  const n = reportsFor('remplacant', name).length
+  if (n === 0) return { label: 'Pas encore évalué', cls: 'bg-foreground/10 text-foreground/60' }
+  const a = avgFor('remplacant', name)
+  if (a >= 4.5) return { label: 'Recommandé', cls: 'bg-green-100 text-green-700' }
+  if (a >= 3.5) return { label: 'Fiable', cls: 'bg-green-50 text-green-700' }
+  if (a >= 2.5) return { label: 'Correct', cls: 'bg-amber-100 text-amber-700' }
+  return { label: 'À surveiller', cls: 'bg-red-100 text-red-700' }
+}
+const expanded = ref<string | null>(null)
+function toggleExpand(name: string) {
+  expanded.value = expanded.value === name ? null : name
+}
 </script>
 
 <template>
@@ -132,13 +198,14 @@ function publish() {
         </p>
 
         <label class="block text-sm font-semibold mb-2 text-foreground">Établissement</label>
-        <select
-          v-model.number="selectedEstId"
-          class="w-full px-4 py-3 rounded-[14px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary mb-5"
-        >
-          <option :value="null" disabled>Sélectionnez votre établissement…</option>
-          <option v-for="(e, i) in establishments" :key="i" :value="i">{{ e.city }} — {{ e.name }}</option>
-        </select>
+        <div class="mb-5">
+          <DropdownSelect
+            v-model="selectedEstId"
+            :options="estOptions"
+            placeholder="Sélectionnez votre établissement…"
+            aria-label="Établissement"
+          />
+        </div>
 
         <label class="block text-sm font-semibold mb-2 text-foreground">Code d’accès établissement</label>
         <input
@@ -199,17 +266,22 @@ function publish() {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label class="block text-sm font-semibold mb-2 text-foreground">Degré *</label>
-              <select v-model="form.level" class="field">
-                <option value="" disabled>Sélectionner…</option>
-                <option v-for="l in yearLevels" :key="l.id" :value="l.id">{{ l.label }}</option>
-              </select>
+              <DropdownSelect
+                v-model="form.level"
+                :options="yearLevels.map((l) => ({ value: l.id, label: l.label }))"
+                placeholder="Sélectionner…"
+                aria-label="Degré"
+              />
             </div>
             <div>
               <label class="block text-sm font-semibold mb-2 text-foreground">Discipline *</label>
-              <select v-model="form.subject" class="field" :disabled="!form.level">
-                <option value="" disabled>{{ form.level ? 'Sélectionner…' : 'Choisissez d’abord un degré' }}</option>
-                <option v-for="s in formSubjects" :key="s" :value="s">{{ s }}</option>
-              </select>
+              <DropdownSelect
+                v-model="form.subject"
+                :options="formSubjects"
+                :disabled="!form.level"
+                :placeholder="form.level ? 'Sélectionner…' : 'Choisissez d’abord un degré'"
+                aria-label="Discipline"
+              />
             </div>
             <div>
               <label class="block text-sm font-semibold mb-2 text-foreground">Périodes / semaine *</label>
@@ -299,6 +371,133 @@ function publish() {
           </div>
         </section>
         <p v-else class="text-sm text-muted-foreground">Aucune offre publiée pour le moment.</p>
+
+        <!-- Rapports de satisfaction -->
+        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mt-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+              <ClipboardCheck :size="22" class="text-primary" />
+            </div>
+            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+              Rapport de satisfaction
+            </h2>
+          </div>
+
+          <!-- kind toggle -->
+          <div class="flex flex-wrap gap-2 mb-5">
+            <button
+              type="button"
+              class="px-4 py-2 rounded-full text-sm font-medium border-2 transition-all"
+              :class="report.kind === 'remplacant' ? 'bg-primary text-primary-foreground border-transparent' : 'bg-transparent text-foreground/70 border-border hover:border-primary/40'"
+              @click="setKind('remplacant')"
+            >Sur un·e remplaçant·e</button>
+            <button
+              type="button"
+              class="px-4 py-2 rounded-full text-sm font-medium border-2 transition-all"
+              :class="report.kind === 'etablissement' ? 'bg-primary text-primary-foreground border-transparent' : 'bg-transparent text-foreground/70 border-border hover:border-primary/40'"
+              @click="setKind('etablissement')"
+            >Sur un établissement</button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold mb-2 text-foreground">
+                {{ report.kind === 'remplacant' ? 'Remplaçant·e' : 'Établissement' }} *
+              </label>
+              <DropdownSelect v-model="report.target" :options="reportTargets" placeholder="Sélectionner…" aria-label="Sujet du rapport" />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-2 text-foreground">Année / degré</label>
+              <DropdownSelect
+                v-model="report.level"
+                :options="yearLevels.map((l) => ({ value: l.id, label: l.label }))"
+                placeholder="Sélectionner…"
+                aria-label="Année"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-semibold mb-2 text-foreground">Discipline</label>
+              <DropdownSelect
+                v-model="report.discipline"
+                :options="reportDisciplines"
+                :disabled="!report.level"
+                :placeholder="report.level ? 'Sélectionner…' : 'Choisissez d’abord une année'"
+                aria-label="Discipline"
+              />
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <label class="block text-sm font-semibold mb-2 text-foreground">Note *</label>
+            <div class="flex gap-1">
+              <button v-for="n in 5" :key="n" type="button" @click="report.rating = n" :aria-label="`${n} étoile(s)`">
+                <Star :size="28" :class="n <= report.rating ? 'text-amber-400 fill-amber-400' : 'text-foreground/25'" />
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <label class="block text-sm font-semibold mb-2 text-foreground">Commentaire</label>
+            <textarea v-model="report.comment" rows="3" placeholder="Ponctualité, gestion de classe, autonomie…" class="field resize-none"></textarea>
+          </div>
+
+          <div class="flex items-center gap-4 mt-6">
+            <button
+              class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full text-base font-bold shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
+              :disabled="!canSendReport"
+              @click="submitReport"
+            >
+              <Send :size="20" />
+              Envoyer le rapport
+            </button>
+            <span v-if="reportSent" class="inline-flex items-center gap-1.5 text-sm font-semibold text-green-600">
+              <Check :size="16" /> Rapport enregistré
+            </span>
+          </div>
+        </section>
+
+        <!-- Viabilité des remplaçant·e·s -->
+        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mt-8">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+              <ShieldCheck :size="22" class="text-primary" />
+            </div>
+            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+              Viabilité des remplaçant·e·s
+            </h2>
+          </div>
+          <p class="text-sm text-muted-foreground mb-5">Consultez la réputation d'un·e candidat·e avant de l'engager.</p>
+
+          <div class="space-y-3">
+            <div v-for="r in replacements" :key="r.id" class="rounded-[18px] border-2 border-border overflow-hidden">
+              <button class="w-full p-4 flex items-center gap-4 text-left hover:bg-foreground/5 transition-colors" @click="toggleExpand(r.name)">
+                <div class="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold shrink-0" style="background-color:#FD4401">{{ r.avatar }}</div>
+                <div class="min-w-0 flex-1">
+                  <div class="font-bold text-foreground truncate">{{ r.name }}</div>
+                  <div class="text-xs text-foreground/60 truncate">{{ r.subject }} · {{ r.level }}</div>
+                </div>
+                <div class="flex items-center gap-1 shrink-0">
+                  <Star v-for="n in 5" :key="n" :size="15" :class="n <= Math.round(avgFor('remplacant', r.name)) ? 'text-amber-400 fill-amber-400' : 'text-foreground/20'" />
+                </div>
+                <span class="shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold" :class="viability(r.name).cls">{{ viability(r.name).label }}</span>
+                <ChevronDown :size="18" class="text-foreground/40 transition-transform shrink-0" :class="expanded === r.name ? 'rotate-180' : ''" />
+              </button>
+              <div v-if="expanded === r.name" class="px-4 pb-4 space-y-3">
+                <p v-if="reportsFor('remplacant', r.name).length === 0" class="text-sm text-foreground/50">Aucun avis pour l'instant.</p>
+                <div v-for="rep in reportsFor('remplacant', r.name)" :key="rep.id" class="p-3 rounded-[14px] bg-foreground/5">
+                  <div class="flex items-center justify-between gap-2 mb-1">
+                    <div class="flex items-center gap-1">
+                      <Star v-for="n in 5" :key="n" :size="13" :class="n <= rep.rating ? 'text-amber-400 fill-amber-400' : 'text-foreground/20'" />
+                    </div>
+                    <span class="text-xs text-foreground/50">{{ rep.context }} · {{ rep.date }}</span>
+                  </div>
+                  <p class="text-sm text-foreground/80">{{ rep.comment }}</p>
+                  <p class="text-xs text-foreground/50 mt-1">— {{ rep.author }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </template>
     </div>
 

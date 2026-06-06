@@ -8,8 +8,22 @@ import EstablishmentsMap from '../components/EstablishmentsMap.vue'
 import GrilleHoraire from '../components/GrilleHoraire.vue'
 import { yearLevels, subjectsForLevels } from '../data/vaud'
 import { useOffers } from '../composables/useOffers'
+import DropdownSelect from '../components/DropdownSelect.vue'
 
 const { offers } = useOffers()
+const sortBy = ref('Plus récentes')
+
+// Location search (the "Emplacement" bar) + canton chips filter the catalogue
+const locationQuery = ref('')
+const filteredOffers = computed(() => {
+  const q = locationQuery.value.trim().toLowerCase()
+  return offers.value.filter((o) => {
+    const loc = o.location.toLowerCase()
+    if (q && !loc.includes(q)) return false
+    if (selected.cantons.length && !selected.cantons.some((c) => loc.includes(c.toLowerCase()))) return false
+    return true
+  })
+})
 
 const doodles: Doodle[] = [
   // left gutter
@@ -143,7 +157,7 @@ function onCardLeave(e: MouseEvent) {
             <!-- Emplacement -->
             <div class="mb-8">
               <label class="block text-base font-semibold mb-4" style="font-family:Inter,sans-serif">Emplacement (Suisse romande)</label>
-              <input type="text" placeholder="NPA (ex: 1003)" class="w-full px-4 py-3 rounded-[16px] border-2 border-foreground/10 mb-3" style="font-family:Inter,sans-serif" />
+              <input v-model="locationQuery" type="text" placeholder="Ville ou NPA (ex: Lausanne)" class="w-full px-4 py-3 rounded-[16px] border-2 border-foreground/10 mb-3 bg-input-background text-foreground" style="font-family:Inter,sans-serif" />
               <div class="mb-3">
                 <label class="block text-sm text-foreground/70 mb-2">Rayon: {{ searchRadius }} km</label>
                 <input type="range" min="5" max="50" v-model.number="searchRadius" class="w-full" />
@@ -230,20 +244,21 @@ function onCardLeave(e: MouseEvent) {
         <div class="lg:col-span-8">
           <div class="flex items-center justify-between mb-8">
             <h1 class="text-[clamp(1.875rem,6vw,3rem)] leading-tight" style="font-family:'DM Serif Display',serif">
-              <span class="text-primary">{{ offers.length }}</span> opportunités
+              <span class="text-primary">{{ filteredOffers.length }}</span> opportunités
               <br />
               correspondent à votre profil
             </h1>
-            <select class="px-6 py-3 rounded-[16px] border-2 border-foreground/10 font-medium">
-              <option>Plus récentes</option>
-              <option>Plus proches</option>
-              <option>Meilleure affinité</option>
-            </select>
+            <div class="w-52 shrink-0">
+              <DropdownSelect v-model="sortBy" :options="['Plus récentes', 'Plus proches', 'Meilleure affinité']" aria-label="Trier" />
+            </div>
           </div>
 
           <div class="space-y-6">
+            <div v-if="filteredOffers.length === 0" class="rounded-[24px] p-10 text-center bg-card border-2 border-dashed border-border">
+              <p class="text-foreground/60">Aucune offre ne correspond à cette recherche.</p>
+            </div>
             <div
-              v-for="mission in offers"
+              v-for="mission in filteredOffers"
               :key="mission.id"
               class="rounded-[24px] p-8 shadow-lg hover:shadow-xl transition-all cursor-pointer relative overflow-hidden bg-card"
               @mouseenter="onCardHover" @mouseleave="onCardLeave"
