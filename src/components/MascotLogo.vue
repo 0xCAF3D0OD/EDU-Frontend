@@ -33,10 +33,11 @@ const { isDark } = useTheme()
   flex-shrink: 0;
 }
 .mascot {
-  --fh: 46px;
-  --fw: 44px;
+  --fh: 49px;
+  --fw: 45px;
   width: var(--fw);
   height: var(--fh);
+  transform: translate(-205px, 5px);
   background-repeat: no-repeat;
   background-size: calc(var(--fw) * 25) var(--fh);
   background-position: 0 0;
@@ -69,7 +70,7 @@ const { isDark } = useTheme()
 }
 @media (min-width: 640px) {
   .mascot { --fh: 56px; --fw: 53px; }
-  .bubble { left: -30px; height: 28px; }
+  .bubble { left: -240px; height: 20px; }
   .brand { font-size: 1.5rem; }
 }
 @media (prefers-reduced-motion: reduce) {
