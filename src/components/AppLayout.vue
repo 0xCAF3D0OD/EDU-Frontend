@@ -5,11 +5,8 @@ import { Menu, X, ChevronDown } from 'lucide-vue-next'
 import Lenis from 'lenis'
 import FloatingShapes from './FloatingShapes.vue'
 import ThemeToggle from './ThemeToggle.vue'
-import alloBubble from '../assets/allo-bubble.svg'
-import alloOrange from '../assets/allo-orange.svg'
-import { useTheme } from '../composables/useTheme'
+import MascotLogo from './MascotLogo.vue'
 
-const { isDark } = useTheme()
 const route = useRoute()
 const scrolled = ref(false)
 const mobileOpen = ref(false)
@@ -97,22 +94,8 @@ onUnmounted(() => {
       }"
     >
       <div class="max-w-7xl mx-auto px-5 sm:px-8 py-3 flex items-center justify-between gap-4 relative">
-        <!-- Logo: "allô" speech bubble + Remplaçant, links home -->
-        <RouterLink to="/" class="min-w-0 shrink-0" aria-label="Accueil — Allô Remplaçant">
-          <div class="flex items-center gap-2 sm:gap-3 group">
-            <img
-              :src="isDark ? alloOrange : alloBubble"
-              alt="allô"
-              class="h-10 sm:h-14 w-auto shrink-0 transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-105"
-            />
-            <span
-              class="text-[1.05rem] sm:text-[1.55rem] font-semibold text-primary leading-none"
-              style="font-family:'DM Serif Display',serif;letter-spacing:-0.01em"
-            >
-              Remplaçant
-            </span>
-          </div>
-        </RouterLink>
+        <!-- Logo: animated character (on hover) + "allô" speech bubble, links home -->
+        <MascotLogo class="shrink-0" />
 
         <!-- Desktop nav links -->
         <div class="hidden xl:flex items-center gap-6">
