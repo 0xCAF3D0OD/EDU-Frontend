@@ -1,227 +1,220 @@
-# EduChat — Frontend
+<div align="center">
 
-> Vue 3 + Vite + Tailwind CSS v4 — Containerized & deployed on Kubernetes via GitHub Actions
+# Allô Remplaçant — Frontend
+
+**Plateforme de remplacements scolaires pour l'enseignement obligatoire vaudois (DGEO).**
+Les remplaçant·e·s trouvent et postulent à des missions ; les établissements publient leurs offres.
+
+[![Vue](https://img.shields.io/badge/Vue-3-42b883?logo=vuedotjs&logoColor=white)](https://vuejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Tailwind](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![PWA](https://img.shields.io/badge/PWA-installable-5a0fc8?logo=pwa&logoColor=white)](#-pwa)
+[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+
+</div>
 
 ---
 
-## Stack
+## 📑 Sommaire
 
-| Layer | Technology |
+- [Aperçu](#-aperçu)
+- [Stack](#-stack)
+- [Démarrage rapide](#-démarrage-rapide)
+- [Scripts](#-scripts)
+- [Structure du projet](#-structure-du-projet)
+- [Architecture](#-architecture)
+- [Thématisation](#-thématisation)
+- [Données métier (VD)](#-données-métier-vd)
+- [PWA](#-pwa)
+- [Déploiement & CI/CD](#-déploiement--cicd)
+- [Roadmap](#-roadmap)
+- [Licence](#-licence)
+
+---
+
+## 🔎 Aperçu
+
+SPA Vue 3 qui couvre deux parcours sur **une seule base de code** :
+
+| Parcours | Pages clés |
+|---|---|
+| **Remplaçant·e** | Accueil, Missions (catalogue + postuler), Tableau de bord, Messages, Créer un profil (dossier MIREO), Expertise |
+| **Établissement** | Espace établissement (accès réservé → publication d'offres) |
+
+Le tout multi-thème (5 thèmes dont *État de Vaud*), responsive, installable (PWA), et alimenté par les données officielles vaudoises (HarmoS, grilles horaires, établissements).
+
+---
+
+## 🧱 Stack
+
+| Domaine | Techno |
 |---|---|
 | Framework | Vue 3 (`<script setup>` + TypeScript) |
-| Build tool | Vite 8 |
-| Styling | Tailwind CSS v4 via `@tailwindcss/vite` |
+| Build | Vite 8 |
+| Styles | Tailwind CSS **v4** (`@tailwindcss/vite`) + variables CSS |
+| État partagé | Composables (`src/composables`) — pattern store léger |
+| Routing | Vue Router 4 |
 | Animations | GSAP + Lenis (smooth scroll) |
-| Icons | `lucide-vue-next` |
-| Routing | Vue Router v4 |
-| Container | Docker (multi-stage: Node builder → Nginx) |
-| Registry | GitHub Container Registry (GHCR) |
-| Orchestration | Kubernetes (K3s) via Helm |
-| CI/CD | GitHub Actions |
+| Carte | Leaflet + OpenStreetMap (chargé à la demande) |
+| Icônes | `lucide-vue-next` |
+| Conteneur / Déploiement | Docker (Node → Nginx) · GHCR · Kubernetes (K3s) · GitHub Actions |
 
 ---
 
-## Project Structure
+## 🚀 Démarrage rapide
+
+> Prérequis : **Node ≥ 20** et npm.
+
+```bash
+npm install        # installer les dépendances
+npm run dev        # serveur de dev → http://localhost:5173
+npm run build      # build de production (type-check + bundle) → dist/
+npm run preview    # prévisualiser le build (nécessaire pour tester la PWA)
+```
+
+---
+
+## 🛠 Scripts
+
+| Script | Rôle |
+|---|---|
+| `npm run dev` | Serveur Vite (exposé sur le réseau via `--host`) |
+| `npm run build` | `vue-tsc -b` (vérif. de types) puis `vite build` |
+| `npm run preview` | Sert le `dist/` localement (SW PWA actif) |
+| `npm run lint` | ESLint avec `--fix` |
+| `npm run format` | Prettier sur `src/` |
+
+---
+
+## 📁 Structure du projet
 
 ```
 Frontend/
+├── public/                     # Servi tel quel à la racine
+│   ├── favicon.svg / .ico / *.png   # Favicons (logo « allô »)
+│   ├── manifest.webmanifest    # Manifeste PWA
+│   ├── sw.js                   # Service worker (offline)
+│   └── icons/                  # Icônes d'app (192 / 512 / maskable)
 ├── src/
+│   ├── pages/                  # 1 page = 1 route
+│   │   ├── Home · Missions · Dashboard · Messages
+│   │   ├── CreateProfile       # Dossier MIREO (remplaçant)
+│   │   ├── Establishment       # Espace établissement (offres)
+│   │   ├── Expertise · About · Settings · Login · NotFound
 │   ├── components/
-│   │   ├── AppLayout.vue        # Global layout: nav + router-view + Lenis
-│   │   ├── AnimatedBlob.vue     # GSAP SVG blob animation
-│   │   └── FloatingShapes.vue   # Background floating shapes
-│   ├── pages/
-│   │   ├── Home.vue             # Landing page
-│   │   ├── About.vue            # About page
-│   │   └── NotFound.vue         # 404 page
-│   ├── router/
-│   │   └── index.ts             # Vue Router configuration
-│   ├── styles/
-│   │   ├── index.css            # Entry point: imports theme + Tailwind
-│   │   ├── theme.css            # CSS variables (colors, radius, typography)
-│   │   ├── fonts.css            # Font declarations
-│   │   └── globals.css          # Global base styles
-│   ├── App.vue                  # Root component (RouterView only)
-│   └── main.ts                  # App entry point
-├── index.html                   # HTML entry — sets html/body height to 100%
-├── vite.config.ts               # Vite config with Vue + Tailwind plugins
-├── postcss.config.mjs           # Empty — Tailwind handled by Vite plugin
-├── Dockerfile                   # Multi-stage build
-├── tsconfig.json
-└── package.json
+│   │   ├── AppLayout.vue        # Shell : nav (+ dropdown), Lenis, <RouterView>
+│   │   ├── Footer · ThemeToggle · ToggleSwitch
+│   │   ├── DoodleBackground.vue # Décor SVG dispersé (96 doodles)
+│   │   ├── EstablishmentsMap.vue# Carte Leaflet (lazy)
+│   │   └── GrilleHoraire.vue    # Grilles horaires officielles (repliable)
+│   ├── composables/            # État partagé (« stores »)
+│   │   ├── useTheme.ts          # Thème actif (5 thèmes, persistant)
+│   │   ├── useOffers.ts         # Catalogue d'offres partagé
+│   │   └── useEstablishment.ts  # Session établissement (accès réservé)
+│   ├── data/
+│   │   └── vaud.ts              # Années ↔ disciplines, grilles, établissements
+│   ├── styles/                 # index → fonts + theme + globals + Tailwind
+│   ├── assets/doodles/         # SVG décoratifs
+│   ├── router/index.ts         # Routes (sous AppLayout, sauf /login)
+│   └── main.ts                 # Point d'entrée (+ enregistrement SW)
+├── index.html                  # Metas PWA, favicon, anti-flash de thème
+├── vite.config.ts · Dockerfile · nginx.conf
 ```
 
 ---
 
-## Key Design Decisions
+## 🧩 Architecture
 
-### Tailwind v4 — not v3
+**Coquille + routes.** Toutes les pages sont rendues dans `AppLayout` (nav + footer + smooth scroll) ; `/login` est autonome.
 
-This project uses **Tailwind CSS v4**, which works differently from v3:
-
-```
-Tailwind v3                      Tailwind v4
-─────────────────────────────    ─────────────────────────────
-postcss.config: tailwindcss{}    postcss.config: {} (empty)
-tailwind.config.js required      No tailwind.config.js needed
-@tailwind base/components/util   @import "tailwindcss"
-PostCSS plugin                   Vite plugin (@tailwindcss/vite)
+```mermaid
+flowchart LR
+  main[main.ts] --> router
+  router -->|/login| Login
+  router --> AppLayout
+  AppLayout --> Home & Missions & Dashboard & Messages
+  AppLayout --> CreateProfile & Establishment & Expertise & About & Settings
 ```
 
-**`vite.config.ts`** — Tailwind is loaded as a Vite plugin, not via PostCSS:
-```ts
-import tailwindcss from '@tailwindcss/vite'
+**Flux d'une offre** — un établissement publie, ça apparaît instantanément côté remplaçant grâce au store partagé `useOffers` :
 
-export default defineConfig({
-  plugins: [vue(), tailwindcss()],
-})
+```mermaid
+flowchart LR
+  E[Establishment.vue] -->|addOffer| S[(useOffers)]
+  S -->|offers| M[Missions.vue]
+  M -->|Postuler| C[Remplaçant·e]
 ```
 
-**`src/styles/index.css`** — imports use v4 syntax:
-```css
-@import './fonts.css';
-@import './theme.css';
-@import './globals.css';
-@import 'tailwindcss' source(none);
-@source '../**/*.{vue,js,ts}';
-```
-
-### Layout Height Chain
-
-For `min-h-screen` and `position: absolute` to work correctly, every ancestor must have a defined height:
-
-```
-html  { height: 100% }   ← set in index.html <style>
-body  { height: 100% }   ← set in index.html <style>
-#app  { height: 100% }   ← set in index.html <style>
-AppLayout div             ← uses min-height: 100vh
-```
-
-Without this chain, hero sections and absolute-positioned blobs break.
-
-### Animations
-
-Framer Motion (React original) was replaced with **pure GSAP** since GSAP was already used for ScrollTrigger. Hover interactions use `@mouseenter`/`@mouseleave` event handlers instead of `whileHover` props.
+**État partagé sans Pinia.** Chaque composable expose un `ref` à portée module (singleton) : importer le composable depuis plusieurs composants partage le même état. Persistance via `localStorage` (thème) ou `sessionStorage` (session établissement).
 
 ---
 
-## Local Development
+## 🎨 Thématisation
+
+5 thèmes définis en **variables CSS** dans [`src/styles/theme.css`](src/styles/theme.css) : `creme` (défaut), `nuit` (sombre chaud), `foret`, `lavande`, `vaud` (vert officiel).
+
+- [`useTheme`](src/composables/useTheme.ts) applique une classe `theme-*` (+ `dark`) sur `<html>` et persiste le choix.
+- Pour éviter le *flash* au chargement, le thème est appliqué avant le rendu via un script inline dans `index.html`.
+- **Règle d'or** : les composants utilisent les *tokens* (`bg-card`, `text-foreground`, `text-primary`…), jamais des couleurs en dur — c'est ce qui rend les 5 thèmes possibles.
+
+> Le logo bascule en version orange en thème sombre uniquement.
+
+---
+
+## 🇨🇭 Données métier (VD)
+
+[`src/data/vaud.ts`](src/data/vaud.ts) centralise les données officielles (LEO / HarmoS, version août 2025) :
+
+- **Degrés** (1-2P … 9-11S VG/VP) et **disciplines corrélées** (allemand dès 5P, anglais dès 7P, OS/OCOM au secondaire) → utilisées par les filtres de Missions et le formulaire d'offre.
+- **Grilles horaires** officielles (périodes par discipline) → `GrilleHoraire.vue`.
+- **Établissements** géolocalisés → `EstablishmentsMap.vue`.
+
+---
+
+## 📱 PWA
+
+L'app est **installable** et fonctionne **hors-ligne** :
+
+- `public/manifest.webmanifest` (mode `standalone`, icônes maskable).
+- `public/sw.js` — precache de l'app shell + *stale-while-revalidate*, enregistré **en production uniquement** (`main.ts`).
+
+Tester l'installation :
 
 ```bash
-# Install dependencies
-npm install
-
-# Start dev server (exposed on all interfaces)
-npm run dev
-# → http://localhost:5173
+npm run build && npm run preview
+# puis « Installer l'application » (desktop) ou « Ajouter à l'écran d'accueil » (mobile)
 ```
-
-> **Note:** `fsevents` warnings on macOS are harmless — it's a native macOS file watcher used by Vite internally.
 
 ---
 
-## Docker
+## ☁️ Déploiement & CI/CD
 
-The Dockerfile uses a **two-stage build**:
+Build **multi-stage** Docker (`node:lts-alpine` → `nginx:alpine`), publié sur **GHCR** et déployé sur **K3s** via GitHub Actions.
 
+```mermaid
+flowchart LR
+  push[push main] --> A[GitHub Actions]
+  A -->|docker-publish.yml| GHCR[(GHCR image)]
+  A -->|k3s-deploy.yml| K3s[K3s · namespace dev]
 ```
-┌─────────────────────────────┐
-│  Stage 1: builder           │
-│  node:lts-alpine            │
-│  npm ci --ignore-scripts    │
-│  npm run build              │
-│  → /app/dist                │
-└────────────┬────────────────┘
-             │ COPY dist
-┌────────────▼────────────────┐
-│  Stage 2: serve             │
-│  nginx:alpine               │
-│  /usr/share/nginx/html/     │
-│  PORT 80                    │
-└─────────────────────────────┘
-```
-
-```dockerfile
-FROM node:lts-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --ignore-scripts
-COPY . .
-RUN npm run build
-
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-> `--ignore-scripts` prevents `fsevents` (macOS-only native module) from failing on Linux during CI builds.
-
----
-
-## CI/CD Pipeline
-
-```
-git push (main)
-      │
-      ▼
-┌─────────────────────────┐
-│  GitHub Actions          │
-│  .github/workflows/      │
-│  docker-publish.yml      │
-│                          │
-│  1. Checkout code        │
-│  2. Build Docker image   │
-│  3. Push to GHCR         │
-│     ghcr.io/0xcaf3d0od/  │
-│     edu-frontend:latest  │
-└────────────┬────────────┘
-             │
-             ▼
-┌─────────────────────────┐
-│  Kubernetes (K3s)        │
-│  namespace: dev          │
-│                          │
-│  imagePullPolicy: Always │
-│  → pulls latest on       │
-│    pod restart           │
-│                          │
-│  kubectl rollout restart │
-│  deployment/edu-...      │
-└─────────────────────────┘
-```
-
-### Force redeploy after a push
-
-If the pod is not picking up the new image:
 
 ```bash
+# Forcer un redéploiement
 sudo kubectl rollout restart deployment/edu-deployment-frontend -n dev
-sudo kubectl get pods -n dev -w
 ```
 
-### Verify what's running in the pod
-
-```bash
-# Enter the container
-sudo kubectl exec -it $(sudo kubectl get pod -n dev \
-  -l app=edu-service-frontend \
-  -o jsonpath='{.items[0].metadata.name}') -n dev -- sh
-
-# Check the built files
-ls /usr/share/nginx/html/
-cat /usr/share/nginx/html/index.html
-```
+> Le `Dockerfile` utilise `npm ci --ignore-scripts` pour éviter l'échec de `fsevents` (module macOS) sur les runners Linux.
 
 ---
 
-## Common Issues & Fixes
+## 🗺 Roadmap
 
-| Symptom | Cause | Fix |
-|---|---|---|
-| Tailwind classes not applied | Wrong Tailwind version setup (v3 vs v4) | Use `@tailwindcss/vite` plugin, empty `postcss.config.mjs` |
-| Hero section invisible / layout broken | `#app` has no height | Add `html,body,#app { height:100% }` in `index.html` |
-| `EBADPLATFORM fsevents` in Docker | macOS-only native module in `package-lock.json` | Use `npm ci --ignore-scripts` in Dockerfile |
-| Pod running old code | Image not re-pulled | `kubectl rollout restart` or check GitHub Actions ran |
-| `npm install -r requirements.txt` error | Python flag used with npm | Remove `requirements.txt` — this is a Node project |
-| Duplicate `src/pages/pages/` folders | Bad `cp -r` command during migration | `rm -rf src/pages/pages src/router/router src/styles/styles` |
+- [ ] **Capacitor** — empaqueter en apps natives iOS/Android (stores).
+- [ ] Brancher un backend réel (auth IAM/DGEO, persistance des offres) — `axios` déjà installé.
+
+---
+
+## 📄 Licence
+
+Distribué sous licence **GNU GPL v3** — voir [`LICENSE`](LICENSE).
