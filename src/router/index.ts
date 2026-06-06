@@ -9,6 +9,7 @@ import Settings from '../pages/Settings.vue'
 import Login from '../pages/Login.vue'
 import CreateProfile from '../pages/CreateProfile.vue'
 import Expertise from '../pages/Expertise.vue'
+import SpecialEducation from '../pages/SpecialEducation.vue'
 import Establishment from '../pages/Establishment.vue'
 import NotFound from '../pages/NotFound.vue'
 
@@ -24,6 +25,7 @@ const router = createRouter({
         { path: '', component: Home },
         { path: 'missions', component: Missions },
         { path: 'expertise', component: Expertise },
+        { path: 'enseignement-specialise', component: SpecialEducation },
         { path: 'dashboard', component: Dashboard },
         { path: 'messages', component: Messages },
         { path: 'settings', component: Settings },

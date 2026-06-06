@@ -9,6 +9,7 @@ import ToggleSwitch from '../components/ToggleSwitch.vue'
 import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
 import { useTheme } from '../composables/useTheme'
 import { yearLevels, subjectsForLevels } from '../data/vaud'
+import DropdownSelect from '../components/DropdownSelect.vue'
 
 const MIREO_URL = 'https://prestations.vd.ch/pub/mireo/#/'
 
@@ -219,12 +220,7 @@ function saveDraft() {
             </div>
             <div>
               <label class="block text-sm font-semibold mb-2 text-foreground">Sexe</label>
-              <select v-model="identity.gender" class="field">
-                <option value="">Sélectionner…</option>
-                <option>Féminin</option>
-                <option>Masculin</option>
-                <option>Autre</option>
-              </select>
+              <DropdownSelect v-model="identity.gender" :options="['Féminin', 'Masculin', 'Autre']" placeholder="Sélectionner…" aria-label="Sexe" />
             </div>
             <div>
               <label class="block text-sm font-semibold mb-2 text-foreground">Numéro AVS</label>
@@ -233,15 +229,11 @@ function saveDraft() {
             </div>
             <div>
               <label class="block text-sm font-semibold mb-2 text-foreground">Nationalité *</label>
-              <select v-model="identity.nationality" class="field">
-                <option>Suisse</option>
-                <option>France</option>
-                <option>Italie</option>
-                <option>Allemagne</option>
-                <option>Portugal</option>
-                <option>Autre (UE/AELE)</option>
-                <option>Autre (hors UE/AELE)</option>
-              </select>
+              <DropdownSelect
+                v-model="identity.nationality"
+                :options="['Suisse', 'France', 'Italie', 'Allemagne', 'Portugal', 'Autre (UE/AELE)', 'Autre (hors UE/AELE)']"
+                aria-label="Nationalité"
+              />
             </div>
             <div>
               <label class="block text-sm font-semibold mb-2 text-foreground">Téléphone portable (CH) *</label>
@@ -280,15 +272,11 @@ function saveDraft() {
             </div>
             <div class="md:col-span-2">
               <label class="block text-sm font-semibold mb-2 text-foreground">Canton *</label>
-              <select v-model="address.canton" class="field">
-                <option>Vaud (VD)</option>
-                <option>Genève (GE)</option>
-                <option>Fribourg (FR)</option>
-                <option>Valais (VS)</option>
-                <option>Neuchâtel (NE)</option>
-                <option>Jura (JU)</option>
-                <option>Hors canton</option>
-              </select>
+              <DropdownSelect
+                v-model="address.canton"
+                :options="['Vaud (VD)', 'Genève (GE)', 'Fribourg (FR)', 'Valais (VS)', 'Neuchâtel (NE)', 'Jura (JU)', 'Hors canton']"
+                aria-label="Canton"
+              />
             </div>
           </div>
           <label class="flex items-center gap-3 mt-5 cursor-pointer select-none">

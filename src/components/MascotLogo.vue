@@ -11,13 +11,13 @@ const { isDark } = useTheme()
 
 <template>
   <RouterLink to="/" class="mascot-link" aria-label="Accueil — Allô Remplaçant">
-    <span class="brand">Remplaçant</span>
-    <div class="mascot-wrap">
-      <!-- "allô" bubble sits to the upper-left of the character, tail toward the phone -->
+    <span class="mark">
+      <!-- "allô" bubble in the left gutter, tail pointing right toward the phone -->
       <img :src="isDark ? alloOrange : alloBubble" alt="" aria-hidden="true" class="bubble" />
       <!-- animated character on the phone -->
-      <div class="mascot" :style="{ backgroundImage: `url(${sprite})` }" />
-    </div>
+      <span class="mascot" :style="{ backgroundImage: `url(${sprite})` }" />
+    </span>
+    <span class="brand">Remplaçant</span>
   </RouterLink>
 </template>
 
@@ -25,19 +25,24 @@ const { isDark } = useTheme()
 .mascot-link {
   display: flex;
   align-items: center;
-  gap: 1.6rem; /* room for the bubble between the word and the character */
+  gap: 0.55rem;
   min-width: 0;
 }
-.mascot-wrap {
+/* The mark hosts the character + an absolutely-placed bubble.
+   padding-left reserves an on-screen gutter for the bubble (no off-screen transforms). */
+.mark {
   position: relative;
+  display: inline-block;
   flex-shrink: 0;
+  padding-left: 34px;
 }
 .mascot {
-  --fh: 49px;
-  --fw: 45px;
+  --fh: 56px;
+  --fw: 53px;
+  display: block;
   width: var(--fw);
   height: var(--fh);
-  transform: translate(-205px, 5px);
+  transform: translate(10px, 5px);
   background-repeat: no-repeat;
   background-size: calc(var(--fw) * 25) var(--fh);
   background-position: 0 0;
@@ -51,12 +56,12 @@ const { isDark } = useTheme()
 }
 .bubble {
   position: absolute;
-  top: 0;
-  left: -26px;
-  height: 24px;
+  left: -15px;
+  top: -4px;
+  height: 30px;
   width: auto;
   pointer-events: none;
-  transform: rotate(2deg);
+  transform: rotate(-3deg);
   z-index: 1;
 }
 .brand {
@@ -64,14 +69,17 @@ const { isDark } = useTheme()
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--primary);
-  font-size: 1.05rem;
+  font-size: 1.5rem;
   line-height: 1;
   white-space: nowrap;
 }
-@media (min-width: 640px) {
-  .mascot { --fh: 56px; --fw: 53px; }
-  .bubble { left: -240px; height: 20px; }
-  .brand { font-size: 1.5rem; }
+
+/* Mobile: only the character + bubble (no word), slightly tighter */
+@media (max-width: 639px) {
+  .brand { display: none; }
+  .mark { padding-left: 28px; }
+  .mascot { --fh: 50px; --fw: 47px; transform: translate(25px, 5px);}
+  .bubble { left: 0; top: -3px; height: 26px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .mascot-link:hover .mascot { animation: none; }
