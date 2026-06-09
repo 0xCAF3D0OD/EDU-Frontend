@@ -8,8 +8,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import FloatingShapes from './FloatingShapes.vue'
 import ThemeToggle from './ThemeToggle.vue'
 import MascotLogo from './MascotLogo.vue'
+import { useLenis } from '../composables/useLenis'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const { setLenis } = useLenis()
 
 const route = useRoute()
 const scrolled = ref(false)
@@ -91,6 +94,7 @@ onMounted(() => {
     smoothWheel: true,
   })
   lenisRef.value = lenis
+  setLenis(lenis)
   lenis.on('scroll', ScrollTrigger.update)
   gsap.ticker.add(lenisTick)
   gsap.ticker.lagSmoothing(0)
@@ -101,6 +105,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   gsap.ticker.remove(lenisTick)
+  setLenis(null)
   lenisRef.value?.destroy()
   window.removeEventListener('scroll', handleScroll)
   window.removeEventListener('click', handleDocClick)
