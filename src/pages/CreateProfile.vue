@@ -18,22 +18,16 @@ const accentColor = computed(() =>
   ({ creme: '#FD4401', nuit: '#FF5A1F', foret: '#B8621B', lavande: '#7C3F8C', vaud: '#00843D' })[currentTheme.value],
 )
 
-// All doodles live in the left/right gutters or top/bottom whitespace so they
-// never sit on top of form text.
+// On this long, dense form the decoration stays deliberately discreet: few
+// doodles, small, low opacity, hugging the extreme edges so the eye flows
+// straight down the fields. Clarity first, playfulness second.
 const doodles: Doodle[] = [
-  // left gutter (top -> bottom)
-  { name: 'rocket', top: '5%', left: '2%', size: 84, rotate: -12, opacity: 0.5 },
-  { name: 'pencil', top: '28%', left: '3%', size: 58, rotate: 10, opacity: 0.5 },
-  { name: 'schoolbus', top: '52%', left: '2%', size: 88, rotate: -3, opacity: 0.5 },
-  { name: 'partyhat', top: '76%', left: '4%', size: 52, opacity: 0.5 },
-  // right gutter (top -> bottom)
-  { name: 'star', top: '8%', right: '3%', size: 46, opacity: 0.6 },
-  { name: 'sun-rays', top: '30%', right: '3%', size: 70, opacity: 0.45 },
-  { name: 'bunting', top: '54%', right: '2%', size: 82, opacity: 0.4 },
-  { name: 'balloon', top: '78%', right: '4%', size: 52, opacity: 0.5 },
-  // corners
-  { name: 'sparkle', bottom: '4%', right: '8%', size: 40, opacity: 0.6 },
-  { name: 'asterisk', bottom: '5%', left: '9%', size: 42, opacity: 0.5 },
+  { name: 'rocket', top: '4%', left: '1.5%', size: 52, rotate: -12, opacity: 0.22 },
+  { name: 'schoolbus', top: '46%', left: '1.5%', size: 56, rotate: -3, opacity: 0.2 },
+  { name: 'partyhat', bottom: '5%', left: '2.5%', size: 40, opacity: 0.22 },
+  { name: 'sun-rays', top: '16%', right: '1.5%', size: 52, opacity: 0.22 },
+  { name: 'bunting', top: '64%', right: '1.5%', size: 58, opacity: 0.18 },
+  { name: 'sparkle', bottom: '5%', right: '3%', size: 32, opacity: 0.28 },
 ]
 
 // ---- Form state -------------------------------------------------------------
@@ -190,18 +184,25 @@ function saveDraft() {
             <ExternalLink :size="16" />
           </a>
         </div>
+
+        <p class="mt-4 text-sm text-muted-foreground">
+          <span class="text-primary font-semibold">*</span> Champs obligatoires. Le formulaire est divisé en 7 parties — complétez-les à votre rythme.
+        </p>
       </div>
 
       <form class="space-y-7" @submit.prevent="saveDraft">
         <!-- 1. Identité & contact -->
         <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+          <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <User :size="22" class="text-primary" />
             </div>
-            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
-              Identité &amp; contact
-            </h2>
+            <div>
+              <div class="text-[0.7rem] font-bold tracking-[0.14em] uppercase text-muted-foreground mb-1">Partie 1 sur 7</div>
+              <h2 class="text-[clamp(1.2rem,3.8vw,1.55rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+                Identité &amp; contact
+              </h2>
+            </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div class="md:col-span-2">
@@ -251,13 +252,16 @@ function saveDraft() {
 
         <!-- 2. Adresse -->
         <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+          <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <MapPin :size="22" class="text-primary" />
             </div>
-            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
-              Adresse
-            </h2>
+            <div>
+              <div class="text-[0.7rem] font-bold tracking-[0.14em] uppercase text-muted-foreground mb-1">Partie 2 sur 7</div>
+              <h2 class="text-[clamp(1.2rem,3.8vw,1.55rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+                Adresse
+              </h2>
+            </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-6 gap-5">
             <div class="md:col-span-6">
@@ -301,13 +305,16 @@ function saveDraft() {
 
         <!-- 3. Situation familiale -->
         <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+          <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <UsersIcon :size="22" class="text-primary" />
             </div>
-            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
-              Situation familiale
-            </h2>
+            <div>
+              <div class="text-[0.7rem] font-bold tracking-[0.14em] uppercase text-muted-foreground mb-1">Partie 3 sur 7</div>
+              <h2 class="text-[clamp(1.2rem,3.8vw,1.55rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+                Situation familiale
+              </h2>
+            </div>
           </div>
           <div class="space-y-4">
             <div class="flex items-center justify-between gap-4 p-4 rounded-[16px] bg-foreground/5">
@@ -329,13 +336,16 @@ function saveDraft() {
 
         <!-- 4. Données bancaires -->
         <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+          <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <Landmark :size="22" class="text-primary" />
             </div>
-            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
-              Données bancaires
-            </h2>
+            <div>
+              <div class="text-[0.7rem] font-bold tracking-[0.14em] uppercase text-muted-foreground mb-1">Partie 4 sur 7</div>
+              <h2 class="text-[clamp(1.2rem,3.8vw,1.55rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+                Données bancaires
+              </h2>
+            </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
@@ -366,13 +376,16 @@ function saveDraft() {
 
         <!-- 5. Titres & formation -->
         <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+          <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <GraduationCap :size="22" class="text-primary" />
             </div>
-            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
-              Titres &amp; formation
-            </h2>
+            <div>
+              <div class="text-[0.7rem] font-bold tracking-[0.14em] uppercase text-muted-foreground mb-1">Partie 5 sur 7</div>
+              <h2 class="text-[clamp(1.2rem,3.8vw,1.55rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+                Titres &amp; formation
+              </h2>
+            </div>
           </div>
 
           <label class="flex items-center gap-3 mb-5 cursor-pointer select-none">
@@ -432,13 +445,16 @@ function saveDraft() {
 
         <!-- 6. Disponibilités & préférences -->
         <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+          <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <CalendarCheck :size="22" class="text-primary" />
             </div>
-            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
-              Disponibilités &amp; préférences
-            </h2>
+            <div>
+              <div class="text-[0.7rem] font-bold tracking-[0.14em] uppercase text-muted-foreground mb-1">Partie 6 sur 7</div>
+              <h2 class="text-[clamp(1.2rem,3.8vw,1.55rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+                Disponibilités &amp; préférences
+              </h2>
+            </div>
           </div>
 
           <div class="flex items-center justify-between gap-4 p-4 rounded-[16px] bg-foreground/5 mb-6">
@@ -540,13 +556,16 @@ function saveDraft() {
 
         <!-- 7. Documents -->
         <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+          <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <FileText :size="22" class="text-primary" />
             </div>
-            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
-              Documents à fournir
-            </h2>
+            <div>
+              <div class="text-[0.7rem] font-bold tracking-[0.14em] uppercase text-muted-foreground mb-1">Partie 7 sur 7</div>
+              <h2 class="text-[clamp(1.2rem,3.8vw,1.55rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+                Documents à fournir
+              </h2>
+            </div>
           </div>
           <p class="text-sm text-muted-foreground mb-5">
             Préparez ces documents — vous les téléverserez ensuite directement dans MIREO.

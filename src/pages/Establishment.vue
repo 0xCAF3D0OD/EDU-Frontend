@@ -22,18 +22,15 @@ const accentColor = computed(
   () => ({ creme: '#FD4401', nuit: '#FF5A1F', foret: '#B8621B', lavande: '#7C3F8C', vaud: '#00843D' })[currentTheme.value],
 )
 
+// Discreet decoration: a working page (offers + reports) reads best with the
+// doodles receding to the extreme edges at low opacity.
 const doodles: Doodle[] = [
-  { name: 'star3', top: '8%', left: '3%', size: 56, opacity: 0.5 },
-  { name: 'scribble', top: '30%', left: '4%', size: 60, opacity: 0.45 },
-  { name: 'ring', top: '60%', left: '4%', size: 50, opacity: 0.45 },
-  { name: 'leaf4', bottom: '8%', left: '6%', size: 54, opacity: 0.45 },
-  { name: 'bolt2', top: '14%', right: '4%', size: 48, opacity: 0.5 },
-  { name: 'scribble2', top: '44%', right: '5%', size: 52, opacity: 0.45 },
-  { name: 'raincloud2', bottom: '12%', right: '6%', size: 56, opacity: 0.45 },
-  { name: 'paperplane', top: '3%', right: '3%', size: 46, rotate: 8, opacity: 0.4 },
-  { name: 'dots', top: '46%', left: '3%', size: 42, opacity: 0.4 },
-  { name: 'triangle', top: '28%', right: '3%', size: 40, rotate: 12, opacity: 0.4 },
-  { name: 'sun-small', top: '78%', right: '4%', size: 52, opacity: 0.4 },
+  { name: 'star3', top: '6%', left: '1.5%', size: 46, opacity: 0.22 },
+  { name: 'scribble', top: '42%', left: '1.5%', size: 52, opacity: 0.16 },
+  { name: 'leaf4', bottom: '6%', left: '2.5%', size: 46, opacity: 0.2 },
+  { name: 'paperplane', top: '8%', right: '1.5%', size: 44, rotate: 8, opacity: 0.22 },
+  { name: 'raincloud2', top: '58%', right: '1.5%', size: 50, opacity: 0.16 },
+  { name: 'sun-small', bottom: '7%', right: '3%', size: 44, opacity: 0.22 },
 ]
 
 // --- Gate (login) ---
@@ -260,13 +257,16 @@ function toggleExpand(name: string) {
 
         <!-- Formulaire rapide -->
         <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+          <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <Plus :size="22" class="text-primary" />
             </div>
-            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
-              Publier une offre
-            </h2>
+            <div>
+              <div class="text-[0.7rem] font-bold tracking-[0.14em] uppercase text-muted-foreground mb-1">Catalogue des missions</div>
+              <h2 class="text-[clamp(1.2rem,3.8vw,1.55rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+                Publier une offre
+              </h2>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -380,13 +380,16 @@ function toggleExpand(name: string) {
 
         <!-- Rapports de satisfaction -->
         <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mt-8">
-          <div class="flex items-center gap-3 mb-6">
-            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
+          <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
+            <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <ClipboardCheck :size="22" class="text-primary" />
             </div>
-            <h2 class="text-[clamp(1.4rem,4.5vw,1.85rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
-              Rapport de satisfaction
-            </h2>
+            <div>
+              <div class="text-[0.7rem] font-bold tracking-[0.14em] uppercase text-muted-foreground mb-1">Évaluation — non visible par le·la remplaçant·e</div>
+              <h2 class="text-[clamp(1.2rem,3.8vw,1.55rem)] leading-tight text-foreground" style="font-family:'DM Serif Display',serif">
+                Rapport de satisfaction
+              </h2>
+            </div>
           </div>
 
           <!-- kind toggle -->
