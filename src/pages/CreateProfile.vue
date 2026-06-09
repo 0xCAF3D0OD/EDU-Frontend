@@ -75,6 +75,7 @@ const bank = reactive({
 })
 
 interface Diploma {
+  id: number
   system: string
   school: string
   title: string
@@ -82,12 +83,13 @@ interface Diploma {
   date: string
   inProgress: boolean
 }
+let diplomaId = 1
 const noDiploma = ref(false)
 const diplomas = ref<Diploma[]>([
-  { system: '', school: '', title: '', country: 'Suisse', date: '', inProgress: false },
+  { id: diplomaId++, system: '', school: '', title: '', country: 'Suisse', date: '', inProgress: false },
 ])
 function addDiploma() {
-  diplomas.value.push({ system: '', school: '', title: '', country: 'Suisse', date: '', inProgress: false })
+  diplomas.value.push({ id: diplomaId++, system: '', school: '', title: '', country: 'Suisse', date: '', inProgress: false })
 }
 function removeDiploma(i: number) {
   diplomas.value.splice(i, 1)
@@ -155,7 +157,7 @@ function saveDraft() {
 </script>
 
 <template>
-  <div class="bg-background relative" style="min-height:100vh; overflow-x:hidden;">
+  <div class="bg-background relative" style="min-height:100dvh; overflow-x:hidden;">
     <DoodleBackground :items="doodles" />
 
     <div class="relative z-10 max-w-4xl mx-auto px-5 sm:px-8 py-12">
@@ -203,29 +205,29 @@ function saveDraft() {
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div class="md:col-span-2">
-              <label class="block text-sm font-semibold mb-2 text-foreground">Adresse email *</label>
-              <input v-model="identity.email" type="email" placeholder="prenom.nom@exemple.ch" class="field" />
+              <label for="cp-email" class="block text-sm font-semibold mb-2 text-foreground">Adresse email *</label>
+              <input id="cp-email" v-model="identity.email" type="email" autocomplete="email" placeholder="prenom.nom@exemple.ch" class="field" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Prénom *</label>
-              <input v-model="identity.firstName" type="text" placeholder="Marc" class="field" />
+              <label for="cp-firstname" class="block text-sm font-semibold mb-2 text-foreground">Prénom *</label>
+              <input id="cp-firstname" v-model="identity.firstName" type="text" autocomplete="given-name" placeholder="Marc" class="field" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Nom *</label>
-              <input v-model="identity.lastName" type="text" placeholder="Renaud" class="field" />
+              <label for="cp-lastname" class="block text-sm font-semibold mb-2 text-foreground">Nom *</label>
+              <input id="cp-lastname" v-model="identity.lastName" type="text" autocomplete="family-name" placeholder="Renaud" class="field" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Date de naissance *</label>
-              <input v-model="identity.birthDate" type="date" class="field" />
+              <label for="cp-birthdate" class="block text-sm font-semibold mb-2 text-foreground">Date de naissance *</label>
+              <input id="cp-birthdate" v-model="identity.birthDate" type="date" autocomplete="bday" class="field" />
             </div>
             <div>
               <label class="block text-sm font-semibold mb-2 text-foreground">Sexe</label>
               <DropdownSelect v-model="identity.gender" :options="['Féminin', 'Masculin', 'Autre']" placeholder="Sélectionner…" aria-label="Sexe" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Numéro AVS</label>
-              <input v-model="identity.avs" type="text" placeholder="756.0000.0000.00" class="field" />
-              <p class="text-xs text-muted-foreground mt-1.5">Obligatoire si nationalité suisse.</p>
+              <label for="cp-avs" class="block text-sm font-semibold mb-2 text-foreground">Numéro AVS</label>
+              <input id="cp-avs" v-model="identity.avs" type="text" inputmode="numeric" aria-describedby="cp-avs-help" placeholder="756.0000.0000.00" class="field" />
+              <p id="cp-avs-help" class="text-xs text-muted-foreground mt-1.5">Obligatoire si nationalité suisse.</p>
             </div>
             <div>
               <label class="block text-sm font-semibold mb-2 text-foreground">Nationalité *</label>
@@ -236,13 +238,13 @@ function saveDraft() {
               />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Téléphone portable (CH) *</label>
-              <input v-model="identity.mobile" type="tel" placeholder="+41 79 123 45 67" class="field" />
-              <p class="text-xs text-muted-foreground mt-1.5">Numéro suisse requis pour la connexion MIREO.</p>
+              <label for="cp-mobile" class="block text-sm font-semibold mb-2 text-foreground">Téléphone portable (CH) *</label>
+              <input id="cp-mobile" v-model="identity.mobile" type="tel" autocomplete="tel" aria-describedby="cp-mobile-help" placeholder="+41 79 123 45 67" class="field" />
+              <p id="cp-mobile-help" class="text-xs text-muted-foreground mt-1.5">Numéro suisse requis pour la connexion MIREO.</p>
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Téléphone privé (optionnel)</label>
-              <input v-model="identity.privatePhone" type="tel" placeholder="+41 21 000 00 00" class="field" />
+              <label for="cp-privatephone" class="block text-sm font-semibold mb-2 text-foreground">Téléphone privé (optionnel)</label>
+              <input id="cp-privatephone" v-model="identity.privatePhone" type="tel" autocomplete="tel" placeholder="+41 21 000 00 00" class="field" />
             </div>
           </div>
         </section>
@@ -259,16 +261,16 @@ function saveDraft() {
           </div>
           <div class="grid grid-cols-1 md:grid-cols-6 gap-5">
             <div class="md:col-span-6">
-              <label class="block text-sm font-semibold mb-2 text-foreground">Rue et numéro *</label>
-              <input v-model="address.street" type="text" placeholder="Avenue de la Gare 1" class="field" />
+              <label for="cp-street" class="block text-sm font-semibold mb-2 text-foreground">Rue et numéro *</label>
+              <input id="cp-street" v-model="address.street" type="text" autocomplete="address-line1" placeholder="Avenue de la Gare 1" class="field" />
             </div>
             <div class="md:col-span-2">
-              <label class="block text-sm font-semibold mb-2 text-foreground">NPA *</label>
-              <input v-model="address.zip" type="text" placeholder="1003" class="field" />
+              <label for="cp-zip" class="block text-sm font-semibold mb-2 text-foreground">NPA *</label>
+              <input id="cp-zip" v-model="address.zip" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="1003" class="field" />
             </div>
             <div class="md:col-span-2">
-              <label class="block text-sm font-semibold mb-2 text-foreground">Localité *</label>
-              <input v-model="address.city" type="text" placeholder="Lausanne" class="field" />
+              <label for="cp-city" class="block text-sm font-semibold mb-2 text-foreground">Localité *</label>
+              <input id="cp-city" v-model="address.city" type="text" autocomplete="address-level2" placeholder="Lausanne" class="field" />
             </div>
             <div class="md:col-span-2">
               <label class="block text-sm font-semibold mb-2 text-foreground">Canton *</label>
@@ -285,14 +287,14 @@ function saveDraft() {
           </label>
           <div v-if="!address.sameForCorrespondence" class="grid grid-cols-1 md:grid-cols-6 gap-5 mt-5 pt-5 border-t border-border">
             <div class="md:col-span-6">
-              <label class="block text-sm font-semibold mb-2 text-foreground">Adresse de correspondance</label>
-              <input v-model="address.cStreet" type="text" placeholder="Rue et numéro" class="field" />
+              <label for="cp-cstreet" class="block text-sm font-semibold mb-2 text-foreground">Adresse de correspondance</label>
+              <input id="cp-cstreet" v-model="address.cStreet" type="text" autocomplete="address-line1" placeholder="Rue et numéro" class="field" />
             </div>
             <div class="md:col-span-2">
-              <input v-model="address.cZip" type="text" placeholder="NPA" class="field" />
+              <input v-model="address.cZip" type="text" inputmode="numeric" autocomplete="postal-code" aria-label="NPA de correspondance" placeholder="NPA" class="field" />
             </div>
             <div class="md:col-span-4">
-              <input v-model="address.cCity" type="text" placeholder="Localité" class="field" />
+              <input v-model="address.cCity" type="text" autocomplete="address-level2" aria-label="Localité de correspondance" placeholder="Localité" class="field" />
             </div>
           </div>
         </section>
@@ -380,12 +382,12 @@ function saveDraft() {
 
           <div v-if="!noDiploma" class="space-y-5">
             <div
-              v-for="(d, i) in diplomas" :key="i"
+              v-for="(d, i) in diplomas" :key="d.id"
               class="p-5 rounded-[18px] bg-foreground/5 relative"
             >
               <button
                 v-if="diplomas.length > 1" type="button"
-                class="absolute top-3 right-3 text-foreground/40 hover:text-destructive transition-colors"
+                class="absolute top-3 right-3 text-foreground/55 hover:text-destructive transition-colors"
                 @click="removeDiploma(i)"
               >
                 <Trash2 :size="18" />
@@ -500,7 +502,7 @@ function saveDraft() {
                       class="w-full h-10 rounded-[12px] text-xs font-semibold border-2 transition-all"
                       :class="slotOn(d, slot)
                         ? 'bg-primary text-primary-foreground border-transparent'
-                        : 'bg-transparent text-foreground/50 border-border hover:border-primary/40'"
+                        : 'bg-transparent text-foreground/65 border-border hover:border-primary/40'"
                       @click="toggleSlot(d, slot)"
                     >
                       {{ slotOn(d, slot) ? '✓' : '–' }}
@@ -614,9 +616,10 @@ function saveDraft() {
   font-family: 'Inter', sans-serif;
   transition: border-color 0.2s ease;
 }
-.field:focus {
+.field:focus-visible {
   outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 28%, transparent);
 }
 .field::placeholder {
   color: var(--muted-foreground);

@@ -165,7 +165,7 @@ function toggleExpand(name: string) {
 </script>
 
 <template>
-  <div class="bg-background relative" style="min-height:100vh; overflow-x:hidden;">
+  <div class="bg-background relative" style="min-height:100dvh; overflow-x:hidden;">
     <DoodleBackground :items="doodles" />
 
     <div class="relative z-10 max-w-4xl mx-auto px-5 sm:px-8 py-12">
@@ -361,7 +361,7 @@ function toggleExpand(name: string) {
                 </div>
               </div>
               <button
-                class="p-2 rounded-full text-foreground/40 hover:text-destructive hover:bg-foreground/5 transition-colors shrink-0"
+                class="p-2 rounded-full text-foreground/55 hover:text-destructive hover:bg-foreground/5 transition-colors shrink-0"
                 title="Retirer l’offre"
                 @click="removeOffer(o.id)"
               >
@@ -480,19 +480,19 @@ function toggleExpand(name: string) {
                   <Star v-for="n in 5" :key="n" :size="15" :class="n <= Math.round(avgFor('remplacant', r.name)) ? 'text-amber-400 fill-amber-400' : 'text-foreground/20'" />
                 </div>
                 <span class="shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold" :class="viability(r.name).cls">{{ viability(r.name).label }}</span>
-                <ChevronDown :size="18" class="text-foreground/40 transition-transform shrink-0" :class="expanded === r.name ? 'rotate-180' : ''" />
+                <ChevronDown :size="18" class="text-foreground/55 transition-transform shrink-0" :class="expanded === r.name ? 'rotate-180' : ''" />
               </button>
               <div v-if="expanded === r.name" class="px-4 pb-4 space-y-3">
-                <p v-if="reportsFor('remplacant', r.name).length === 0" class="text-sm text-foreground/50">Aucun avis pour l'instant.</p>
+                <p v-if="reportsFor('remplacant', r.name).length === 0" class="text-sm text-foreground/65">Aucun avis pour l'instant.</p>
                 <div v-for="rep in reportsFor('remplacant', r.name)" :key="rep.id" class="p-3 rounded-[14px] bg-foreground/5">
                   <div class="flex items-center justify-between gap-2 mb-1">
                     <div class="flex items-center gap-1">
                       <Star v-for="n in 5" :key="n" :size="13" :class="n <= rep.rating ? 'text-amber-400 fill-amber-400' : 'text-foreground/20'" />
                     </div>
-                    <span class="text-xs text-foreground/50">{{ rep.context }} · {{ rep.date }}</span>
+                    <span class="text-xs text-foreground/65">{{ rep.context }} · {{ rep.date }}</span>
                   </div>
                   <p class="text-sm text-foreground/80">{{ rep.comment }}</p>
-                  <p class="text-xs text-foreground/50 mt-1">— {{ rep.author }}</p>
+                  <p class="text-xs text-foreground/65 mt-1">— {{ rep.author }}</p>
                 </div>
               </div>
             </div>

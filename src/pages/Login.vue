@@ -22,7 +22,7 @@ const doodles: Doodle[] = [
 </script>
 
 <template>
-  <div style="min-height:100vh; overflow:auto; background:var(--background); display:flex;">
+  <div style="min-height:100dvh; overflow:auto; background:var(--background); display:flex;">
 
     <!-- Left: visual -->
     <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden items-center justify-center p-12 bg-muted">
@@ -92,11 +92,13 @@ const doodles: Doodle[] = [
         <!-- Email/password -->
         <form class="space-y-5" @submit.prevent>
           <div>
-            <label class="block text-sm font-semibold mb-2" style="font-family:Inter,sans-serif">Adresse email</label>
+            <label for="login-email" class="block text-sm font-semibold mb-2" style="font-family:Inter,sans-serif">Adresse email</label>
             <div class="relative">
-              <Mail :size="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40" />
+              <Mail :size="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/55" />
               <input
+                id="login-email"
                 type="email"
+                autocomplete="email"
                 placeholder="votre.email@exemple.ch"
                 class="w-full pl-12 pr-4 py-4 rounded-[16px] border-2 border-foreground/10 focus:border-primary focus:outline-none transition-all"
                 style="font-family:Inter,sans-serif"
@@ -105,18 +107,21 @@ const doodles: Doodle[] = [
           </div>
 
           <div>
-            <label class="block text-sm font-semibold mb-2" style="font-family:Inter,sans-serif">Mot de passe</label>
+            <label for="login-password" class="block text-sm font-semibold mb-2" style="font-family:Inter,sans-serif">Mot de passe</label>
             <div class="relative">
-              <Lock :size="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40" />
+              <Lock :size="20" class="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/55" />
               <input
+                id="login-password"
                 :type="showPassword ? 'text' : 'password'"
+                autocomplete="current-password"
                 placeholder="••••••••"
                 class="w-full pl-12 pr-12 py-4 rounded-[16px] border-2 border-foreground/10 focus:border-primary focus:outline-none transition-all"
                 style="font-family:Inter,sans-serif"
               />
               <button
                 type="button"
-                class="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground transition-colors"
+                :aria-label="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/55 hover:text-foreground transition-colors"
                 @click="showPassword = !showPassword"
               >
                 <EyeOff v-if="showPassword" :size="20" />
@@ -124,7 +129,7 @@ const doodles: Doodle[] = [
               </button>
             </div>
             <div class="text-right mt-2">
-              <a href="#" class="text-sm text-primary hover:underline font-medium">Mot de passe oublié ?</a>
+              <a href="#" class="text-sm text-accent-cta hover:underline font-medium">Mot de passe oublié ?</a>
             </div>
           </div>
 
@@ -139,7 +144,7 @@ const doodles: Doodle[] = [
         <div class="text-center mt-8">
           <p class="text-foreground/70">
             Pas encore inscrit ?
-            <RouterLink to="/create-profile" class="text-primary font-semibold hover:underline">Créer un compte</RouterLink>
+            <RouterLink to="/create-profile" class="text-accent-cta font-semibold hover:underline">Créer un compte</RouterLink>
           </p>
         </div>
       </div>

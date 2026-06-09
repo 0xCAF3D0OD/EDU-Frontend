@@ -44,6 +44,7 @@ const features = [
 let ctx: gsap.Context | null = null
 
 onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   ctx = gsap.context(() => {
     if (heroRef.value) {
       const circles = heroRef.value.querySelectorAll('.parallax-circle')
@@ -102,11 +103,11 @@ function onBtnRelease(e: MouseEvent) {
 </script>
 
 <template>
-  <div style="min-height:100vh; overflow-x:hidden; background:var(--background); position:relative;">
+  <div style="min-height:100dvh; overflow-x:hidden; background:var(--background); position:relative;">
     <DoodleBackground :items="doodles" />
 
     <!-- Hero -->
-    <section ref="heroRef" class="min-h-screen flex items-center justify-center relative overflow-hidden px-8">
+    <section ref="heroRef" class="min-h-dvh flex items-center justify-center relative overflow-hidden px-8">
       <div class="max-w-6xl mx-auto text-center relative z-10">
         <h1 class="text-[clamp(2.5rem,9vw,5.5rem)] leading-[1.05] mb-8" style="font-family:'DM Serif Display',serif">
           Trouvez votre remplaçant

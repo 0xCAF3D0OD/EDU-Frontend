@@ -53,7 +53,7 @@ const criteria = [
 </script>
 
 <template>
-  <div class="bg-background relative" style="min-height:100vh; overflow-x:hidden;">
+  <div class="bg-background relative" style="min-height:100dvh; overflow-x:hidden;">
     <DoodleBackground :items="doodles" />
 
     <div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-8 py-12">

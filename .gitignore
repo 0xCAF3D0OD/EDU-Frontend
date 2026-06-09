@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 
 # macOS
 .DS_Store
+
+# Skills tiers installés en local (UI UX Pro Max, etc.) — non versionnés
+.claude/skills/

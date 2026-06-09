@@ -53,7 +53,7 @@ onUnmounted(() => window.removeEventListener('click', onDocClick))
       <span :class="isPlaceholder ? 'text-muted-foreground' : ''" class="truncate">
         {{ selected ? selected.label : placeholder }}
       </span>
-      <ChevronDown :size="18" class="text-foreground/50 transition-transform shrink-0" :class="open ? 'rotate-180' : ''" />
+      <ChevronDown :size="18" class="text-foreground/65 transition-transform shrink-0" :class="open ? 'rotate-180' : ''" />
     </button>
 
     <Transition name="dd-pop">

@@ -49,7 +49,7 @@ function onBtnLeave(e: MouseEvent) {
 </script>
 
 <template>
-  <div style="min-height:100vh; overflow-x:hidden; background:var(--background); position:relative;">
+  <div style="min-height:100dvh; overflow-x:hidden; background:var(--background); position:relative;">
     <DoodleBackground :items="doodles" />
     <div class="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8 py-12">
       <!-- Header -->

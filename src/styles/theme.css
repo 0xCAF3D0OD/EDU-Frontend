@@ -25,6 +25,9 @@
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: #FD4401;
+  /* Accent CTA — distinct from the primary brand colour, for secondary actions & links */
+  --accent-cta: #2563EB;
+  --accent-cta-foreground: #ffffff;
   --chart-1: #FD4401;
   --chart-2: #FDCB40;
   --chart-3: #FF8A5B;
@@ -71,6 +74,8 @@
   --input-background: #2A211B;
   --switch-background: #FDCB40;
   --ring: #FF5A1F;
+  --accent-cta: #3B82F6;
+  --accent-cta-foreground: #ffffff;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --chart-1: #FF5A1F;
@@ -199,6 +204,8 @@
   --color-input-background: var(--input-background);
   --color-switch-background: var(--switch-background);
   --color-ring: var(--ring);
+  --color-accent-cta: var(--accent-cta);
+  --color-accent-cta-foreground: var(--accent-cta-foreground);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
