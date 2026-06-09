@@ -109,7 +109,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div style="min-height:100vh; position:relative;">
+  <div style="min-height:100dvh; position:relative;">
     <FloatingShapes />
 
     <!-- Glassmorphism Navigation -->

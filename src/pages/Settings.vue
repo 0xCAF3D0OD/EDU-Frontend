@@ -58,7 +58,7 @@ const doodles: Doodle[] = [
 </script>
 
 <template>
-  <div class="bg-background" style="min-height:100vh; overflow-x:hidden; position:relative;">
+  <div class="bg-background" style="min-height:100dvh; overflow-x:hidden; position:relative;">
     <DoodleBackground :items="doodles" />
 
     <div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-8 py-12">
@@ -96,20 +96,20 @@ const doodles: Doodle[] = [
 
             <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label class="block text-sm font-semibold mb-2 text-foreground" style="font-family:Inter,sans-serif">Prénom</label>
-                <input type="text" value="Marc" class="w-full px-4 py-3 rounded-[16px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary transition-all" />
+                <label for="set-firstname" class="block text-sm font-semibold mb-2 text-foreground" style="font-family:Inter,sans-serif">Prénom</label>
+                <input id="set-firstname" type="text" value="Marc" autocomplete="given-name" class="w-full px-4 py-3 rounded-[16px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary transition-all" />
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-2 text-foreground" style="font-family:Inter,sans-serif">Nom</label>
-                <input type="text" value="Renaud" class="w-full px-4 py-3 rounded-[16px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary transition-all" />
+                <label for="set-lastname" class="block text-sm font-semibold mb-2 text-foreground" style="font-family:Inter,sans-serif">Nom</label>
+                <input id="set-lastname" type="text" value="Renaud" autocomplete="family-name" class="w-full px-4 py-3 rounded-[16px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary transition-all" />
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-2 text-foreground" style="font-family:Inter,sans-serif">Email</label>
-                <input type="email" value="marc.renaud@exemple.ch" class="w-full px-4 py-3 rounded-[16px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary transition-all" />
+                <label for="set-email" class="block text-sm font-semibold mb-2 text-foreground" style="font-family:Inter,sans-serif">Email</label>
+                <input id="set-email" type="email" value="marc.renaud@exemple.ch" autocomplete="email" class="w-full px-4 py-3 rounded-[16px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary transition-all" />
               </div>
               <div>
-                <label class="block text-sm font-semibold mb-2 text-foreground" style="font-family:Inter,sans-serif">Téléphone</label>
-                <input type="tel" value="+41 79 123 45 67" class="w-full px-4 py-3 rounded-[16px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary transition-all" />
+                <label for="set-phone" class="block text-sm font-semibold mb-2 text-foreground" style="font-family:Inter,sans-serif">Téléphone</label>
+                <input id="set-phone" type="tel" value="+41 79 123 45 67" autocomplete="tel" class="w-full px-4 py-3 rounded-[16px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary transition-all" />
               </div>
             </div>
           </div>

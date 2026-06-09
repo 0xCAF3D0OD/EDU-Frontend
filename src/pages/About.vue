@@ -49,6 +49,7 @@ const team = [
 ]
 
 onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   ctx = gsap.context(() => {
     if (starRef.value) {
       gsap.to(starRef.value, { rotate: 10, duration: 2.5, yoyo: true, repeat: -1, ease: 'sine.inOut' })
@@ -134,11 +135,11 @@ function onBtnRelease(e: MouseEvent) {
 </script>
 
 <template>
-  <div ref="containerRef" style="min-height:100vh; overflow-x:hidden; background:var(--background); position:relative;">
+  <div ref="containerRef" style="min-height:100dvh; overflow-x:hidden; background:var(--background); position:relative;">
     <DoodleBackground :items="doodles" />
 
     <!-- Hero -->
-    <section class="min-h-screen flex items-center justify-center relative overflow-hidden px-8">
+    <section class="min-h-dvh flex items-center justify-center relative overflow-hidden px-8">
       <div ref="blob1" class="absolute top-20 left-10 opacity-25">
         <AnimatedBlob color="#FDCB40" :size="380" />
       </div>

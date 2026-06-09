@@ -19,6 +19,11 @@ const doodles: Doodle[] = [
   { name: 'people', top: '36%', right: '5%', size: 74, opacity: 0.45 },
   { name: 'kite', top: '62%', right: '6%', size: 66, opacity: 0.45 },
   { name: 'heart-fill', bottom: '9%', right: '6%', size: 46, opacity: 0.5 },
+  // top band + mid edges
+  { name: 'rocket', top: '6%', left: '3%', size: 46, rotate: -12, opacity: 0.4 },
+  { name: 'bolt', top: '26%', left: '3%', size: 38, opacity: 0.45 },
+  { name: 'pencil', top: '24%', right: '3%', size: 46, rotate: 10, opacity: 0.45 },
+  { name: 'sparkle4', top: '80%', right: '4%', size: 44, opacity: 0.4 },
 ]
 
 const criteria = [
@@ -53,7 +58,7 @@ const criteria = [
 </script>
 
 <template>
-  <div class="bg-background relative" style="min-height:100vh; overflow-x:hidden;">
+  <div class="bg-background relative" style="min-height:100dvh; overflow-x:hidden;">
     <DoodleBackground :items="doodles" />
 
     <div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-8 py-12">

@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
         :href="ESTABLISHMENTS_DIRECTORY_URL"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+        class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-cta hover:underline"
       >
         Annuaire officiel
         <ExternalLink :size="14" />

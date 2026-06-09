@@ -16,6 +16,11 @@ const doodles: Doodle[] = [
   { name: 'star2', top: '14%', right: '5%', size: 52, opacity: 0.5 },
   { name: 'sparkle3', top: '44%', right: '6%', size: 44, opacity: 0.5 },
   { name: 'rainbow-mini', bottom: '10%', right: '8%', size: 64, opacity: 0.45 },
+  { name: 'cloud', top: '3%', left: '3%', size: 46, opacity: 0.4 },
+  { name: 'swirl', top: '26%', left: '3%', size: 40, rotate: -10, opacity: 0.4 },
+  { name: 'pencil', top: '24%', right: '4%', size: 46, rotate: 14, opacity: 0.45 },
+  { name: 'kite', top: '58%', right: '5%', size: 58, opacity: 0.45 },
+  { name: 'flower-blue', top: '86%', left: '5%', size: 50, opacity: 0.4 },
 ]
 
 const measures = [
@@ -52,7 +57,7 @@ const pros = [
 </script>
 
 <template>
-  <div class="bg-background relative" style="min-height:100vh; overflow-x:hidden;">
+  <div class="bg-background relative" style="min-height:100dvh; overflow-x:hidden;">
     <DoodleBackground :items="doodles" />
 
     <div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-8 py-12">

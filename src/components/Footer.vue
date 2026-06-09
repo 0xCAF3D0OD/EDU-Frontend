@@ -19,7 +19,7 @@ const legalLinks = ['Mentions légales', 'Confidentialité', 'CGU']
 </script>
 
 <template>
-  <footer class="bg-foreground/5 border-t border-border/50 py-20 px-8">
+  <footer class="relative z-10 bg-muted border-t border-border/50 py-20 px-8">
     <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <!-- Brand -->
@@ -50,7 +50,7 @@ const legalLinks = ['Mentions légales', 'Confidentialité', 'CGU']
           <h4 class="font-semibold mb-5 text-foreground" style="font-family:Inter,sans-serif">Navigation</h4>
           <ul class="space-y-3">
             <li v-for="link in navLinks" :key="link.label">
-              <RouterLink :to="link.to" class="text-foreground/60 hover:text-primary transition-colors" style="font-family:Inter,sans-serif">
+              <RouterLink :to="link.to" class="text-foreground/60 hover:text-accent-cta transition-colors" style="font-family:Inter,sans-serif">
                 {{ link.label }}
               </RouterLink>
             </li>
@@ -75,11 +75,11 @@ const legalLinks = ['Mentions légales', 'Confidentialité', 'CGU']
 
       <!-- Bottom -->
       <div class="pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-sm text-foreground/50" style="font-family:Inter,sans-serif">
+        <p class="text-sm text-foreground/65" style="font-family:Inter,sans-serif">
           © {{ year }} alloremplacement. Tous droits réservés.
         </p>
         <div class="flex gap-6">
-          <a v-for="link in legalLinks" :key="link" href="#" class="text-sm text-foreground/50 hover:text-primary transition-colors" style="font-family:Inter,sans-serif">
+          <a v-for="link in legalLinks" :key="link" href="#" class="text-sm text-foreground/65 hover:text-accent-cta transition-colors" style="font-family:Inter,sans-serif">
             {{ link }}
           </a>
         </div>

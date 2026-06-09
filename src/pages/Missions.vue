@@ -115,7 +115,7 @@ function onCardLeave(e: MouseEvent) {
 </script>
 
 <template>
-  <div style="min-height:100vh; overflow-x:hidden; background:var(--background); position:relative;">
+  <div style="min-height:100dvh; overflow-x:hidden; background:var(--background); position:relative;">
     <DoodleBackground :items="doodles" />
     <div class="relative z-10 max-w-[1600px] mx-auto px-5 sm:px-8 py-12">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -208,7 +208,7 @@ function onCardLeave(e: MouseEvent) {
                   <span class="text-sm text-foreground/60 ml-2">périodes</span>
                 </div>
                 <input type="range" min="1" max="28" v-model.number="periodsRange" class="w-full" />
-                <div class="flex justify-between text-xs text-foreground/50 mt-1">
+                <div class="flex justify-between text-xs text-foreground/65 mt-1">
                   <span>1</span>
                   <span>28</span>
                 </div>
@@ -218,7 +218,7 @@ function onCardLeave(e: MouseEvent) {
             <!-- Disciplines -->
             <div class="mb-6">
               <label class="block text-base font-semibold mb-2" style="font-family:Inter,sans-serif">Disciplines</label>
-              <p class="text-xs text-foreground/50 mb-4">
+              <p class="text-xs text-foreground/65 mb-4">
                 {{ selected.levels.length ? 'Selon les niveaux sélectionnés' : 'Sélectionnez un niveau pour affiner' }}
               </p>
               <div class="flex flex-wrap gap-2">

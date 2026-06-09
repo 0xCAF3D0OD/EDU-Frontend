@@ -124,7 +124,7 @@ function onDeviceFile(ev: Event) {
         <div class="p-6 border-b border-foreground/10">
           <h1 class="text-[2rem] mb-4" style="font-family:'DM Serif Display',serif">Messages</h1>
           <div class="relative">
-            <Search :size="18" class="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40" />
+            <Search :size="18" class="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/55" />
             <input
               v-model="searchQuery"
               type="text"
@@ -136,14 +136,16 @@ function onDeviceFile(ev: Event) {
         </div>
 
         <div class="flex-1 overflow-y-auto" data-lenis-prevent>
-          <p v-if="filteredConversations.length === 0" class="p-6 text-sm text-foreground/50 text-center">
+          <p v-if="filteredConversations.length === 0" class="p-6 text-sm text-foreground/65 text-center">
             Aucun contact pour « {{ searchQuery }} ».
           </p>
-          <div
+          <button
             v-for="conv in filteredConversations"
             :key="conv.id"
-            class="p-5 border-b border-foreground/5 cursor-pointer transition-all relative hover:bg-foreground/5"
+            type="button"
+            class="w-full text-left p-5 border-b border-foreground/5 cursor-pointer transition-all relative hover:bg-foreground/5"
             :style="{ backgroundColor: selectedChat === conv.id ? 'var(--muted)' : 'transparent' }"
+            :aria-current="selectedChat === conv.id ? 'true' : undefined"
             @click="openChat(conv.id)"
           >
             <div class="flex gap-4">
@@ -169,7 +171,7 @@ function onDeviceFile(ev: Event) {
                 {{ conv.unread }}
               </div>
             </div>
-          </div>
+          </button>
         </div>
       </div>
 
@@ -216,7 +218,7 @@ function onDeviceFile(ev: Event) {
                 {{ transmissionDocs.length }}
               </span>
             </h3>
-            <ChevronDown :size="20" class="text-foreground/50 transition-transform" :class="docsOpen ? 'rotate-180' : ''" />
+            <ChevronDown :size="20" class="text-foreground/65 transition-transform" :class="docsOpen ? 'rotate-180' : ''" />
           </button>
           <Transition name="pop">
             <div v-if="docsOpen" class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
@@ -237,7 +239,7 @@ function onDeviceFile(ev: Event) {
                   <p class="text-sm font-semibold truncate">{{ doc.name }}</p>
                   <p class="text-xs text-foreground/60">{{ doc.size }}</p>
                 </div>
-                <Download :size="16" class="text-foreground/40 flex-shrink-0 mt-1" />
+                <Download :size="16" class="text-foreground/55 flex-shrink-0 mt-1" />
               </div>
             </a>
             </div>
@@ -344,7 +346,7 @@ function onDeviceFile(ev: Event) {
               <div class="absolute right-3 top-1/2 -translate-y-1/2 flex gap-2">
                 <button
                   class="p-2 hover:bg-foreground/5 rounded-full transition-colors"
-                  :class="showAttach ? 'text-primary' : 'text-foreground/50'"
+                  :class="showAttach ? 'text-primary' : 'text-foreground/65'"
                   title="Joindre un fichier"
                   @click="showAttach = !showAttach; showEmoji = false"
                 >
@@ -352,7 +354,7 @@ function onDeviceFile(ev: Event) {
                 </button>
                 <button
                   class="p-2 hover:bg-foreground/5 rounded-full transition-colors"
-                  :class="showEmoji ? 'text-primary' : 'text-foreground/50'"
+                  :class="showEmoji ? 'text-primary' : 'text-foreground/65'"
                   title="Emojis"
                   @click="showEmoji = !showEmoji; showAttach = false"
                 >
@@ -406,42 +408,42 @@ function onDeviceFile(ev: Event) {
                   <div class="flex items-center gap-3 p-3 rounded-[14px] hover:bg-foreground/5">
                     <Building2 :size="18" class="text-primary shrink-0" />
                     <div class="min-w-0">
-                      <div class="text-xs text-foreground/50">Établissement</div>
+                      <div class="text-xs text-foreground/65">Établissement</div>
                       <div class="text-sm font-medium truncate">{{ currentConversation?.school }}</div>
                     </div>
                   </div>
                   <div class="flex items-center gap-3 p-3 rounded-[14px] hover:bg-foreground/5">
                     <GraduationCap :size="18" class="text-primary shrink-0" />
                     <div class="min-w-0">
-                      <div class="text-xs text-foreground/50">Degré</div>
+                      <div class="text-xs text-foreground/65">Degré</div>
                       <div class="text-sm font-medium">{{ currentConversation?.level }}</div>
                     </div>
                   </div>
                   <div class="flex items-center gap-3 p-3 rounded-[14px] hover:bg-foreground/5">
                     <BookOpen :size="18" class="text-primary shrink-0" />
                     <div class="min-w-0">
-                      <div class="text-xs text-foreground/50">Discipline</div>
+                      <div class="text-xs text-foreground/65">Discipline</div>
                       <div class="text-sm font-medium">{{ currentConversation?.subject }}</div>
                     </div>
                   </div>
                   <a :href="`mailto:${currentConversation?.email}`" class="flex items-center gap-3 p-3 rounded-[14px] hover:bg-foreground/5">
                     <Mail :size="18" class="text-primary shrink-0" />
                     <div class="min-w-0">
-                      <div class="text-xs text-foreground/50">Email</div>
+                      <div class="text-xs text-foreground/65">Email</div>
                       <div class="text-sm font-medium truncate">{{ currentConversation?.email }}</div>
                     </div>
                   </a>
                   <a :href="`tel:${currentConversation?.phone}`" class="flex items-center gap-3 p-3 rounded-[14px] hover:bg-foreground/5">
                     <Phone :size="18" class="text-primary shrink-0" />
                     <div class="min-w-0">
-                      <div class="text-xs text-foreground/50">Téléphone</div>
+                      <div class="text-xs text-foreground/65">Téléphone</div>
                       <div class="text-sm font-medium">{{ currentConversation?.phone }}</div>
                     </div>
                   </a>
                   <div class="flex items-center gap-3 p-3 rounded-[14px] hover:bg-foreground/5">
                     <MapPin :size="18" class="text-primary shrink-0" />
                     <div class="min-w-0">
-                      <div class="text-xs text-foreground/50">Localité</div>
+                      <div class="text-xs text-foreground/65">Localité</div>
                       <div class="text-sm font-medium">{{ currentConversation?.location }}</div>
                     </div>
                   </div>

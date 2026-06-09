@@ -14,6 +14,7 @@ const floatingDots = [0, 60, 120, 180, 240, 300]
 let ctx: gsap.Context | null = null
 
 onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   ctx = gsap.context(() => {
     if (sadIconRef.value) gsap.to(sadIconRef.value, { rotation: 360, duration: 20, repeat: -1, ease: 'none' })
     if (num1Ref.value) gsap.to(num1Ref.value, { rotate: -5, duration: 1, yoyo: true, repeat: -1, ease: 'sine.inOut' })
@@ -55,7 +56,7 @@ function onBtnRelease(e: MouseEvent) {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center relative overflow-hidden px-8 bg-background" style="position:relative">
+  <div class="min-h-dvh flex items-center justify-center relative overflow-hidden px-8 bg-background" style="position:relative">
 
     <div class="blob-tl absolute top-10 left-10 opacity-20"><AnimatedBlob color="#FDCB40" :size="130" /></div>
     <div class="blob-tr absolute top-20 right-20 opacity-20"><AnimatedBlob color="#FD4401" :size="120" /></div>
