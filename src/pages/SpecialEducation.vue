@@ -16,7 +16,7 @@ const doodles: Doodle[] = [
   { name: 'star2', top: '14%', right: '5%', size: 52, opacity: 0.5 },
   { name: 'sparkle3', top: '44%', right: '6%', size: 44, opacity: 0.5 },
   { name: 'rainbow-mini', bottom: '10%', right: '8%', size: 64, opacity: 0.45 },
-  { name: 'cloud', top: '6%', left: '15%', size: 54, opacity: 0.4 },
+  { name: 'cloud', top: '3%', left: '3%', size: 46, opacity: 0.4 },
   { name: 'swirl', top: '26%', left: '3%', size: 40, rotate: -10, opacity: 0.4 },
   { name: 'pencil', top: '24%', right: '4%', size: 46, rotate: 14, opacity: 0.45 },
   { name: 'kite', top: '58%', right: '5%', size: 58, opacity: 0.45 },

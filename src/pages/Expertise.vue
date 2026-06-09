@@ -20,7 +20,7 @@ const doodles: Doodle[] = [
   { name: 'kite', top: '62%', right: '6%', size: 66, opacity: 0.45 },
   { name: 'heart-fill', bottom: '9%', right: '6%', size: 46, opacity: 0.5 },
   // top band + mid edges
-  { name: 'rocket', top: '6%', left: '14%', size: 52, rotate: -12, opacity: 0.4 },
+  { name: 'rocket', top: '6%', left: '3%', size: 46, rotate: -12, opacity: 0.4 },
   { name: 'bolt', top: '26%', left: '3%', size: 38, opacity: 0.45 },
   { name: 'pencil', top: '24%', right: '3%', size: 46, rotate: 10, opacity: 0.45 },
   { name: 'sparkle4', top: '80%', right: '4%', size: 44, opacity: 0.4 },

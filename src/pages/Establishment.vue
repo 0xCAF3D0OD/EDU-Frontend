@@ -30,7 +30,7 @@ const doodles: Doodle[] = [
   { name: 'bolt2', top: '14%', right: '4%', size: 48, opacity: 0.5 },
   { name: 'scribble2', top: '44%', right: '5%', size: 52, opacity: 0.45 },
   { name: 'raincloud2', bottom: '12%', right: '6%', size: 56, opacity: 0.45 },
-  { name: 'paperplane', top: '6%', left: '15%', size: 50, rotate: 8, opacity: 0.4 },
+  { name: 'paperplane', top: '3%', right: '3%', size: 46, rotate: 8, opacity: 0.4 },
   { name: 'dots', top: '46%', left: '3%', size: 42, opacity: 0.4 },
   { name: 'triangle', top: '28%', right: '3%', size: 40, rotate: 12, opacity: 0.4 },
   { name: 'sun-small', top: '78%', right: '4%', size: 52, opacity: 0.4 },
