@@ -30,6 +30,10 @@ const doodles: Doodle[] = [
   { name: 'bolt2', top: '14%', right: '4%', size: 48, opacity: 0.5 },
   { name: 'scribble2', top: '44%', right: '5%', size: 52, opacity: 0.45 },
   { name: 'raincloud2', bottom: '12%', right: '6%', size: 56, opacity: 0.45 },
+  { name: 'paperplane', top: '6%', left: '15%', size: 50, rotate: 8, opacity: 0.4 },
+  { name: 'dots', top: '46%', left: '3%', size: 42, opacity: 0.4 },
+  { name: 'triangle', top: '28%', right: '3%', size: 40, rotate: 12, opacity: 0.4 },
+  { name: 'sun-small', top: '78%', right: '4%', size: 52, opacity: 0.4 },
 ]
 
 // --- Gate (login) ---
@@ -207,10 +211,12 @@ function toggleExpand(name: string) {
           />
         </div>
 
-        <label class="block text-sm font-semibold mb-2 text-foreground">Code d’accès établissement</label>
+        <label for="est-access-code" class="block text-sm font-semibold mb-2 text-foreground">Code d’accès établissement</label>
         <input
+          id="est-access-code"
           v-model="accessCode"
           type="password"
+          autocomplete="off"
           placeholder="••••••••"
           class="w-full px-4 py-3 rounded-[14px] border-2 border-border bg-input-background text-foreground focus:outline-none focus:border-primary mb-2"
           @keyup.enter="doLogin"
@@ -284,20 +290,20 @@ function toggleExpand(name: string) {
               />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Périodes / semaine *</label>
-              <input v-model.number="form.periods" type="number" min="1" max="32" class="field" />
+              <label for="est-periods" class="block text-sm font-semibold mb-2 text-foreground">Périodes / semaine *</label>
+              <input id="est-periods" v-model.number="form.periods" type="number" inputmode="numeric" min="1" max="32" class="field" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Horaire (optionnel)</label>
-              <input v-model="form.schedule" type="text" placeholder="Lun-Mar-Mer 08:30-11:45" class="field" />
+              <label for="est-schedule" class="block text-sm font-semibold mb-2 text-foreground">Horaire (optionnel)</label>
+              <input id="est-schedule" v-model="form.schedule" type="text" placeholder="Lun-Mar-Mer 08:30-11:45" class="field" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Début *</label>
-              <input v-model="form.startDate" type="date" class="field" />
+              <label for="est-start" class="block text-sm font-semibold mb-2 text-foreground">Début *</label>
+              <input id="est-start" v-model="form.startDate" type="date" class="field" />
             </div>
             <div>
-              <label class="block text-sm font-semibold mb-2 text-foreground">Fin *</label>
-              <input v-model="form.endDate" type="date" class="field" />
+              <label for="est-end" class="block text-sm font-semibold mb-2 text-foreground">Fin *</label>
+              <input id="est-end" v-model="form.endDate" type="date" class="field" />
             </div>
           </div>
 
@@ -437,8 +443,8 @@ function toggleExpand(name: string) {
           </div>
 
           <div class="mt-5">
-            <label class="block text-sm font-semibold mb-2 text-foreground">Commentaire</label>
-            <textarea v-model="report.comment" rows="3" placeholder="Ponctualité, gestion de classe, autonomie…" class="field resize-none"></textarea>
+            <label for="est-comment" class="block text-sm font-semibold mb-2 text-foreground">Commentaire</label>
+            <textarea id="est-comment" v-model="report.comment" rows="3" placeholder="Ponctualité, gestion de classe, autonomie…" class="field resize-none"></textarea>
           </div>
 
           <div class="flex items-center gap-4 mt-6">

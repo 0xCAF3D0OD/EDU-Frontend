@@ -19,7 +19,7 @@ const legalLinks = ['Mentions légales', 'Confidentialité', 'CGU']
 </script>
 
 <template>
-  <footer class="bg-foreground/5 border-t border-border/50 py-20 px-8">
+  <footer class="relative z-10 bg-muted border-t border-border/50 py-20 px-8">
     <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <!-- Brand -->
