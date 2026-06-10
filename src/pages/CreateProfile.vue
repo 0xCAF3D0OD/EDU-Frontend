@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { reactive, ref, computed, watch } from 'vue'
+import { reactive, ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import {
   User, MapPin, Users as UsersIcon, Landmark, GraduationCap, CalendarCheck,
-  FileText, Plus, Trash2, ExternalLink, Save, Info, ShieldCheck,
+  FileText, Plus, Trash2, ExternalLink, Save, Info, ShieldCheck, Check,
 } from 'lucide-vue-next'
 import Footer from '../components/Footer.vue'
 import ToggleSwitch from '../components/ToggleSwitch.vue'
 import DoodleBackground, { type Doodle } from '../components/DoodleBackground.vue'
 import { useTheme } from '../composables/useTheme'
+import { useLenis } from '../composables/useLenis'
 import { yearLevels, subjectsForLevels } from '../data/vaud'
 import DropdownSelect from '../components/DropdownSelect.vue'
+
+const { scrollToEl } = useLenis()
 
 const MIREO_URL = 'https://prestations.vd.ch/pub/mireo/#/'
 
@@ -148,13 +151,65 @@ function saveDraft() {
   saved.value = true
   setTimeout(() => (saved.value = false), 2500)
 }
+
+// ---- Section completion (drives the sticky table of contents) ---------------
+const identityDone = computed(() =>
+  !!(identity.email && identity.firstName && identity.lastName && identity.birthDate && identity.mobile && identity.nationality),
+)
+const addressDone = computed(() => !!(address.street && address.zip && address.city && address.canton))
+const bankDone = computed(() => !!(bank.bankName && bank.iban))
+const diplomaDone = computed(() => noDiploma.value || diplomas.value.some((d) => d.title && d.system))
+const availabilityDone = computed(() => selectedClasses.value.length > 0)
+const documentsDone = computed(() => !!(uploaded.avs && uploaded.id))
+
+interface Section {
+  id: string
+  n: number
+  label: string
+  icon: typeof User
+  done?: { value: boolean }
+  optional?: boolean
+}
+const sections: Section[] = [
+  { id: 'sec-identite', n: 1, label: 'Identité & contact', icon: User, done: identityDone },
+  { id: 'sec-adresse', n: 2, label: 'Adresse', icon: MapPin, done: addressDone },
+  { id: 'sec-famille', n: 3, label: 'Situation familiale', icon: UsersIcon, optional: true },
+  { id: 'sec-bancaire', n: 4, label: 'Données bancaires', icon: Landmark, done: bankDone },
+  { id: 'sec-titres', n: 5, label: 'Titres & formation', icon: GraduationCap, done: diplomaDone },
+  { id: 'sec-dispo', n: 6, label: 'Disponibilités', icon: CalendarCheck, done: availabilityDone },
+  { id: 'sec-documents', n: 7, label: 'Documents', icon: FileText, done: documentsDone },
+]
+const requiredTotal = sections.filter((s) => !s.optional).length
+const completedCount = computed(() => sections.filter((s) => s.done?.value).length)
+const activeLabel = computed(() => sections.find((s) => s.id === activeId.value)?.label ?? sections[0]!.label)
+
+function goTo(id: string) {
+  scrollToEl('#' + id)
+}
+
+// Scrollspy: highlight the section currently in view
+const activeId = ref(sections[0]!.id)
+let observer: IntersectionObserver | null = null
+onMounted(() => {
+  observer = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) if (e.isIntersecting) activeId.value = (e.target as HTMLElement).id
+    },
+    { rootMargin: '-25% 0px -65% 0px', threshold: 0 },
+  )
+  for (const s of sections) {
+    const el = document.getElementById(s.id)
+    if (el) observer.observe(el)
+  }
+})
+onUnmounted(() => observer?.disconnect())
 </script>
 
 <template>
-  <div class="bg-background relative" style="min-height:100dvh; overflow-x:hidden;">
+  <div class="bg-background relative" style="min-height:100dvh; overflow-x:clip;">
     <DoodleBackground :items="doodles" />
 
-    <div class="relative z-10 max-w-4xl mx-auto px-5 sm:px-8 py-12">
+    <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 py-12">
       <!-- Header -->
       <div class="mb-10">
         <span class="inline-block text-sm font-semibold text-primary mb-3 tracking-wide uppercase">
@@ -190,9 +245,57 @@ function saveDraft() {
         </p>
       </div>
 
-      <form class="space-y-7" @submit.prevent="saveDraft">
+      <div class="lg:flex lg:gap-10 lg:items-start">
+        <!-- Mobile progress bar (the lateral ToC is hidden below lg) -->
+        <div class="lg:hidden sticky top-[84px] z-20 -mx-5 sm:-mx-8 px-5 sm:px-8 py-3 mb-6 bg-background/90 backdrop-blur-md border-b border-border">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-semibold text-foreground truncate pr-3">{{ activeLabel }}</span>
+            <span class="text-xs font-bold text-primary tabular-nums shrink-0">{{ completedCount }}/{{ requiredTotal }} complétées</span>
+          </div>
+          <div class="h-1.5 rounded-full bg-foreground/10 overflow-hidden">
+            <div class="h-full rounded-full bg-primary transition-all duration-500" :style="{ width: (completedCount / requiredTotal * 100) + '%' }"></div>
+          </div>
+        </div>
+
+        <!-- Sticky table of contents -->
+        <aside class="hidden lg:block lg:w-64 lg:shrink-0 lg:sticky lg:top-28 self-start">
+          <div class="rounded-[20px] border border-border bg-card/70 backdrop-blur-sm p-4">
+            <div class="flex items-center justify-between mb-3 px-1">
+              <span class="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-muted-foreground">Progression</span>
+              <span class="text-xs font-bold text-primary tabular-nums">{{ completedCount }}/{{ requiredTotal }}</span>
+            </div>
+            <div class="h-1.5 rounded-full bg-foreground/10 mb-4 overflow-hidden">
+              <div class="h-full rounded-full bg-primary transition-all duration-500" :style="{ width: (completedCount / requiredTotal * 100) + '%' }"></div>
+            </div>
+            <ol class="space-y-0.5">
+              <li v-for="s in sections" :key="s.id">
+                <button
+                  type="button"
+                  class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[12px] text-left text-sm transition-colors"
+                  :class="activeId === s.id ? 'bg-primary/10 text-foreground font-semibold' : 'text-foreground/70 hover:bg-foreground/5'"
+                  @click="goTo(s.id)"
+                >
+                  <span
+                    class="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[0.65rem] font-bold"
+                    :class="s.done?.value
+                      ? 'bg-green-500 text-white'
+                      : s.optional
+                        ? 'bg-foreground/10 text-muted-foreground'
+                        : 'border-2 border-border text-muted-foreground'"
+                  >
+                    <Check v-if="s.done?.value" :size="12" :stroke-width="3" />
+                    <template v-else>{{ s.n }}</template>
+                  </span>
+                  <span class="min-w-0 truncate">{{ s.label }}</span>
+                </button>
+              </li>
+            </ol>
+          </div>
+        </aside>
+
+        <form class="flex-1 min-w-0 space-y-7" @submit.prevent="saveDraft">
         <!-- 1. Identité & contact -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
+        <section id="sec-identite" class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
           <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <User :size="22" class="text-primary" />
@@ -251,7 +354,7 @@ function saveDraft() {
         </section>
 
         <!-- 2. Adresse -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
+        <section id="sec-adresse" class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
           <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <MapPin :size="22" class="text-primary" />
@@ -304,7 +407,7 @@ function saveDraft() {
         </section>
 
         <!-- 3. Situation familiale -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
+        <section id="sec-famille" class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
           <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <UsersIcon :size="22" class="text-primary" />
@@ -335,7 +438,7 @@ function saveDraft() {
         </section>
 
         <!-- 4. Données bancaires -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
+        <section id="sec-bancaire" class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
           <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <Landmark :size="22" class="text-primary" />
@@ -375,7 +478,7 @@ function saveDraft() {
         </section>
 
         <!-- 5. Titres & formation -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
+        <section id="sec-titres" class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
           <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <GraduationCap :size="22" class="text-primary" />
@@ -444,7 +547,7 @@ function saveDraft() {
         </section>
 
         <!-- 6. Disponibilités & préférences -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
+        <section id="sec-dispo" class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
           <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <CalendarCheck :size="22" class="text-primary" />
@@ -555,7 +658,7 @@ function saveDraft() {
         </section>
 
         <!-- 7. Documents -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
+        <section id="sec-documents" class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card">
           <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <FileText :size="22" class="text-primary" />
@@ -617,7 +720,8 @@ function saveDraft() {
           <ShieldCheck :size="14" />
           Vos données restent sur votre appareil tant que vous ne les reportez pas sur MIREO. Le canton décline toute responsabilité quant aux informations saisies sur le module officiel.
         </p>
-      </form>
+        </form>
+      </div>
     </div>
 
     <Footer />
@@ -625,6 +729,9 @@ function saveDraft() {
 </template>
 
 <style scoped>
+section[id] {
+  scroll-margin-top: 7rem;
+}
 .field {
   width: 100%;
   padding: 0.7rem 1rem;
