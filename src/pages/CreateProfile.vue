@@ -181,6 +181,7 @@ const sections: Section[] = [
 ]
 const requiredTotal = sections.filter((s) => !s.optional).length
 const completedCount = computed(() => sections.filter((s) => s.done?.value).length)
+const activeLabel = computed(() => sections.find((s) => s.id === activeId.value)?.label ?? sections[0]!.label)
 
 function goTo(id: string) {
   scrollToEl('#' + id)
@@ -205,7 +206,7 @@ onUnmounted(() => observer?.disconnect())
 </script>
 
 <template>
-  <div class="bg-background relative" style="min-height:100dvh; overflow-x:hidden;">
+  <div class="bg-background relative" style="min-height:100dvh; overflow-x:clip;">
     <DoodleBackground :items="doodles" />
 
     <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 py-12">
@@ -245,6 +246,17 @@ onUnmounted(() => observer?.disconnect())
       </div>
 
       <div class="lg:flex lg:gap-10 lg:items-start">
+        <!-- Mobile progress bar (the lateral ToC is hidden below lg) -->
+        <div class="lg:hidden sticky top-[84px] z-20 -mx-5 sm:-mx-8 px-5 sm:px-8 py-3 mb-6 bg-background/90 backdrop-blur-md border-b border-border">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-semibold text-foreground truncate pr-3">{{ activeLabel }}</span>
+            <span class="text-xs font-bold text-primary tabular-nums shrink-0">{{ completedCount }}/{{ requiredTotal }} complétées</span>
+          </div>
+          <div class="h-1.5 rounded-full bg-foreground/10 overflow-hidden">
+            <div class="h-full rounded-full bg-primary transition-all duration-500" :style="{ width: (completedCount / requiredTotal * 100) + '%' }"></div>
+          </div>
+        </div>
+
         <!-- Sticky table of contents -->
         <aside class="hidden lg:block lg:w-64 lg:shrink-0 lg:sticky lg:top-28 self-start">
           <div class="rounded-[20px] border border-border bg-card/70 backdrop-blur-sm p-4">

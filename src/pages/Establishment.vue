@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import {
   Building2, Lock, LogOut, Send, ShieldCheck, Plus, Trash2, MapPin, Clock, BookOpen, Check, AlertCircle,
   Star, ClipboardCheck, ChevronDown,
@@ -14,6 +14,9 @@ import { useTheme } from '../composables/useTheme'
 import { establishments, yearLevels, subjectsForLevels } from '../data/vaud'
 import { replacements, contacts } from '../data/users'
 import { useReports, type ReportKind } from '../composables/useReports'
+import { useLenis } from '../composables/useLenis'
+
+const { scrollToEl } = useLenis()
 
 const { session, isAuthenticated, login, logout } = useEstablishment()
 const { offers, addOffer, removeOffer } = useOffers()
@@ -163,13 +166,51 @@ const expanded = ref<string | null>(null)
 function toggleExpand(name: string) {
   expanded.value = expanded.value === name ? null : name
 }
+
+// ---- Sticky table of contents (authenticated view) --------------------------
+const navSections = computed(() => [
+  { id: 'est-offre', label: 'Publier une offre', icon: Plus, done: !!canPublish.value },
+  { id: 'est-offres', label: 'Vos offres', icon: BookOpen, count: myOffers.value.length },
+  { id: 'est-rapport', label: 'Rapport', icon: ClipboardCheck, done: !!canSendReport.value },
+  { id: 'est-viabilite', label: 'Viabilité', icon: ShieldCheck },
+])
+const activeSection = ref('est-offre')
+let io: IntersectionObserver | null = null
+function setupSpy() {
+  io?.disconnect()
+  io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) if (e.isIntersecting) activeSection.value = (e.target as HTMLElement).id
+    },
+    { rootMargin: '-25% 0px -65% 0px', threshold: 0 },
+  )
+  for (const s of navSections.value) {
+    const el = document.getElementById(s.id)
+    if (el) io.observe(el)
+  }
+}
+function goToSection(id: string) {
+  scrollToEl('#' + id)
+}
+onMounted(() => {
+  if (isAuthenticated.value) nextTick(setupSpy)
+})
+watch(isAuthenticated, (v) => {
+  if (v) nextTick(setupSpy)
+  else io?.disconnect()
+})
+// Re-observe when the "Vos offres" block toggles between list and empty state
+watch(() => myOffers.value.length, () => {
+  if (isAuthenticated.value) nextTick(setupSpy)
+})
+onUnmounted(() => io?.disconnect())
 </script>
 
 <template>
-  <div class="bg-background relative" style="min-height:100dvh; overflow-x:hidden;">
+  <div class="bg-background relative" style="min-height:100dvh; overflow-x:clip;">
     <DoodleBackground :items="doodles" />
 
-    <div class="relative z-10 max-w-4xl mx-auto px-5 sm:px-8 py-12">
+    <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 py-12">
       <div class="mb-8">
         <span class="inline-block text-sm font-semibold text-primary mb-3 tracking-wide uppercase">
           Réservé aux établissements
@@ -255,8 +296,40 @@ function toggleExpand(name: string) {
           </button>
         </div>
 
+        <div class="lg:flex lg:gap-10 lg:items-start">
+          <!-- Sticky table of contents -->
+          <aside class="hidden lg:block lg:w-60 lg:shrink-0 lg:sticky lg:top-28 self-start">
+            <nav class="rounded-[20px] border border-border bg-card/70 backdrop-blur-sm p-3">
+              <div class="text-[0.7rem] font-bold uppercase tracking-[0.12em] text-muted-foreground px-2 mb-2">Espace</div>
+              <ul class="space-y-0.5">
+                <li v-for="s in navSections" :key="s.id">
+                  <button
+                    type="button"
+                    class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[12px] text-left text-sm transition-colors"
+                    :class="activeSection === s.id ? 'bg-primary/10 text-foreground font-semibold' : 'text-foreground/70 hover:bg-foreground/5'"
+                    @click="goToSection(s.id)"
+                  >
+                    <span
+                      class="shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
+                      :class="s.done ? 'bg-green-500 text-white' : 'bg-foreground/10 text-foreground/70'"
+                    >
+                      <Check v-if="s.done" :size="13" :stroke-width="3" />
+                      <component :is="s.icon" v-else :size="13" />
+                    </span>
+                    <span class="min-w-0 truncate flex-1">{{ s.label }}</span>
+                    <span
+                      v-if="s.count !== undefined && s.count > 0"
+                      class="shrink-0 px-1.5 min-w-[1.25rem] h-5 rounded-full bg-primary/15 text-primary text-[0.7rem] font-bold flex items-center justify-center tabular-nums"
+                    >{{ s.count }}</span>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </aside>
+
+          <div class="flex-1 min-w-0">
         <!-- Formulaire rapide -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mb-8">
+        <section id="est-offre" class="scroll-mt-28 rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mb-8">
           <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <Plus :size="22" class="text-primary" />
@@ -347,7 +420,7 @@ function toggleExpand(name: string) {
         </section>
 
         <!-- Offres publiées -->
-        <section v-if="myOffers.length">
+        <section v-if="myOffers.length" id="est-offres" class="scroll-mt-28">
           <h3 class="text-lg font-bold text-foreground mb-4">Vos offres publiées ({{ myOffers.length }})</h3>
           <div class="space-y-4">
             <div
@@ -376,10 +449,10 @@ function toggleExpand(name: string) {
             </div>
           </div>
         </section>
-        <p v-else class="text-sm text-muted-foreground">Aucune offre publiée pour le moment.</p>
+        <p v-else id="est-offres" class="scroll-mt-28 text-sm text-muted-foreground">Aucune offre publiée pour le moment.</p>
 
         <!-- Rapports de satisfaction -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mt-8">
+        <section id="est-rapport" class="scroll-mt-28 rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mt-8">
           <div class="flex items-center gap-4 mb-6 pb-5 border-b border-border">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10 shrink-0">
               <ClipboardCheck :size="22" class="text-primary" />
@@ -466,7 +539,7 @@ function toggleExpand(name: string) {
         </section>
 
         <!-- Viabilité des remplaçant·e·s -->
-        <section class="rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mt-8">
+        <section id="est-viabilite" class="scroll-mt-28 rounded-[28px] p-6 sm:p-8 shadow-sm bg-card mt-8">
           <div class="flex items-center gap-3 mb-2">
             <div class="w-11 h-11 rounded-full flex items-center justify-center bg-primary/10">
               <ShieldCheck :size="22" class="text-primary" />
@@ -507,6 +580,8 @@ function toggleExpand(name: string) {
             </div>
           </div>
         </section>
+          </div>
+        </div>
       </template>
     </div>
 
